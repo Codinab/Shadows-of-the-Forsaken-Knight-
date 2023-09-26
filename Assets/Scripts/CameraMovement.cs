@@ -18,6 +18,8 @@ public class CameraMovement : MonoBehaviour
     {
         // Follow the player
         if (player == null) return;
-        transform.position = player.transform.position;
+        Vector3 playerPosition = player.transform.position;
+        playerPosition.z -= 10;
+        transform.position = playerPosition;
     }
 }
