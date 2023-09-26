@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1842654318477508805}
   - component: {fileID: 396534079832663281}
   - component: {fileID: 3366061365922077510}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -172,6 +172,9 @@ MonoBehaviour:
   maxFallSpeed: 15
   dashPower: 100
   nSecondJumps: 1
+  doubleJumpEnabled: 0
+  dashEnabled: 0
+  wallJumpEnabled: 0
   groundCheck: {fileID: 807124148586545411}
   wallCheckLeft: {fileID: 8628216703916324979}
   wallCheckRight: {fileID: 6476407985935429166}
@@ -250,7 +253,7 @@ GameObject:
   - component: {fileID: 5882503934023997504}
   - component: {fileID: 6375073107375507721}
   - component: {fileID: 2988056414919240844}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Collider
   m_Icon: {fileID: 0}
@@ -418,7 +421,7 @@ Transform:
   m_GameObject: {fileID: 7224561812328387773}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: -0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
