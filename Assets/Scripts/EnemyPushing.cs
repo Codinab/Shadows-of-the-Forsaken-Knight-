@@ -23,7 +23,7 @@ public class EnemyPushing : MonoBehaviour
         {
             Debug.LogError("PlayerMovement or PlayerCombat not found on player");
         }
-    }
+    } 
 
     private void OnTriggerEnter2D(Collider2D other)
     {
