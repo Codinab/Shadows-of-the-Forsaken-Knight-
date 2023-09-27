@@ -17,6 +17,7 @@ public class SmallSpiderChasing : MonoBehaviour
     float lastJump;
     float peakJump;
     bool jumped;
+    float lastMoved;
     [SerializeField] LayerMask Ground;
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,7 @@ public class SmallSpiderChasing : MonoBehaviour
         lastJump = 0;
         peakJump = transform.position.y;
         jumped = false;
+        lastMoved = Time.time;
     }
 
     // Update is called once per frame
@@ -54,21 +56,12 @@ public class SmallSpiderChasing : MonoBehaviour
             }
             //Debug.Log(_rb.velocity);
         }
-        if(GroundCheck())
-        Debug.Log($"lossy: {GroundCheckBody.transform.lossyScale} local: {GroundCheckBody.transform.localScale}");
-        //jumping on trigger
+        //jumping on trigger this detects the peak of the jump and moves after to clear the jump if hugging the wall before that
         if (jumped)
         {
             if (peakJump > transform.position.y)
             {
-                if (_player.transform.position.x > transform.position.x)
-                {
-                    _rb.velocity += new Vector2(1, 0);
-                }
-                if (_player.transform.position.x < transform.position.x)
-                {
-                    _rb.velocity += new Vector2(-1, 0);
-                }
+                MoveSlightly();
                 peakJump = transform.position.y;
                 jumped = false;
                 Debug.Log("Jumped");
@@ -79,7 +72,15 @@ public class SmallSpiderChasing : MonoBehaviour
             }
             //Debug.Log(_rb.velocity);
         }
-        
+        /////fixing bug with box stuck on the edge of ground
+        if (_rb.velocity != Vector2.zero)
+        {
+            lastMoved = Time.time;
+        }
+        else if (lastMoved + 0.5 < Time.time)
+        {
+            MoveSlightly();
+        }
     }
     private bool GroundCheck()
     {
@@ -90,7 +91,7 @@ public class SmallSpiderChasing : MonoBehaviour
     private void OnTriggerStay2D(Collider2D other)
     {
         
-        if (other.tag == "Ground" && GroundCheck() && lastJump + JumpStrength/3 < Time.time)
+        if (other.tag == "Ground" && GroundCheck() && lastJump + JumpStrength/4 < Time.time)
         {
             Jump();
             lastJump = Time.time;
@@ -103,6 +104,17 @@ public class SmallSpiderChasing : MonoBehaviour
         {
             _rb.velocity = new Vector2(_rb.velocity.x, JumpStrength);
             jumped = true;
+        }
+    }
+    private void MoveSlightly()
+    {
+        if (_player.transform.position.x > transform.position.x)
+        {
+            _rb.velocity += new Vector2(1, 0);
+        }
+        if (_player.transform.position.x < transform.position.x)
+        {
+            _rb.velocity += new Vector2(-1, 0);
         }
     }
 }
