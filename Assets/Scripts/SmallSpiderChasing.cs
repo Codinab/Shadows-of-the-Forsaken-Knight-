@@ -54,7 +54,6 @@ public class SmallSpiderChasing : MonoBehaviour
                     lastLookLeft = Time.time;
                 }
             }
-            //Debug.Log(_rb.velocity);
         }
         //jumping on trigger this detects the peak of the jump and moves after to clear the jump if hugging the wall before that
         if (jumped)
@@ -64,13 +63,12 @@ public class SmallSpiderChasing : MonoBehaviour
                 MoveSlightly();
                 peakJump = transform.position.y;
                 jumped = false;
-                Debug.Log("Jumped");
+                
             }
             if (peakJump < transform.position.y)
             {
                 peakJump = transform.position.y;
             }
-            //Debug.Log(_rb.velocity);
         }
         /////fixing bug with box stuck on the edge of ground
         if (_rb.velocity != Vector2.zero)
@@ -104,6 +102,7 @@ public class SmallSpiderChasing : MonoBehaviour
         {
             _rb.velocity = new Vector2(_rb.velocity.x, JumpStrength);
             jumped = true;
+            peakJump = transform.position.y;
         }
     }
     private void MoveSlightly()
