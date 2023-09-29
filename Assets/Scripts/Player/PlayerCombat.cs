@@ -126,15 +126,16 @@ public class PlayerCombat : MonoBehaviour
         playerMovement.GetPushed(pushBackDirection, attackPushBack);    
         Invoke(nameof(ResetAttack), attackDelay);
 
+        /*
         InvokeRepeating(nameof(AttackLookingDirectionDelayed), 0f, 0.04f);
-        Invoke(nameof(StopAttacking), attackDuration);
+        Invoke(nameof(StopAttacking), attackDuration);*/
     }
     
     public float attackDelay = 0.25f;
     public float attackDuration = 0.1f;
     public float attackPushBack = 0.1f;
     
-    private void StopAttacking()
+    /*private void StopAttacking()
     {
         CancelInvoke(nameof(AttackLookingDirectionDelayed)); // Stop the repeated invoking of Attacking
     }
@@ -142,7 +143,7 @@ public class PlayerCombat : MonoBehaviour
     private void AttackLookingDirectionDelayed()
     {
         Attack();
-    }
+    }*/
     
     private bool CanJumpAfterSuccessfulDownAttack()
     {
