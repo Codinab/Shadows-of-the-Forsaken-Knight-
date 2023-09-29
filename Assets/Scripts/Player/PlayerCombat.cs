@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static PlayerMovement;
 
+
 public class PlayerCombat : MonoBehaviour
 {
     
@@ -16,7 +17,8 @@ public class PlayerCombat : MonoBehaviour
     private float _invincibilityDurationAfterDamaged = 3f;
     private bool _alive = true;
     private bool _invincible = false;
-    
+    public float pushPower = 3f;
+
     
 
     public bool IsInvincible()
@@ -86,83 +88,110 @@ public class PlayerCombat : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.gameObject.CompareTag("Enemy")) return;
+        if (_objectsInAttackRange.Contains(other.gameObject)) return;
         _objectsInAttackRange.Add(other.gameObject);
-        Debug.Log(other.gameObject.name + " entered player trigger");
+        //Debug.Log(other.gameObject.name + " entered player trigger");
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (!other.gameObject.CompareTag("Enemy")) return;
         _objectsInAttackRange.Remove(other.gameObject);
-        Debug.Log(other.gameObject.name + " exited player trigger");
+        //Debug.Log(other.gameObject.name + " exited player trigger");
     }
 
     private bool _usedAttackKey = false;
     private bool CanAttack()
     {
         bool attackKey = Input.GetKey(KeyCode.C);
-        if (attackKey && !_usedAttackKey)
-        {
-            return true;
-        }
-        if (!attackKey) _usedAttackKey = false;
-        return false;
+        if (attackKey) Debug.Log("Attack key pressed");
+        return (attackKey && !_attacked);
     }
 
     private bool _attacked = false;
+    List<GameObject> attackedEnemies = new List<GameObject>();
     private void AttackLookingDirection()
     {
-        if (_attacked) return;
         _attacked = true;
         _usedAttackKey = true;
         
-        Debug.Log("Attack");
+        attackedEnemies.Clear();
         
-        Vector2Int lookingDirection = playerMovement.GetLookingDirection();
+        Debug.Log("Attack " + _objectsInAttackRange.Count + " " + playerMovement.GetLookingDirection());
         
-        foreach (GameObject gameObject in _objectsInAttackRange)
-        {
-            if (gameObject.CompareTag("Enemy") && EnemyInAttackDirection(lookingDirection, gameObject))
-            {
-                // TODO: Apply damage to enemy
-                gameObject.GetComponent<MeshRenderer>().enabled = !gameObject.GetComponent<MeshRenderer>().isVisible;
-            }
-        }
-        Debug.Log(lookingDirection);
-        Vector2 pushBackDirection = lookingDirection;
+        Attack();
+        
+        Vector2 pushBackDirection = playerMovement.GetLookingDirection();
         pushBackDirection.x = -pushBackDirection.x;
-        playerMovement.GetPushed(pushBackDirection, 0.1f);
-        Invoke(nameof(ResetAttack), 0.25f);
-        Invoke(nameof(Attacking), 0);
-        Invoke(nameof(StopAttackInProgress), 0.1f);
+        playerMovement.GetPushed(pushBackDirection, attackPushBack);    
+        Invoke(nameof(ResetAttack), attackDelay);
+
+        InvokeRepeating(nameof(AttackLookingDirectionDelayed), 0f, 0.04f);
+        Invoke(nameof(StopAttacking), attackDuration);
+    }
+    
+    public float attackDelay = 0.25f;
+    public float attackDuration = 0.1f;
+    public float attackPushBack = 0.1f;
+    
+    private void StopAttacking()
+    {
+        CancelInvoke(nameof(AttackLookingDirectionDelayed)); // Stop the repeated invoking of Attacking
     }
 
-    private bool _attackInProgress = false;
-    private void Attacking()
+    private void AttackLookingDirectionDelayed()
     {
-        _attackInProgress = true;
-        while (_attackInProgress)
+        Attack();
+    }
+    
+    private bool CanJumpAfterSuccessfulDownAttack()
+    {
+        return playerMovement.IsLookingDown();
+    }
+    
+    private void JumpAfterSuccessfulDownAttack()
+    {
+        playerMovement.RegularJump();
+    }
+
+    private void Attack()
+    {
+        Vector2Int lookingDirection = playerMovement.GetLookingDirection();
+
+        List<GameObject> removedEnemies = new List<GameObject>();
+
+
+        foreach (GameObject enemy in _objectsInAttackRange)
         {
-            Vector2Int lookingDirection = playerMovement.GetLookingDirection();
-        
-            foreach (GameObject enemy in _objectsInAttackRange)
+            if (attackedEnemies.Contains(enemy)) continue;
+            if (enemy.CompareTag("Enemy") && EnemyInAttackDirection(lookingDirection, enemy))
             {
-                if (enemy.CompareTag("Enemy") && EnemyInAttackDirection(lookingDirection, enemy))
+                EnemyLive enemyLive = enemy.GetComponent<EnemyLive>();
+                EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
+
+                enemyLive.TakeDamage(_damage);
+                enemyMovement.GetPushed(lookingDirection, pushPower);
+                
+                if (CanJumpAfterSuccessfulDownAttack()) JumpAfterSuccessfulDownAttack();
+
+                attackedEnemies.Add(enemy);
+                if (!enemyLive.IsAlive())
                 {
-                    // TODO: Apply damage to enemy
-                    enemy.GetComponent<MeshRenderer>().enabled = !enemy.GetComponent<MeshRenderer>().isVisible;
+                    removedEnemies.Add(enemy);
+                    Debug.Log("Enemy killed");
                 }
             }
         }
-    }
 
-    private void StopAttackInProgress()
-    {
-        _attackInProgress = false;
+        foreach (GameObject enemy in removedEnemies)
+        {
+            _objectsInAttackRange.Remove(enemy);
+        }
     }
 
     private void ResetAttack()
     {
+        Debug.Log("Reset attack");
         _attacked = false;
     }
     
