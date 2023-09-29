@@ -252,7 +252,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &6684255209124178672
 MonoBehaviour:
@@ -266,7 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79c6cd0e81a2d80499bdaa27e74db2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 650
+  Speed: 2
   ReactionTime: 0.5
   JumpStrength: 6
   GroundCheckBody: {fileID: 1246309364833936792}

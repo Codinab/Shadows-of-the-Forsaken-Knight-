@@ -90,7 +90,7 @@ public class PlayerCombat : MonoBehaviour
         if (!other.gameObject.CompareTag("Enemy")) return;
         if (_objectsInAttackRange.Contains(other.gameObject)) return;
         _objectsInAttackRange.Add(other.gameObject);
-        //Debug.Log(other.gameObject.name + " entered player trigger");
+        Debug.Log(_objectsInAttackRange.Count + " "+ other.gameObject.name + " entered player trigger");
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -123,6 +123,7 @@ public class PlayerCombat : MonoBehaviour
         
         Vector2 pushBackDirection = playerMovement.GetLookingDirection();
         pushBackDirection.x = -pushBackDirection.x;
+        playerMovement.ResetHorizontalVelocity();
         playerMovement.GetPushed(pushBackDirection, attackPushBack);    
         Invoke(nameof(ResetAttack), attackDelay);
 
@@ -159,10 +160,10 @@ public class PlayerCombat : MonoBehaviour
     {
         Vector2Int lookingDirection = playerMovement.GetLookingDirection();
 
-        List<GameObject> removedEnemies = new List<GameObject>();
-
-
-        foreach (GameObject enemy in _objectsInAttackRange)
+        List<GameObject> enemiesToAttack = new List<GameObject>();
+        enemiesToAttack.AddRange(_objectsInAttackRange);
+        
+        foreach (GameObject enemy in enemiesToAttack)
         {
             if (attackedEnemies.Contains(enemy)) continue;
             if (enemy.CompareTag("Enemy") && EnemyInAttackDirection(lookingDirection, enemy))
@@ -176,17 +177,7 @@ public class PlayerCombat : MonoBehaviour
                 if (CanJumpAfterSuccessfulDownAttack()) JumpAfterSuccessfulDownAttack();
 
                 attackedEnemies.Add(enemy);
-                if (!enemyLive.IsAlive())
-                {
-                    removedEnemies.Add(enemy);
-                    Debug.Log("Enemy killed");
-                }
             }
-        }
-
-        foreach (GameObject enemy in removedEnemies)
-        {
-            _objectsInAttackRange.Remove(enemy);
         }
     }
 
