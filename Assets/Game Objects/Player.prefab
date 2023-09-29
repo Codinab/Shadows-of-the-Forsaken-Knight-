@@ -290,7 +290,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582472c379bcff84d9a38f6826bfbef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pushPower: 3
   healthText: {fileID: 0}
+  attackDelay: 0.25
+  attackDuration: 0.1
+  attackPushBack: 0.1
   playerMovement: {fileID: 1842654318477508805}
 --- !u!61 &3366061365922077510
 BoxCollider2D:

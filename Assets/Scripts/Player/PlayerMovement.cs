@@ -303,7 +303,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _horizontalDashCooldownActive = false;
     }
-    
+
     private void ResetBetweenDashCooldown()
     {
         _dashed = false;
@@ -312,26 +312,19 @@ public class PlayerMovement : MonoBehaviour
     public void GetPushed(Vector2 direction, float pushPower)
     {
         // Game the script for this object PlayerCombat
-        PushPlayerInDirection(direction, pushPower);
+        _rigidbody2D.AddForce(direction * pushPower, ForceMode2D.Impulse);
     }
     public void GetPushedByEnemy(Vector2 direction, float pushPower)
     {
         // Game the script for this object PlayerCombat
         if (playerCombat.IsInvincible()) return;
         _movementEnabled = false;
-        PushPlayerInDirectionRv(direction, pushPower);
+        ResetVelocities();
+        GetPushed(direction, pushPower);
         Invoke(nameof(EnableMovement), 0.4f);
     }
 
-    private void PushPlayerInDirectionRv(Vector2 direction, float pushPower)
-    {
-        ResetVelocities();
-        _rigidbody2D.AddForce(direction * pushPower, ForceMode2D.Impulse);
-    }
-    private void PushPlayerInDirection(Vector2 direction, float pushPower)
-    {
-        _rigidbody2D.AddForce(direction * pushPower, ForceMode2D.Impulse);
-    }
+
     private void EnableMovement()
     {
         _movementEnabled = true;
@@ -357,6 +350,23 @@ public class PlayerMovement : MonoBehaviour
     {
         return _lookingDirection;
     }
+    public bool IsLookingLeft()
+    {
+        return _lookingDirection.x == -1;
+    }
+    public bool IsLookingRight()
+    {
+        return _lookingDirection.x == 1;
+    }
+    public bool IsLookingUp()
+    {
+        return _lookingDirection.y == 1;
+    }
+    public bool IsLookingDown()
+    {
+        return _lookingDirection.y == -1;
+    }
+    
 
     private Vector2Int _lastDirection = new Vector2Int(0, 0);
     private void UpdateDirectionKeyPress()
@@ -371,6 +381,24 @@ public class PlayerMovement : MonoBehaviour
             _lookingDirection.y = 0;
             _lookingDirection.x = _lastDirection.x;
         }
+        else if (upKey && downKey)
+        {
+            _lookingDirection.y = -_lastDirection.y;
+            _lookingDirection.x = 0;
+            _lastDirection.y = _lookingDirection.y;
+        }
+        else if (upKey)
+        {
+            _lookingDirection.y = 1;
+            _lastDirection.y = 1;
+            _lookingDirection.x = 0;
+        }
+        else if (downKey)
+        {
+            _lookingDirection.y = -1;
+            _lastDirection.y = -1;
+            _lookingDirection.x = 0;
+        }
         else if (leftKey && rightKey)
         {
             _lookingDirection.x = -_lastDirection.x;
@@ -381,53 +409,38 @@ public class PlayerMovement : MonoBehaviour
         {
             _lastDirection.x = -1;
             _lookingDirection.x = -1;
+            _lookingDirection.y = 0;
         }
-        else if (rightKey)
+        else // rightKey
         {
             _lastDirection.x = 1;
             _lookingDirection.x = 1;
+            _lookingDirection.y = 0;
         }
-        else if (upKey && downKey)
-        {
-            _lookingDirection.y = -_lastDirection.y;
-            _lookingDirection.x = 0;
-            _lastDirection.y = _lookingDirection.y;
-            _lookingDirection.x = 0;
-        }
-        else if (upKey)
-        {
-            _lookingDirection.y = 1;
-            _lastDirection.y = 1;
-            _lookingDirection.x = 0;
-        }
-        else // downKey
-        {
-            _lookingDirection.y = -1;
-            _lastDirection.y = -1;
-            _lookingDirection.x = 0;
-        }
-        
     }
+
     
 
     // Box for ground check
-    private Vector2 _boxSize = new Vector2(0.1f, 1f);
+    private Vector2 _horizontalTouchRectangle = new Vector2(0.1f, 0.9f);
+    private Vector2 _verticalTouchRectangle = new Vector2(0.9f, 0.1f);
     
     private bool IsTouchingGround()
     {
-        return Physics2D.OverlapBox(groundCheck.position, _boxSize, 0f, whatIsGround);
+        Vector2 boxPosition = groundCheck.position;
+        return Physics2D.OverlapBox(boxPosition, _verticalTouchRectangle, 0f, whatIsGround);
     }
 
     private bool IsTouchingWallLeft()
     {
         Vector2 boxPosition = wallCheckLeft.position;
-        return Physics2D.OverlapBox(boxPosition, _boxSize, 0f, whatIsGround);
+        return Physics2D.OverlapBox(boxPosition, _horizontalTouchRectangle, 0f, whatIsGround);
     }
 
     private bool IsTouchingWallRight()
     {
         Vector2 boxPosition = wallCheckRight.position;
-        return Physics2D.OverlapBox(boxPosition, _boxSize, 0f, whatIsGround);
+        return Physics2D.OverlapBox(boxPosition, _horizontalTouchRectangle, 0f, whatIsGround);
     }
 
     private bool _jumped;
@@ -449,8 +462,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void PerformJump()
     {
-        Debug.Log("Performing jump");
-        ResetVelocities();
         PerformJumpWithDirection();
         _jumped = true;
     }
@@ -534,7 +545,7 @@ public class PlayerMovement : MonoBehaviour
         Invoke(nameof(ResetWallJump), jumpHorizontalForceDuration);
     }
 
-    private void RegularJump()
+    public void RegularJump()
     {
         ResetVerticalVelocity();
         _rigidbody2D.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
