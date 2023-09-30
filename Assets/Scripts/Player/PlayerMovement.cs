@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// Handles the movement mechanics of the player, including walking, jumping, wall jumping, and dashing.
 /// </summary>
+[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(PlayerCombat))]
 public class PlayerMovement : MonoBehaviour
 {
     /// <summary>
@@ -64,10 +61,21 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     public int nSecondJumps = 1;
     
-    public bool doubleJumpEnabled = false;
-    public bool dashEnabled = false;
-    public bool wallJumpEnabled = false;
+    /// <summary>
+    /// Whether the player can double jump.
+    /// </summary>
+    public bool doubleJumpEnabled;
+    
+    /// <summary>
+    /// Whether the player can dash.
+    /// </summary> 
+    public bool dashEnabled;
 
+    /// <summary>
+    /// Whether the player can wall jump.
+    /// </summary>
+    public bool wallJumpEnabled;
+    
     // Reference to the Rigidbody2D component.
     private Rigidbody2D _rigidbody2D;
 
@@ -109,49 +117,88 @@ public class PlayerMovement : MonoBehaviour
     // Whether the player's movement is enabled or disabled.
     private bool _movementEnabled = true;
 
-    /// <summary>
-    /// Reference point for checking if the player is on the ground.
-    /// </summary>
-    public Transform groundCheck;
+    // Reference point for checking if the player is on the ground.
+    private Transform _groundCheck;
 
-    /// <summary>
-    /// Reference point for checking if the player is touching a wall on the left.
-    /// </summary>
-    public Transform wallCheckLeft;
+    // Reference point for checking if the player is touching a wall on the left.
+    private Transform _wallCheckLeft;
 
-    /// <summary>
-    /// Reference point for checking if the player is touching a wall on the right.
-    /// </summary>
-    public Transform wallCheckRight;
+    // Reference point for checking if the player is touching a wall on the right.
+    private Transform _wallCheckRight;
 
     /// <summary>
     /// Radius for checking ground or wall collisions.
     /// </summary>
     public float checkRadius = 0.1f;
 
-    /// <summary>
-    /// Layer mask to determine what is considered ground.
-    /// </summary>
-    public LayerMask whatIsGround;
+    //Layer mask to determine what is considered ground.
+    private LayerMask _whatIsGround;
 
+    // The player's combat script.
+    private PlayerCombat _playerCombat;
+    
     // Start is called before the first frame update
     private void Start()
     {
-        if (playerCombat == null)
+        InitScripts();
+
+        InitRigidBody();
+
+        InitiateChecks();
+        
+        InitLayers();
+    }
+
+    private void InitLayers()
+    {
+        _whatIsGround = LayerMask.GetMask("Ground");
+        if (_whatIsGround == 0)
+        {
+            Debug.LogError("LayerMask for ground not found");
+        }
+    }
+
+    private void InitScripts()
+    {
+        _playerCombat = GetComponent<PlayerCombat>();
+        if (_playerCombat == null)
         {
             Debug.LogError("PlayerCombat not found on player");
         }
-        
+    }
+
+    private void InitRigidBody()
+    {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         if (_rigidbody2D == null)
         {
             Debug.LogError("Rigidbody2D not found on player");
         }
-        
+    }
+
+    private void InitiateChecks()
+    {
+        _groundCheck = transform.Find("GroundCheck");
+        if (_groundCheck == null)
+        {
+            Debug.LogError("GroundCheck not found on player");
+        }
+
+        _wallCheckLeft = transform.Find("WallCheckLeft");
+        if (_wallCheckLeft == null)
+        {
+            Debug.LogError("WallCheckLeft not found on player");
+        }
+
+        _wallCheckRight = transform.Find("WallCheckRight");
+        if (_wallCheckRight == null)
+        {
+            Debug.LogError("WallCheckRight not found on player");
+        }
     }
 
     // Maximum velocity of the player
-    private float _maxVelocity = 100f;
+    private static readonly float MaxVelocity = 100f;
 
     // FixedUpdate is called once per physics frame
     private void FixedUpdate()
@@ -207,7 +254,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private int _consecutiveJumpsMade;
-
     private bool CanDoubleJump()
     {
         bool jumpKeyPressed = Input.GetKey(KeyCode.V);
@@ -228,8 +274,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 velocity = _rigidbody2D.velocity;
         if (velocity.y < -maxFallSpeed) velocity.y = -maxFallSpeed;
-        if (velocity.x > _maxVelocity) velocity.x = _maxVelocity;
-        if (velocity.x < -_maxVelocity) velocity.x = -_maxVelocity;
+        if (velocity.x > MaxVelocity) velocity.x = MaxVelocity;
+        if (velocity.x < -MaxVelocity) velocity.x = -MaxVelocity;
         _rigidbody2D.velocity = velocity;
     }
 
@@ -237,8 +283,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _horizontalDashCooldownActive;
     private bool _verticalDashCooldownActive;
 
-    private float _betweenDashDelay = 0.4f;
-
+    private static readonly float BetweenDashDelay = 0.4f;
     private bool CanDashVertical()
     {
         return Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.B) && !_dashed && !_verticalDashCooldownActive && !_wallJumped;
@@ -262,14 +307,14 @@ public class PlayerMovement : MonoBehaviour
 
         _dashed = true;
         _verticalDashCooldownActive = true;
-        ResetCooldownsAfterDelayV();
+        ResetCooldownAfterDelayV();
     }
 
-    private void ResetCooldownsAfterDelayV()
+    private void ResetCooldownAfterDelayV()
     {
         Invoke(nameof(ResetVerticalDashCooldown), dashCooldown);
         Invoke(nameof(ResetVerticalVelocity), verticalDashDuration);
-        Invoke(nameof(ResetBetweenDashCooldown), _betweenDashDelay);
+        Invoke(nameof(ResetBetweenDashCooldown), BetweenDashDelay);
     }
 
     private void PerformDashHorizontal()
@@ -285,13 +330,13 @@ public class PlayerMovement : MonoBehaviour
 
         _dashed = true;
         _horizontalDashCooldownActive = true;
-        ResetCooldownsAfterDelay();
+        ResetCooldownAfterDelay();
     }
 
-    private void ResetCooldownsAfterDelay()
+    private void ResetCooldownAfterDelay()
     {
         Invoke(nameof(ResetHorizontalDashCooldown), dashCooldown);
-        Invoke(nameof(ResetBetweenDashCooldown), _betweenDashDelay);
+        Invoke(nameof(ResetBetweenDashCooldown), BetweenDashDelay);
     }
 
     private void ResetVerticalDashCooldown()
@@ -309,15 +354,26 @@ public class PlayerMovement : MonoBehaviour
         _dashed = false;
     }
     
+    /// <summary>
+    /// Pushes the player in a given direction with a given force.
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="pushPower"></param>
     public void GetPushed(Vector2 direction, float pushPower)
     {
         // Game the script for this object PlayerCombat
         _rigidbody2D.AddForce(direction * pushPower, ForceMode2D.Impulse);
     }
+    
+    /// <summary>
+    /// Pushes the player by an enemy in a given direction with a given force.
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="pushPower"></param>
     public void GetPushedByEnemy(Vector2 direction, float pushPower)
     {
         // Game the script for this object PlayerCombat
-        if (playerCombat.IsInvincible()) return;
+        if (_playerCombat.IsInvincible()) return;
         _movementEnabled = false;
         ResetVelocities();
         GetPushed(direction, pushPower);
@@ -346,6 +402,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns the direction the player is looking in.
+    /// </summary>
+    /// <returns></returns>
     public Vector2Int GetLookingDirection()
     {
         return _lookingDirection;
@@ -422,25 +482,25 @@ public class PlayerMovement : MonoBehaviour
     
 
     // Box for ground check
-    private Vector2 _horizontalTouchRectangle = new Vector2(0.1f, 0.9f);
-    private Vector2 _verticalTouchRectangle = new Vector2(0.9f, 0.1f);
+    private static readonly Vector2 HorizontalTouchRectangle = new Vector2(0.1f, 0.9f);
+    private static readonly Vector2 VerticalTouchRectangle = new Vector2(0.9f, 0.1f);
     
     private bool IsTouchingGround()
     {
-        Vector2 boxPosition = groundCheck.position;
-        return Physics2D.OverlapBox(boxPosition, _verticalTouchRectangle, 0f, whatIsGround);
+        Vector2 boxPosition = _groundCheck.position;
+        return Physics2D.OverlapBox(boxPosition, VerticalTouchRectangle, 0f, _whatIsGround);
     }
 
     private bool IsTouchingWallLeft()
     {
-        Vector2 boxPosition = wallCheckLeft.position;
-        return Physics2D.OverlapBox(boxPosition, _horizontalTouchRectangle, 0f, whatIsGround);
+        Vector2 boxPosition = _wallCheckLeft.position;
+        return Physics2D.OverlapBox(boxPosition, HorizontalTouchRectangle, 0f, _whatIsGround);
     }
 
     private bool IsTouchingWallRight()
     {
-        Vector2 boxPosition = wallCheckRight.position;
-        return Physics2D.OverlapBox(boxPosition, _horizontalTouchRectangle, 0f, whatIsGround);
+        Vector2 boxPosition = _wallCheckRight.position;
+        return Physics2D.OverlapBox(boxPosition, HorizontalTouchRectangle, 0f, _whatIsGround);
     }
 
     private bool _jumped;
@@ -556,7 +616,7 @@ public class PlayerMovement : MonoBehaviour
         _wallJumped = false;
     }
     
-    public PlayerCombat playerCombat;
+
     
     public void ResetJumps()
     {

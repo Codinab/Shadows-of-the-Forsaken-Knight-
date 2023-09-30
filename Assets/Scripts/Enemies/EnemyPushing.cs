@@ -10,19 +10,30 @@ public class EnemyPushing : MonoBehaviour
     private bool _canPush = true;
     private bool _playerInTrigger = false;
 
-    public GameObject player;
+    private GameObject _player;
     private PlayerMovement _playerMovement;
     private PlayerCombat _playerCombat;
 
     private void Start()
     {
-        _playerMovement = player.GetComponent<PlayerMovement>();
-        _playerCombat = player.GetComponent<PlayerCombat>();
-        
-        if (_playerMovement == null || _playerCombat == null)
+        _playerMovement = _player.GetComponent<PlayerMovement>();
+        if (_playerMovement == null)
         {
-            Debug.LogError("PlayerMovement or PlayerCombat not found on player");
+            Debug.LogError("PlayerMovement not found on player");
         }
+        
+        _playerCombat = _player.GetComponent<PlayerCombat>();
+        if (_playerCombat == null)
+        {
+            Debug.LogError("PlayerCombat not found on player");
+        }
+        
+        _player = GameObject.FindGameObjectWithTag("Player");
+        if (_player == null)
+        {
+            Debug.LogError("Player not found");
+        }
+        
     } 
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -54,7 +65,7 @@ public class EnemyPushing : MonoBehaviour
     {
         if (!_canPush || !_playerInTrigger) return;
         
-        Vector2 pushDirection = this.player.transform.position - transform.position;
+        Vector2 pushDirection = this._player.transform.position - transform.position;
         _playerMovement.GetPushedByEnemy(pushDirection.normalized, pushPower);
         _playerCombat.ApplyDamage(1);
         _canPush = false;

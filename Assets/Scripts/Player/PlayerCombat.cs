@@ -34,7 +34,8 @@ public class PlayerCombat : MonoBehaviour
 
     private void Start()
     {
-        if (playerMovement == null)
+        _playerMovement = GetComponent<PlayerMovement>();
+        if (_playerMovement == null)
         {
             Debug.LogError("PlayerMovement not found on player");
         }
@@ -74,7 +75,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void SetInvincible()
     {
-        playerMovement.ResetJumps();
+        _playerMovement.ResetJumps();
         _invincible = true;
     }
 
@@ -107,7 +108,7 @@ public class PlayerCombat : MonoBehaviour
         if (attackKey) Debug.Log("Attack key pressed");
         return (attackKey && !_attacked);
     }
-
+ 
     private bool _attacked = false;
     List<GameObject> attackedEnemies = new List<GameObject>();
     private void AttackLookingDirection()
@@ -117,14 +118,14 @@ public class PlayerCombat : MonoBehaviour
         
         attackedEnemies.Clear();
         
-        Debug.Log("Attack " + _objectsInAttackRange.Count + " " + playerMovement.GetLookingDirection());
+        Debug.Log("Attack " + _objectsInAttackRange.Count + " " + _playerMovement.GetLookingDirection());
         
         Attack();
         
-        Vector2 pushBackDirection = playerMovement.GetLookingDirection();
+        Vector2 pushBackDirection = _playerMovement.GetLookingDirection();
         pushBackDirection.x = -pushBackDirection.x;
-        playerMovement.ResetHorizontalVelocity();
-        playerMovement.GetPushed(pushBackDirection, attackPushBack);    
+        _playerMovement.ResetHorizontalVelocity();
+        _playerMovement.GetPushed(pushBackDirection, attackPushBack);    
         Invoke(nameof(ResetAttack), attackDelay);
 
         /*
@@ -148,17 +149,17 @@ public class PlayerCombat : MonoBehaviour
     
     private bool CanJumpAfterSuccessfulDownAttack()
     {
-        return playerMovement.IsLookingDown();
+        return _playerMovement.IsLookingDown();
     }
     
     private void JumpAfterSuccessfulDownAttack()
     {
-        playerMovement.RegularJump();
+        _playerMovement.RegularJump();
     }
 
     private void Attack()
     {
-        Vector2Int lookingDirection = playerMovement.GetLookingDirection();
+        Vector2Int lookingDirection = _playerMovement.GetLookingDirection();
 
         List<GameObject> enemiesToAttack = new List<GameObject>();
         enemiesToAttack.AddRange(_objectsInAttackRange);
@@ -209,5 +210,5 @@ public class PlayerCombat : MonoBehaviour
         return approximatedDirection == (Vector2)lookingDirection;
     }
     
-    public PlayerMovement playerMovement;
+    private PlayerMovement _playerMovement;
 }

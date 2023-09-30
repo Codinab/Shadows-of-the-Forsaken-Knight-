@@ -6,7 +6,7 @@ public class SmallSpiderChasing : MonoBehaviour
     [SerializeField] int Speed;
     [SerializeField] float ReactionTime;
     [SerializeField] int JumpStrength;
-    [SerializeField] GameObject GroundCheckBody;
+    private GameObject _groundCheckBody;
     Rigidbody2D _rb;
     float lastLookRight;
     float lastLookLeft;
@@ -14,11 +14,28 @@ public class SmallSpiderChasing : MonoBehaviour
     float peakJump;
     bool jumped;
     float lastMoved;
-    [SerializeField] LayerMask Ground;
+    private LayerMask _ground;
     
     void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
+        if (_player == null)
+        {
+            Debug.LogError("Player not found");
+        }
+        
+        _groundCheckBody = transform.Find("GroundCheck").gameObject;
+        if (_groundCheckBody == null)
+        {
+            Debug.LogError("GroundCheck not found");
+        }
+        
+        _ground = LayerMask.GetMask("Ground");
+        if (_ground == null)
+        {
+            Debug.LogError("Ground not found");
+        }
+        
         _rb = GetComponent<Rigidbody2D>();
         lastLookLeft = 0;
         lastLookRight = 0;
@@ -75,7 +92,7 @@ public class SmallSpiderChasing : MonoBehaviour
 
     private bool GroundCheck()
     {
-        return Physics2D.OverlapBox(GroundCheckBody.transform.position, GroundCheckBody.transform.lossyScale, 0f, Ground);
+        return Physics2D.OverlapBox(_groundCheckBody.transform.position, _groundCheckBody.transform.lossyScale, 0f, _ground);
     }
     
     private void OnTriggerStay2D(Collider2D other)
