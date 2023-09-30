@@ -34,7 +34,6 @@ public class PlayerCombat : MonoBehaviour
 
     private void Start()
     {
-        playerMovement = GetComponent<PlayerMovement>();
         if (playerMovement == null)
         {
             Debug.LogError("PlayerMovement not found on player");
@@ -49,15 +48,20 @@ public class PlayerCombat : MonoBehaviour
         
     }
     
+    public Text healthText; // This field will hold the reference to the HealthText UI element.
+
     private void Awake()
     {
-
+        if (healthText == null)
+            Debug.LogError("HealthText is not assigned in PlayerCombat!");
     }
     private void UpdateState()
     {
         _alive = _health > 0;
 
- 
+        // Update health display
+        if (healthText != null)
+            healthText.text = "Health: " + _health;
     }
     
     public void ApplyDamage(int damage)
