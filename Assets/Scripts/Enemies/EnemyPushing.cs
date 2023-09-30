@@ -16,6 +16,12 @@ public class EnemyPushing : MonoBehaviour
 
     private void Start()
     {
+        _player = GameObject.FindGameObjectWithTag("Player");
+        if (_player == null)
+        {
+            Debug.LogError("Player not found");
+        }
+             
         _playerMovement = _player.GetComponent<PlayerMovement>();
         if (_playerMovement == null)
         {
@@ -27,13 +33,6 @@ public class EnemyPushing : MonoBehaviour
         {
             Debug.LogError("PlayerCombat not found on player");
         }
-        
-        _player = GameObject.FindGameObjectWithTag("Player");
-        if (_player == null)
-        {
-            Debug.LogError("Player not found");
-        }
-        
     } 
 
     private void OnTriggerEnter2D(Collider2D other)
