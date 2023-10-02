@@ -612,6 +612,7 @@ public class PlayerMovement : MonoBehaviour
     private void ResetWallJump()
     {
         _wallJumped = false;
+        ResetVelocities();
     }
     
 

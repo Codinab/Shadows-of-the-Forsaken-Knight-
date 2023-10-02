@@ -234,7 +234,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 2ac7a5db8c5c6ba49aa3fe79c18a43c9, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -259,8 +259,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  jumpForce: 8
-  wallJumpHorizontalForce: 2.5
+  jumpForce: 6
+  wallJumpHorizontalForce: 1.25
   wallJumpVerticalMultiplierForce: 1
   jumpHorizontalForceDuration: 0.35
   dashCooldown: 0.6
@@ -287,8 +287,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 5
   pushPower: 3
+  pushAfterAttackDelay: 0.1
   attackDelay: 0.25
-  attackPushBack: 0.1
+  attackPushBack: 2
 --- !u!61 &3366061365922077510
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -298,7 +299,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 2657382273488803743}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 2ac7a5db8c5c6ba49aa3fe79c18a43c9, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
