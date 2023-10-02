@@ -1283,10 +1283,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 216471634}
     m_Modifications:
-    - target: {fileID: 6684255209124178672, guid: 49452594316694541acf25c2a81fed7b, type: 3}
-      propertyPath: Speed
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6900085910568131508, guid: 49452594316694541acf25c2a81fed7b, type: 3}
       propertyPath: m_Name
       value: SmallSpider
@@ -1330,14 +1326,6 @@ PrefabInstance:
     - target: {fileID: 8195569900331468487, guid: 49452594316694541acf25c2a81fed7b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326719955907035227, guid: 49452594316694541acf25c2a81fed7b, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1008501920}
-    - target: {fileID: 8632929665158961182, guid: 49452594316694541acf25c2a81fed7b, type: 3}
-      propertyPath: health
-      value: 100000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1776,11 +1764,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 396534079832663281, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: pushPower
-      value: 100
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 396534079832663281, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: attackPushBack
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 396534079832663281, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: pushAfterAttackDelay
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1842654318477508805, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: jumpForce
@@ -1793,7 +1785,7 @@ PrefabInstance:
     - target: {fileID: 2089518725455339971, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6200000, guid: 2ac7a5db8c5c6ba49aa3fe79c18a43c9, type: 2}
     - target: {fileID: 2089518725455339971, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_GravityScale
       value: 1

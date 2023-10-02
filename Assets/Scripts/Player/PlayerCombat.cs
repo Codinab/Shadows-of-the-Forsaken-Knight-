@@ -110,13 +110,16 @@ public class PlayerCombat : MonoBehaviour
         // Clear the list of attacked enemies
         attackedEnemies.Clear();
     
+        Vector2Int lookingDirection = _playerMovement.GetLookingDirection();
+        
         // Execute the attack
-        Attack();
-    
+        Attack(lookingDirection);
+        
         // Push the player back
-        Vector2 pushBackDirection = -_playerMovement.GetLookingDirection();
-        if (pushBackDirection.y == 0)
-            _playerMovement.GetPushedByEnemy(pushBackDirection.normalized, attackPushBack);
+        if (lookingDirection.y == 0)
+        {
+            _playerMovement.GetPushed(-lookingDirection, attackPushBack, pushAfterAttackDelay);
+        }
     
         // Wait for the attack delay before allowing another attack
         yield return new WaitForSeconds(attackDelay);
@@ -124,12 +127,12 @@ public class PlayerCombat : MonoBehaviour
         // Reset the attack flag
         _isAttacking = false;
     }
+    
+    public float pushAfterAttackDelay = 0.4f;
 
-    private void Attack()
+    private void Attack(Vector2Int lookingDirection)
     {
-        Vector2Int lookingDirection = _playerMovement.GetLookingDirection();
-
-        // Create a copy of the list
+        //If the list gets updated during the loop it will crash, so we copy it.
         List<GameObject> objectsInAttackRangeCopy = new List<GameObject>(_objectsInAttackRange);
     
         foreach (GameObject enemy in objectsInAttackRangeCopy)

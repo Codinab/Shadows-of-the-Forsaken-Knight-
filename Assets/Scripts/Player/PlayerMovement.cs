@@ -198,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Maximum velocity of the player
-    private static readonly float MaxVelocity = 100f;
+    private const float MaxVelocity = 100f;
 
     // FixedUpdate is called once per physics frame
     private void FixedUpdate()
@@ -364,12 +364,13 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="direction"></param>
     /// <param name="pushPower"></param>
-    public void GetPushed(Vector2 direction, float pushPower)
+    /// <param name="duration"></param>
+    public void GetPushed(Vector2 direction, float pushPower, float duration=0.4f)
     {
         _movementEnabled = false;
         ResetVelocities();
         Push(direction, pushPower);
-        Invoke(nameof(EnableMovement), 0.4f);
+        Invoke(nameof(EnableMovement), duration);
     }
 
     private void Push(Vector2 direction, float pushPower)
@@ -382,7 +383,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="direction"></param>
     /// <param name="pushPower"></param>
-    public void GetPushedByEnemy(Vector2 direction, float pushPower)
+    public void GetPushedNotInvincible(Vector2 direction, float pushPower)
     {
         // Game the script for this object PlayerCombat
         if (_playerCombat.IsInvincible()) return;
