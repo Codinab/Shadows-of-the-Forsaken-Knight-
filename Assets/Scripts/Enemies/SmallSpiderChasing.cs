@@ -6,15 +6,18 @@ public class SmallSpiderChasing : MonoBehaviour
     [SerializeField] int Speed;
     [SerializeField] float ReactionTime;
     [SerializeField] int JumpStrength;
+    [SerializeField] float StunDuration;
     private GameObject _groundCheckBody;
-    Rigidbody2D _rb;
-    float lastLookRight;
-    float lastLookLeft;
-    float lastJump;
-    float peakJump;
-    bool jumped;
-    float lastMoved;
+    private Rigidbody2D _rb;
+    private float lastLookRight;
+    private float lastLookLeft;
+    private float lastJump;
+    private float peakJump;
+    private bool jumped;
+    private float lastMoved;
     private LayerMask _ground;
+    private float lastHitTaken;
+    private EnemyMovement em;
     
     void Start()
     {
@@ -43,50 +46,44 @@ public class SmallSpiderChasing : MonoBehaviour
         peakJump = transform.position.y;
         jumped = false;
         lastMoved = Time.time;
+        lastHitTaken = 0;
+        em = GetComponent<EnemyMovement>();
     }
 
     void FixedUpdate()
     {
-        if (GroundCheck())
+        if (em.Pushed)
         {
-            if (_player.transform.position.x > transform.position.x && 
-                (lastLookLeft + ReactionTime < Time.time || lastLookLeft == 0))
-            {
-                _rb.velocity = new Vector2(Speed, _rb.velocity.y);
-                lastLookRight = Time.time;
-            }
-            
-            if (_player.transform.position.x < transform.position.x && 
-                (lastLookRight + ReactionTime < Time.time || lastLookRight == 0))
-            {
-                _rb.velocity = new Vector2(-Speed, _rb.velocity.y);
-                lastLookLeft = Time.time;
-            }
+            lastHitTaken = Time.time;
+            em.Pushed= false;
         }
-
-        if (jumped)
+        if (lastHitTaken + StunDuration < Time.time)
         {
-            if (peakJump > transform.position.y)
+            BasicMove();
+            //if jumped but not moving climb over the wall
+            if (jumped)
+            {
+                if (peakJump > transform.position.y)
+                {
+                    MoveSlightly();
+                    peakJump = transform.position.y;
+                    jumped = false;
+                }
+                if (peakJump < transform.position.y)
+                {
+                    peakJump = transform.position.y;
+                }
+            }
+            //if stuck on edge move slightly toward player
+            if (_rb.velocity != Vector2.zero)
+            {
+                lastMoved = Time.time;
+            }
+            else if (lastMoved + 0.5f < Time.time)
             {
                 MoveSlightly();
-                peakJump = transform.position.y;
-                jumped = false;
-            }
-            if (peakJump < transform.position.y)
-            {
-                peakJump = transform.position.y;
             }
         }
-
-        if (_rb.velocity != Vector2.zero)
-        {
-            lastMoved = Time.time;
-        }
-        else if (lastMoved + 0.5f < Time.time)
-        {
-            MoveSlightly();
-        }
-        
         //ClampVelocity();
     }
 
@@ -132,6 +129,25 @@ public class SmallSpiderChasing : MonoBehaviour
         if (_player.transform.position.x < transform.position.x)
         {
             _rb.velocity = new Vector2(-1, _rb.velocity.y);
+        }
+    }
+    private void BasicMove()
+    {
+        if (GroundCheck())
+        {
+            if (_player.transform.position.x > transform.position.x &&
+                (lastLookLeft + ReactionTime < Time.time || lastLookLeft == 0))
+            {
+                _rb.velocity = new Vector2(Speed, _rb.velocity.y);
+                lastLookRight = Time.time;
+            }
+
+            if (_player.transform.position.x < transform.position.x &&
+                (lastLookRight + ReactionTime < Time.time || lastLookRight == 0))
+            {
+                _rb.velocity = new Vector2(-Speed, _rb.velocity.y);
+                lastLookLeft = Time.time;
+            }
         }
     }
 }

@@ -181,7 +181,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushPower: 4
   pushDelay: 0.5
-  player: {fileID: 0}
 --- !u!61 &8025856681551357350
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -269,10 +268,7 @@ MonoBehaviour:
   Speed: 2
   ReactionTime: 0.5
   JumpStrength: 6
-  GroundCheckBody: {fileID: 1246309364833936792}
-  Ground:
-    serializedVersion: 2
-    m_Bits: 8
+  StunDuration: 1
 --- !u!114 &8632929665158961182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c9e0f4f669a5fa418a76af70cfe8986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
+  health: 3
 --- !u!114 &7852150629760770105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,3 +294,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b6c4389add4506a791823c11f6403b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Pushed: 0
