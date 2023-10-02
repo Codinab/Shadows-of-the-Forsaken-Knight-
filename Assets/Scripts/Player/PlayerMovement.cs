@@ -435,52 +435,33 @@ public class PlayerMovement : MonoBehaviour
         bool leftKey = Input.GetKey(KeyCode.A);
         bool upKey = Input.GetKey(KeyCode.W);
         bool downKey = Input.GetKey(KeyCode.S);
+        Vector2Int lastHorizontalDirection = Vector2Int.right;
 
-        if (!rightKey && !leftKey && !upKey && !downKey)
+        if (upKey)
         {
-            _lookingDirection.y = 0;
-            _lookingDirection.x = _lastDirection.x;
-        }
-        else if (upKey && downKey)
-        {
-            _lookingDirection.y = -_lastDirection.y;
-            _lookingDirection.x = 0;
-            _lastDirection.y = _lookingDirection.y;
-        }
-        else if (upKey)
-        {
-            _lookingDirection.y = 1;
-            _lastDirection.y = 1;
-            _lookingDirection.x = 0;
+            _lookingDirection = Vector2Int.up;
         }
         else if (downKey)
         {
-            _lookingDirection.y = -1;
-            _lastDirection.y = -1;
-            _lookingDirection.x = 0;
-        }
-        else if (leftKey && rightKey)
-        {
-            _lookingDirection.x = -_lastDirection.x;
-            _lookingDirection.y = 0;
-            _lastDirection.x = _lookingDirection.x;
+            _lookingDirection = Vector2Int.down;
         }
         else if (leftKey)
         {
-            _lastDirection.x = -1;
-            _lookingDirection.x = -1;
-            _lookingDirection.y = 0;
+            _lookingDirection = Vector2Int.left;
+            lastHorizontalDirection = Vector2Int.left;
         }
-        else // rightKey
+        else if (rightKey)
         {
-            _lastDirection.x = 1;
-            _lookingDirection.x = 1;
-            _lookingDirection.y = 0;
+            _lookingDirection = Vector2Int.right;
+            lastHorizontalDirection = Vector2Int.right;
+        }
+        else  // No keys are pressed
+        {
+            // Maintain the last horizontal direction if no vertical keys are pressed
+            _lookingDirection = lastHorizontalDirection;
         }
     }
-
     
-
     // Box for ground check
     private static readonly Vector2 HorizontalTouchRectangle = new Vector2(0.1f, 0.9f);
     private static readonly Vector2 VerticalTouchRectangle = new Vector2(0.9f, 0.1f);
@@ -529,7 +510,7 @@ public class PlayerMovement : MonoBehaviour
     private void PerformConsecutiveJump()
     {
         Debug.Log("Performing consecutive jump");
-        RegularJump();
+        RegularJumpRv();
         _jumped = true;
         _consecutiveJumpsMade++;
     }
@@ -568,7 +549,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_isGrounded)
         {
-            RegularJump();
+            RegularJumpRv();
         }
         else if (wallJumpEnabled && _isTouchingWallRight)
         {
@@ -605,11 +586,17 @@ public class PlayerMovement : MonoBehaviour
         Invoke(nameof(ResetWallJump), jumpHorizontalForceDuration);
     }
 
-    public void RegularJump()
+    public void RegularJumpRv()
     {
         ResetVerticalVelocity();
         _rigidbody2D.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
     }
+
+    public void RegularJump()
+    {
+        _rigidbody2D.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+    }
+    
 
     private void ResetWallJump()
     {

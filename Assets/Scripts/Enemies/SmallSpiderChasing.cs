@@ -87,7 +87,7 @@ public class SmallSpiderChasing : MonoBehaviour
             MoveSlightly();
         }
         
-        ClampVelocity();
+        //ClampVelocity();
     }
 
     private bool GroundCheck()
@@ -104,13 +104,12 @@ public class SmallSpiderChasing : MonoBehaviour
         }
     }
     
-    
-    
+    private float _maxVelocity = 10f;
     private void ClampVelocity()
     {
         Vector2 velocity = _rb.velocity;
-        if (velocity.x > Speed) velocity.x = Speed;
-        if (velocity.x < -Speed) velocity.x = -Speed;
+        if (velocity.x > _maxVelocity) velocity.x = _maxVelocity;
+        if (velocity.x < -_maxVelocity) velocity.x = -_maxVelocity;
         _rb.velocity = velocity;
     }
     
