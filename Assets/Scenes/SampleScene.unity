@@ -1780,11 +1780,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 396534079832663281, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: attackPushBack
-      value: 10
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1842654318477508805, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: jumpForce
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1842654318477508805, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: wallJumpHorizontalForce
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089518725455339971, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089518725455339971, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_GravityScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3366061365922077510, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 2ac7a5db8c5c6ba49aa3fe79c18a43c9, type: 2}
+    - target: {fileID: 3366061365922077510, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4278073358043291884, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_LocalPosition.x

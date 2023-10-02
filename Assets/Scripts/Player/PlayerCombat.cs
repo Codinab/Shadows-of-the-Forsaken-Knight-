@@ -96,6 +96,7 @@ public class PlayerCombat : MonoBehaviour
     private bool CanAttack()
     {
         bool attackKey = Input.GetKey(KeyCode.C);
+        if (!attackKey) _attacked = false;
         return (attackKey && !_attacked);
     }
     
@@ -104,6 +105,7 @@ public class PlayerCombat : MonoBehaviour
     private IEnumerator PerformAttack()
     {
         _isAttacking = true;
+        _attacked = true;
     
         // Clear the list of attacked enemies
         attackedEnemies.Clear();
@@ -113,7 +115,8 @@ public class PlayerCombat : MonoBehaviour
     
         // Push the player back
         Vector2 pushBackDirection = -_playerMovement.GetLookingDirection();
-        _playerMovement.GetPushed(pushBackDirection, attackPushBack);
+        if (pushBackDirection.y == 0)
+            _playerMovement.GetPushedByEnemy(pushBackDirection.normalized, attackPushBack);
     
         // Wait for the attack delay before allowing another attack
         yield return new WaitForSeconds(attackDelay);
@@ -125,24 +128,28 @@ public class PlayerCombat : MonoBehaviour
     private void Attack()
     {
         Vector2Int lookingDirection = _playerMovement.GetLookingDirection();
-        foreach (GameObject enemy in _objectsInAttackRange)
+
+        // Create a copy of the list
+        List<GameObject> objectsInAttackRangeCopy = new List<GameObject>(_objectsInAttackRange);
+    
+        foreach (GameObject enemy in objectsInAttackRangeCopy)
         {
             if (attackedEnemies.Contains(enemy)) continue;
-        
             if (enemy.CompareTag("Enemy") && EnemyInAttackDirection(lookingDirection, enemy))
             {
                 EnemyLive enemyLive = enemy.GetComponent<EnemyLive>();
                 EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
-            
+        
                 enemyLive.TakeDamage(_damage);
                 enemyMovement.GetPushed(lookingDirection, pushPower);
-            
+        
                 if (CanJumpAfterSuccessfulDownAttack()) JumpAfterSuccessfulDownAttack();
-            
+        
                 attackedEnemies.Add(enemy);
             }
         }
     }
+
 
 
  
@@ -160,7 +167,7 @@ public class PlayerCombat : MonoBehaviour
     
     private void JumpAfterSuccessfulDownAttack()
     {
-        _playerMovement.RegularJump();
+        _playerMovement.RegularJumpRv();
     }
  
     private bool EnemyInAttackDirection(Vector2Int lookingDirection, GameObject enemy)

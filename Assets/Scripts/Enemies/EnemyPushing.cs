@@ -57,7 +57,7 @@ public class EnemyPushing : MonoBehaviour
 
     private void FixedUpdate()
     {
-        PushPlayer();
+        //PushPlayer();
     }
 
     private void PushPlayer()

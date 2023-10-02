@@ -273,9 +273,14 @@ public class PlayerMovement : MonoBehaviour
     private void ClampPlayerVelocity()
     {
         Vector2 velocity = _rigidbody2D.velocity;
+        
         if (velocity.y < -maxFallSpeed) velocity.y = -maxFallSpeed;
-        if (velocity.x > MaxVelocity) velocity.x = MaxVelocity;
-        if (velocity.x < -MaxVelocity) velocity.x = -MaxVelocity;
+        
+        if (!_dashed)
+        {
+            if (velocity.x > MaxVelocity) velocity.x = MaxVelocity;
+            if (velocity.x < -MaxVelocity) velocity.x = -MaxVelocity;
+        }
         _rigidbody2D.velocity = velocity;
     }
 
@@ -361,7 +366,14 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="pushPower"></param>
     public void GetPushed(Vector2 direction, float pushPower)
     {
-        // Game the script for this object PlayerCombat
+        _movementEnabled = false;
+        ResetVelocities();
+        Push(direction, pushPower);
+        Invoke(nameof(EnableMovement), 0.4f);
+    }
+
+    private void Push(Vector2 direction, float pushPower)
+    {
         _rigidbody2D.AddForce(direction * pushPower, ForceMode2D.Impulse);
     }
     
@@ -374,10 +386,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Game the script for this object PlayerCombat
         if (_playerCombat.IsInvincible()) return;
-        _movementEnabled = false;
-        ResetVelocities();
         GetPushed(direction, pushPower);
-        Invoke(nameof(EnableMovement), 0.4f);
     }
 
 
@@ -428,14 +437,13 @@ public class PlayerMovement : MonoBehaviour
     }
     
 
-    private Vector2Int _lastDirection = new Vector2Int(0, 0);
+    private Vector2Int _lastHorizontalDirection = Vector2Int.right; 
     private void UpdateDirectionKeyPress()
     {
         bool rightKey = Input.GetKey(KeyCode.D);
         bool leftKey = Input.GetKey(KeyCode.A);
         bool upKey = Input.GetKey(KeyCode.W);
         bool downKey = Input.GetKey(KeyCode.S);
-        Vector2Int lastHorizontalDirection = Vector2Int.right;
 
         if (upKey)
         {
@@ -448,17 +456,17 @@ public class PlayerMovement : MonoBehaviour
         else if (leftKey)
         {
             _lookingDirection = Vector2Int.left;
-            lastHorizontalDirection = Vector2Int.left;
+            _lastHorizontalDirection = Vector2Int.left;
         }
         else if (rightKey)
         {
             _lookingDirection = Vector2Int.right;
-            lastHorizontalDirection = Vector2Int.right;
+            _lastHorizontalDirection = Vector2Int.right;
         }
-        else  // No keys are pressed
+        else
         {
             // Maintain the last horizontal direction if no vertical keys are pressed
-            _lookingDirection = lastHorizontalDirection;
+            _lookingDirection = _lastHorizontalDirection;
         }
     }
     
@@ -563,6 +571,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetVelocities()
     {
+        Debug.Log("Resetting velocities");
         _rigidbody2D.velocity = new Vector2(0f, 0f);
     }
 
@@ -596,6 +605,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _rigidbody2D.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
     }
+
     
 
     private void ResetWallJump()
