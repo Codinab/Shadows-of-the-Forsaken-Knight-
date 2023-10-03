@@ -12,6 +12,15 @@ public class FlyChasing : MonoBehaviour
     private float _startPositionX;
     private bool _goingRight;
 
+
+    //mutual
+    private float lastHitTaken;
+    private EnemyMovement _em;
+    [SerializeField] float StunDuration;
+    //end of mutual
+
+
+
     //chase speed
     [SerializeField] float HorizontalVelocity = 3;
     //approch (descend) speed and min height
@@ -33,24 +42,35 @@ public class FlyChasing : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player");
         _startPositionX = transform.position.x;
         _goingRight = true;
+        _em = GetComponent<EnemyMovement>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        float playerX = _player.transform.position.x;
-        float flyX = transform.position.x;
-
-        if (Vector2.Distance(_player.transform.position, transform.position) < AgressiveRadius)//descend
+        //mutual
+        if (_em.Pushed)
         {
-            ChasePlayer();
-
+            lastHitTaken = Time.time;
+            _em.Pushed = false;
         }
-        else
+        if (lastHitTaken + StunDuration < Time.time)
         {
-            
-            BasicRoam();
-            MaintainHeight();
+            //end of mutual
+            float playerX = _player.transform.position.x;
+            float flyX = transform.position.x;
+
+            if (Vector2.Distance(_player.transform.position, transform.position) < AgressiveRadius)//descend
+            {
+                ChasePlayer();
+
+            }
+            else
+            {
+
+                BasicRoam();
+                MaintainHeight();
+            }
         }
     }
     private void BasicRoam()

@@ -6,7 +6,7 @@ public class SmallSpiderChasing : MonoBehaviour
     [SerializeField] int Speed;
     [SerializeField] float ReactionTime;
     [SerializeField] int JumpStrength;
-    [SerializeField] float StunDuration;
+    
     private GameObject _groundCheckBody;
     private Rigidbody2D _rb;
     private float lastLookRight;
@@ -16,9 +16,14 @@ public class SmallSpiderChasing : MonoBehaviour
     private bool jumped;
     private float lastMoved;
     private LayerMask _ground;
+
+
+    //mutual
     private float lastHitTaken;
-    private EnemyMovement em;
-    
+    private EnemyMovement _em;
+    [SerializeField] float StunDuration;
+
+
     void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
@@ -47,18 +52,20 @@ public class SmallSpiderChasing : MonoBehaviour
         jumped = false;
         lastMoved = Time.time;
         lastHitTaken = 0;
-        em = GetComponent<EnemyMovement>();
+        _em = GetComponent<EnemyMovement>();
     }
 
     void FixedUpdate()
     {
-        if (em.Pushed)
+        //mutual
+        if (_em.Pushed)
         {
             lastHitTaken = Time.time;
-            em.Pushed= false;
+            _em.Pushed= false;
         }
         if (lastHitTaken + StunDuration < Time.time)
         {
+            //end of mutual
             BasicMove();
             //if jumped but not moving climb over the wall
             if (jumped)
