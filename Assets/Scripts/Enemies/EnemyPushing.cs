@@ -57,7 +57,7 @@ public class EnemyPushing : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //PushPlayer();
+        PushPlayer();
     }
 
     private void PushPlayer()
@@ -65,7 +65,7 @@ public class EnemyPushing : MonoBehaviour
         if (!_canPush || !_playerInTrigger) return;
         
         Vector2 pushDirection = this._player.transform.position - transform.position;
-        _playerMovement.GetPushedByEnemy(pushDirection.normalized, pushPower);
+        _playerMovement.GetPushed(pushDirection.normalized, pushPower);
         _playerCombat.ApplyDamage(1);
         _canPush = false;
         Invoke(nameof(EnablePushing), pushDelay);

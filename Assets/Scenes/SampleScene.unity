@@ -257,7 +257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &216471634
 Transform:
   m_ObjectHideFlags: 0
@@ -963,7 +963,7 @@ PrefabInstance:
     - target: {fileID: 5549668031738043096, guid: c858f455948a58f469b3a25195a64c00, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a5af1f9b0574ac34eb429fc5b4ef80fb, type: 2}
+      objectReference: {fileID: 2100000, guid: 5238d1fbf83157d4e9944e774092faf0, type: 2}
     - target: {fileID: 6474631366577841987, guid: c858f455948a58f469b3a25195a64c00, type: 3}
       propertyPath: m_Name
       value: Floor (11)
@@ -1042,7 +1042,7 @@ PrefabInstance:
     - target: {fileID: 5549668031738043096, guid: c858f455948a58f469b3a25195a64c00, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a5af1f9b0574ac34eb429fc5b4ef80fb, type: 2}
+      objectReference: {fileID: 2100000, guid: 5238d1fbf83157d4e9944e774092faf0, type: 2}
     - target: {fileID: 6474631366577841987, guid: c858f455948a58f469b3a25195a64c00, type: 3}
       propertyPath: m_Name
       value: Floor (9)
@@ -1283,10 +1283,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 216471634}
     m_Modifications:
-    - target: {fileID: 6684255209124178672, guid: 49452594316694541acf25c2a81fed7b, type: 3}
-      propertyPath: Speed
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6900085910568131508, guid: 49452594316694541acf25c2a81fed7b, type: 3}
       propertyPath: m_Name
       value: SmallSpider
@@ -1330,14 +1326,6 @@ PrefabInstance:
     - target: {fileID: 8195569900331468487, guid: 49452594316694541acf25c2a81fed7b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326719955907035227, guid: 49452594316694541acf25c2a81fed7b, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1008501920}
-    - target: {fileID: 8632929665158961182, guid: 49452594316694541acf25c2a81fed7b, type: 3}
-      propertyPath: health
-      value: 100000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1439,7 +1427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &1555559491
 Light:
   m_ObjectHideFlags: 0
@@ -1774,41 +1762,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 396534079832663281, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: pushPower
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 396534079832663281, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: attackPushBack
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1842654318477508805, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: jumpForce
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1842654318477508805, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: wallJumpHorizontalForce
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2089518725455339971, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2089518725455339971, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: m_GravityScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3366061365922077510, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: 2ac7a5db8c5c6ba49aa3fe79c18a43c9, type: 2}
-    - target: {fileID: 3366061365922077510, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: m_IncludeLayers.m_Bits
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4278073358043291884, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_LocalPosition.x

@@ -20,10 +20,11 @@ public class SmallSpiderChasing : MonoBehaviour
 
     //mutual
     private float lastHitTaken;
-    private EnemyMovement _em;
     [SerializeField] float StunDuration;
 
 
+    private EnemyMovement _enemyMovement;
+    
     void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
@@ -52,16 +53,18 @@ public class SmallSpiderChasing : MonoBehaviour
         jumped = false;
         lastMoved = Time.time;
         lastHitTaken = 0;
-        _em = GetComponent<EnemyMovement>();
+        _enemyMovement = GetComponent<EnemyMovement>();
     }
 
     void FixedUpdate()
     {
-        //mutual
-        if (_em.Pushed)
+        // Don't do anything until triggered by the player
+        if(!_enemyMovement.IsCloseToPlayer()) return;
+        
+        if (_enemyMovement.Pushed)
         {
             lastHitTaken = Time.time;
-            _em.Pushed= false;
+            _enemyMovement.Pushed= false;
         }
         if (lastHitTaken + StunDuration < Time.time)
         {
