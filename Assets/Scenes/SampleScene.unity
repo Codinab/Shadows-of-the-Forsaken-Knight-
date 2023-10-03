@@ -257,7 +257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &216471634
 Transform:
   m_ObjectHideFlags: 0
@@ -963,7 +963,7 @@ PrefabInstance:
     - target: {fileID: 5549668031738043096, guid: c858f455948a58f469b3a25195a64c00, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a5af1f9b0574ac34eb429fc5b4ef80fb, type: 2}
+      objectReference: {fileID: 2100000, guid: 5238d1fbf83157d4e9944e774092faf0, type: 2}
     - target: {fileID: 6474631366577841987, guid: c858f455948a58f469b3a25195a64c00, type: 3}
       propertyPath: m_Name
       value: Floor (11)
@@ -1042,7 +1042,7 @@ PrefabInstance:
     - target: {fileID: 5549668031738043096, guid: c858f455948a58f469b3a25195a64c00, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a5af1f9b0574ac34eb429fc5b4ef80fb, type: 2}
+      objectReference: {fileID: 2100000, guid: 5238d1fbf83157d4e9944e774092faf0, type: 2}
     - target: {fileID: 6474631366577841987, guid: c858f455948a58f469b3a25195a64c00, type: 3}
       propertyPath: m_Name
       value: Floor (9)
@@ -1427,7 +1427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &1555559491
 Light:
   m_ObjectHideFlags: 0

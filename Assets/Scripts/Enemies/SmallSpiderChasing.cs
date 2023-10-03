@@ -17,7 +17,7 @@ public class SmallSpiderChasing : MonoBehaviour
     private float lastMoved;
     private LayerMask _ground;
     private float lastHitTaken;
-    private EnemyMovement em;
+    private EnemyMovement _enemyMovement;
     
     void Start()
     {
@@ -47,15 +47,18 @@ public class SmallSpiderChasing : MonoBehaviour
         jumped = false;
         lastMoved = Time.time;
         lastHitTaken = 0;
-        em = GetComponent<EnemyMovement>();
+        _enemyMovement = GetComponent<EnemyMovement>();
     }
 
     void FixedUpdate()
     {
-        if (em.Pushed)
+        // Don't do anything until triggered by the player
+        if(!_enemyMovement.IsCloseToPlayer()) return;
+        
+        if (_enemyMovement.Pushed)
         {
             lastHitTaken = Time.time;
-            em.Pushed= false;
+            _enemyMovement.Pushed= false;
         }
         if (lastHitTaken + StunDuration < Time.time)
         {
