@@ -142,12 +142,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HorizontalVelocity: 3
-  ChaseVelocity: 3.5
-  DescendDistance: 5
-  NormalVerticalVelocity: 2.5
-  NormalHoverHeight: 5.5
+  ChaseVelocity: 4
+  AgressiveRadius: 6
+  VerticalVelocity: 3
+  HoverHeight: 4
   HoverDamp: 0.1
-  ReactionTime: 0.6
+  RoamRadius: 4
 --- !u!61 &1030105785816369076
 BoxCollider2D:
   m_ObjectHideFlags: 0
