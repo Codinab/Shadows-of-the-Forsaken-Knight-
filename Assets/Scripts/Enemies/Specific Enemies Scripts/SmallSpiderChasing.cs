@@ -61,10 +61,10 @@ public class SmallSpiderChasing : MonoBehaviour
         // Don't do anything until triggered by the player
         if(!_enemyMovement.IsCloseToPlayer()) return;
         
-        if (_enemyMovement.Pushed)
+        if (_enemyMovement.pushed)
         {
             lastHitTaken = Time.time;
-            _enemyMovement.Pushed= false;
+            _enemyMovement.pushed= false;
         }
         if (lastHitTaken + StunDuration < Time.time)
         {

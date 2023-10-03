@@ -7,7 +7,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class FlyChasing : MonoBehaviour
 {
-    private Rigidbody2D _rb;
+    private Rigidbody2D _rigidbody2D;
     private GameObject _player;
     private float _startPositionX;
     private bool _goingRight;
@@ -15,7 +15,7 @@ public class FlyChasing : MonoBehaviour
 
     //mutual
     private float lastHitTaken;
-    private EnemyMovement _em;
+    private EnemyMovement _enemyMovement;
     [SerializeField] float StunDuration;
     //end of mutual
 
@@ -38,21 +38,23 @@ public class FlyChasing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
         _player = GameObject.FindGameObjectWithTag("Player");
         _startPositionX = transform.position.x;
         _goingRight = true;
-        _em = GetComponent<EnemyMovement>();
+        _enemyMovement = GetComponent<EnemyMovement>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        //mutual
-        if (_em.Pushed)
+        
+        if (!_enemyMovement.IsCloseToPlayer()) return;
+        
+        if (_enemyMovement.pushed)
         {
             lastHitTaken = Time.time;
-            _em.Pushed = false;
+            _enemyMovement.pushed = false;
         }
         if (lastHitTaken + StunDuration < Time.time)
         {
@@ -78,11 +80,11 @@ public class FlyChasing : MonoBehaviour
 
         if (_goingRight && DidntPassOnTheRight())
         {
-            _rb.velocity = new Vector2(HorizontalVelocity, _rb.velocity.y);
+            _rigidbody2D.velocity = new Vector2(HorizontalVelocity, _rigidbody2D.velocity.y);
         }
         else if (!_goingRight && DidntPassOnTheLeft())
         {
-            _rb.velocity = new Vector2(-HorizontalVelocity, _rb.velocity.y);
+            _rigidbody2D.velocity = new Vector2(-HorizontalVelocity, _rigidbody2D.velocity.y);
         }
         else
         {
@@ -123,15 +125,15 @@ public class FlyChasing : MonoBehaviour
 
         if (hit.distance < height)//too low, fly up
         {
-            _rb.velocity = new Vector2(_rb.velocity.x, vel);
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, vel);
         }
         else if (hit.distance > height + HoverDamp)//too high, fly down
         {
-            _rb.velocity = new Vector2(_rb.velocity.x, -vel);
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, -vel);
         }
         else //perfect stay there
         {
-            _rb.velocity = new Vector2(_rb.velocity.x, 0);
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, 0);
         }
     }
     private void ChasePlayer()
@@ -139,7 +141,7 @@ public class FlyChasing : MonoBehaviour
 
         Vector2 direction = _player.transform.position - transform.position;
         direction.Normalize();
-        _rb.velocity = direction * ChaseVelocity;
+        _rigidbody2D.velocity = direction * ChaseVelocity;
 
     }
     private RaycastHit2D CastRay()

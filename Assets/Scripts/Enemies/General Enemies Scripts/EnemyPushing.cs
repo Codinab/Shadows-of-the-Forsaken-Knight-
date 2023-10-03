@@ -13,6 +13,7 @@ public class EnemyPushing : MonoBehaviour
     private GameObject _player;
     private PlayerMovement _playerMovement;
     private PlayerCombat _playerCombat;
+    private PlayerHealth _playerHealth;
 
     private void Start()
     {
@@ -32,6 +33,12 @@ public class EnemyPushing : MonoBehaviour
         if (_playerCombat == null)
         {
             Debug.LogError("PlayerCombat not found on player");
+        }
+
+        _playerHealth = _player.GetComponent<PlayerHealth>();
+        if (_playerHealth == null)
+        {
+            Debug.LogError("PlayerHealth not found on player");
         }
     } 
 
@@ -66,7 +73,7 @@ public class EnemyPushing : MonoBehaviour
         
         Vector2 pushDirection = this._player.transform.position - transform.position;
         _playerMovement.GetPushed(pushDirection.normalized, pushPower);
-        _playerCombat.ApplyDamage(1);
+        _playerHealth.ApplyDamage(1);
         _canPush = false;
         Invoke(nameof(EnablePushing), pushDelay);
     }

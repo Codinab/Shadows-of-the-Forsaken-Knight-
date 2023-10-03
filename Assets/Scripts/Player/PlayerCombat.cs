@@ -11,26 +11,12 @@ using static PlayerMovement;
 public class PlayerCombat : MonoBehaviour
 {
     
-    public int health = 5;
-    private int _maxHealth = 5;
     private int _damage = 1;
-    private float _invincibilityDurationAfterDamaged = 3f;
-    private bool _alive = true;
-    private bool _invincible = false;
+
     public float pushPower = 3f;
 
-    
+    private PlayerHealth _playerHealth;
 
-    public bool IsInvincible()
-    {
-        return _invincible;
-    }
-    
-    public bool Alive
-    {
-        get => _alive;
-        private set => _alive = value;
-    }
 
     private void Start()
     {
@@ -43,37 +29,11 @@ public class PlayerCombat : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdateState();
-        
         if (CanAttack() && !_isAttacking)
         {
             StartCoroutine(PerformAttack());
         }
         
-    }
-    
-    private void UpdateState()
-    {
-        _alive = health > 0;
-    }
-    
-    public void ApplyDamage(int damage)
-    {
-        if (_invincible) return;
-        health -= damage;
-        SetInvincible();
-        Invoke(nameof(ResetInvincibility), _invincibilityDurationAfterDamaged);
-    }
-
-    private void SetInvincible()
-    {
-        _playerMovement.ResetJumps();
-        _invincible = true;
-    }
-
-    private void ResetInvincibility()
-    {
-        _invincible = false;
     }
     
     private List<GameObject> _objectsInAttackRange = new List<GameObject>();
@@ -97,7 +57,7 @@ public class PlayerCombat : MonoBehaviour
     {
         bool attackKey = Input.GetKey(KeyCode.C);
         if (!attackKey) _attacked = false;
-        return (attackKey && !_attacked);
+        return (attackKey && !_attacked && _playerHealth.IsAlive());
     }
     
     private bool _isAttacking = false;

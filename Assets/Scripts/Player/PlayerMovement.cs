@@ -136,6 +136,8 @@ public class PlayerMovement : MonoBehaviour
 
     // The player's combat script.
     private PlayerCombat _playerCombat;
+
+    private PlayerHealth _playerHealth;
     
     // Start is called before the first frame update
     private void Start()
@@ -386,7 +388,7 @@ public class PlayerMovement : MonoBehaviour
     public void GetPushedNotInvincible(Vector2 direction, float pushPower)
     {
         // Game the script for this object PlayerCombat
-        if (_playerCombat.IsInvincible()) return;
+        if (_playerHealth.IsInvincible()) return;
         GetPushed(direction, pushPower);
     }
 
