@@ -167,6 +167,11 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError("PlayerCombat not found on player");
         }
+        _playerHealth = GetComponent<PlayerHealth>();
+        if (_playerHealth == null)
+        {
+            Debug.LogError("PlayerHealth not found on player");
+        }
     }
 
     private void InitRigidBody()

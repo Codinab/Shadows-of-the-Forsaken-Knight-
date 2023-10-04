@@ -112,10 +112,7 @@ public class PlayerCombat : MonoBehaviour
             }
         }
     }
-
-
-
- 
+    
     private bool _attacked = false;
     List<GameObject> attackedEnemies = new List<GameObject>();
     public float attackDelay = 0.25f;
