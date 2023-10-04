@@ -126,11 +126,6 @@ public class PlayerMovement : MonoBehaviour
     // Reference point for checking if the player is touching a wall on the right.
     private Transform _wallCheckRight;
 
-    /// <summary>
-    /// Radius for checking ground or wall collisions.
-    /// </summary>
-    public float checkRadius = 0.1f;
-
     //Layer mask to determine what is considered ground.
     private LayerMask _whatIsGround;
 
@@ -621,8 +616,6 @@ public class PlayerMovement : MonoBehaviour
         _wallJumped = false;
         ResetVelocities();
     }
-    
-
     
     public void ResetJumps()
     {

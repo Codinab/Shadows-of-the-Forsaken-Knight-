@@ -46,8 +46,15 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        _playerMovement = GetComponent<PlayerMovement>();
+        if (_playerMovement == null)
+        {
+            Debug.LogError("PlayerMovement not found on player");
+        }
+        _playerCombat = GetComponent<PlayerCombat>();
+        if (_playerCombat == null)
+        {
+            Debug.LogError("PlayerCombat not found on player");
+        }
     }
-
-    // Update is called once per frame
 }

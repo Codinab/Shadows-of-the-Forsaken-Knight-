@@ -3,11 +3,15 @@ using UnityEngine;
 
 namespace Entities
 {
+    [RequireComponent(typeof(Rigidbody2D))]
     public abstract class Entity : Updatable, IMovable, IHealth
     {
-        protected Entity(int maxHealth)
+        public int maxHealth = 5;
+        public int health = 5;
+        protected void Start()
         {
             Rigidbody2D = GetComponent<Rigidbody2D>();
+            if (Rigidbody2D == null) Debug.LogError("Rigidbody2D not found");
             MovementDisabledByGetPushed = false;
             MaxHealth = maxHealth;
             CurrentHealth = MaxHealth;
@@ -25,18 +29,8 @@ namespace Entities
 
         
         // IHealth
-        public int CurrentHealth { get; set; }
-        public int MaxHealth { get; set; }
-        public void TakeDamage(int amount)
-        {
-            throw new System.NotImplementedException();
-        }
+        public int CurrentHealth { get => health; set => health = value;}
+        public int MaxHealth { get => maxHealth; set => maxHealth = value; }
 
-        public void Heal(int amount)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool IsDead { get; }
     }
 }
