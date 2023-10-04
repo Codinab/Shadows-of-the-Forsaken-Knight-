@@ -210,8 +210,6 @@ public class PlayerMovement : MonoBehaviour
     // FixedUpdate is called once per physics frame
     private void FixedUpdate()
     {
-        if (!_playerHealth.IsAlive()) return;
-        
         HandleMovement();
         UpdateActions();
 
