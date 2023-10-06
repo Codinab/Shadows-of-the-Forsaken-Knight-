@@ -4,6 +4,7 @@ namespace Interfaces
 {
     public interface IMovable
     {
+        protected float Speed {get; set;}
         bool MovementDisabledByGetPushed {get; set;}
         Rigidbody2D Rigidbody2D {get; set;}
         public void GetPushed(Vector2 direction, float pushPower, float duration=0.4f)
@@ -16,6 +17,11 @@ namespace Interfaces
 
         protected void Invoke(string functionName, float duration);
         
+        void Move(Vector2 direction)
+        {
+            if (MovementDisabledByGetPushed) return;
+            Rigidbody2D.velocity = direction * Speed;
+        }
         private void Push(Vector2 direction, float pushPower)
         {
             Rigidbody2D.AddForce(direction * pushPower, ForceMode2D.Impulse);

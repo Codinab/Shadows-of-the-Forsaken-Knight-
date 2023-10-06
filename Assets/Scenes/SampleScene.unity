@@ -893,6 +893,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fly
       objectReference: {fileID: 0}
+    - target: {fileID: 8965615799527868777, guid: 2827c61929ef272468fd3754d5b21fa3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1064,6 +1068,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff16c28d9f41a564bbd48f3a141aa3c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 5
+--- !u!114 &1008501929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008501920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf3c17e4b274404c90df21c23b4a133b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 5
+  health: 5
+  speed: 0
+  jumpForce: 0
+  maxFallSpeed: 0
+  maxSecondaryJumps: 0
 --- !u!1001 &1010620173
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1508,7 +1531,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1555559491
 Light:
   m_ObjectHideFlags: 0
@@ -1847,6 +1870,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4278073358043291884, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1894,6 +1921,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       insertIndex: 6
       addedObject: {fileID: 1008501928}
+    - targetCorrespondingSourceObject: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1008501929}
   m_SourcePrefab: {fileID: 100100000, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
 --- !u!1001 &2073532739
 PrefabInstance:

@@ -4,9 +4,13 @@ namespace Interfaces.Checkers
 {
     public interface IWallChecker
     {
-        Transform WallCheckLeft { get; }
-        Transform WallCheckRight { get; }
-        LayerMask WhatIsGround { get; }  // Assuming walls and ground use the same layer mask
+        Transform WallCheckLeft { get; set; }
+        Transform WallCheckRight { get; set; }
+        LayerMask WhatIsGround { get; set; }
+        
+        public bool TouchingWallLeft { get; set; }
+        public bool TouchingWallRight { get; set; }
+        public bool TouchingWall { get; set; }
 
         public bool IsTouchingWallLeft()
         {

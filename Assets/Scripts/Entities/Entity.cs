@@ -1,5 +1,6 @@
 ﻿using Interfaces;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Entities
 {
@@ -8,6 +9,8 @@ namespace Entities
     {
         public int maxHealth = 5;
         public int health = 5;
+        public float speed;
+
         protected void Start()
         {
             Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -17,8 +20,8 @@ namespace Entities
             CurrentHealth = MaxHealth;
         }
         
-        
         // IMovable
+        float IMovable.Speed { get => speed; set => speed = value; }
         public bool MovementDisabledByGetPushed { get; set; }
         public Rigidbody2D Rigidbody2D { get; set; }
 

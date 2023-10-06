@@ -1,0 +1,32 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+class Updatable
+class Entity
+class Character
+class Player
+class Enemy
+
+interface IMovable
+interface IHealth
+
+interface IJump
+interface IGroundChecker 
+interface IWallChecker
+
+Updatable --|> Entity
+
+Entity --|> Character
+Entity -> IHealth
+Entity -> IMovable
+
+Character --|> Player
+Character --|> Enemy
+Character -> IJump
+Character -> IGroundChecker
+Character -> IWallChecker
+
+
+
+
+@enduml
