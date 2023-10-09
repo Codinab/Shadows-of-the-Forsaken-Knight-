@@ -9,7 +9,7 @@ namespace Interfaces
         float MaxFallSpeed { get; }
         bool Dashed { get; set; }
         
-        public void ClampPlayerVelocity()
+        public void ClampVelocity()
         {
             Vector2 velocity = Rigidbody2D.velocity;
         

@@ -1,17 +1,28 @@
-﻿using Interfaces;
+﻿using System;
+using Interfaces;
 using Interfaces.Checkers;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 namespace Entities
 {
+    
+    public class IntEventArgs : EventArgs
+    {
+        public IntEventArgs(int value)
+        {
+            Value = value;
+        }
+        public int Value { get; set; }
+    }
     public class Player : Character, IVelocityLimit, IGrabbingWallCheck, IDoubleJump
     {
         public float maxFallSpeed;
 
         protected override void OnFixedUpdate()
         {
-
+            
             base.OnFixedUpdate();
         }
 
@@ -41,6 +52,8 @@ namespace Entities
 
             HandeHorizontalMovement();
         }
+        
+        
 
         private void HandeHorizontalMovement()
         {
@@ -130,6 +143,7 @@ namespace Entities
 
         protected override void PreFixedUpdate()
         {
+            
         }
 
         protected override void PostFixedUpdate()
