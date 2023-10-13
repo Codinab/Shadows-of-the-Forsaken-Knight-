@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// The horizontal force applied when the player jumps off a wall.
     /// </summary>
-    public float wallJumpHorizontalForce = 2.5f;
+    public float wallJumpHorizontalForce = 1.25f;
 
     /// <summary>
     /// Multiplier for the vertical force applied when the player jumps off a wall.

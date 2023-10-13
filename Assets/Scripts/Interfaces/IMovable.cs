@@ -12,15 +12,11 @@ namespace Interfaces
             MovementDisabledByGetPushed = true;
             ResetVelocities();
             Push(direction, pushPower);
-            Invoke(nameof(GetPushedReset), duration);
         }
-
-        protected void Invoke(string functionName, float duration);
-        
-        void Move(Vector2 direction)
+        public void Move(float direction)
         {
-            if (MovementDisabledByGetPushed) return;
-            Rigidbody2D.velocity = direction * Speed;
+            if (MovementDisabledByGetPushed && direction != 0) return;
+            Rigidbody2D.velocity = new Vector2(direction * Speed, Rigidbody2D.velocity.y);
         }
         private void Push(Vector2 direction, float pushPower)
         {
@@ -35,7 +31,7 @@ namespace Interfaces
         {
             Rigidbody2D.velocity = new Vector2(0f, 0f);
         }
-
+        
         public void ResetVerticalVelocity()
         {
             Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, 0);

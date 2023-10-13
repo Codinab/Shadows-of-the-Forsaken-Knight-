@@ -19,53 +19,106 @@ namespace Entities
     public class Player : Character, IVelocityLimit, IGrabbingWallCheck, IDoubleJump
     {
         public float maxFallSpeed;
+        
+        protected override void Start()
+        {
+            base.Start();
+        }
 
         protected override void OnFixedUpdate()
         {
+            UpdateActions();
+            HandleMovement();
             
             base.OnFixedUpdate();
         }
+        
+        protected override void PreFixedUpdate()
+        {
+            
+        }
 
+        protected override void PostFixedUpdate()
+        {
+            (this as IVelocityLimit).ClampVelocity();
+        }
+        
+        // Actions
         private void UpdateActions()
+        {
+            UpdateDirectionKeyPress();
+            
+            UpdateTouching();
+            UpdateGrabbing();
+
+            UpdateFalling();
+            
+            UpdateDoubleJumpCount();
+        }
+
+        private void UpdateDoubleJumpCount()
+        {
+            if (TouchingGround || GrabbingWall) DoubleJumpCount = 0;
+        }
+
+        private void UpdateFalling()
+        {
+            var velocity = Rigidbody2D.velocity;
+            Sliding = velocity.y < 0 && GrabbingWall;
+            Falling = velocity.y < 0 && !GrabbingWall;
+            
+            InAir = !TouchingGround && !GrabbingWall;
+        }
+
+        private void UpdateGrabbing()
+        {
+            GrabbingWallLeft = TouchingWallLeft && Input.GetKey(KeyCode.A);
+            GrabbingWallRight = TouchingWallRight && Input.GetKey(KeyCode.D);
+            GrabbingWall = GrabbingWallLeft || GrabbingWallRight;
+        }
+
+        private void UpdateTouching()
         {
             TouchingGround = (this as IGroundChecker).IsTouchingGround();
             TouchingWallLeft = (this as IWallChecker).IsTouchingWallLeft();
             TouchingWallRight = (this as IWallChecker).IsTouchingWallRight();
             TouchingWall = TouchingWallLeft || TouchingWallRight;
-            GrabbingWallLeft = TouchingWallLeft && Input.GetKey(KeyCode.A);
-            GrabbingWallRight = TouchingWallRight && Input.GetKey(KeyCode.D);
-            GrabbingWall = GrabbingWallLeft || GrabbingWallRight;
-
-            // Check if the player is moving downward
-            var velocity = Rigidbody2D.velocity;
-            Sliding = velocity.y < 0 && GrabbingWall;
-            Falling = velocity.y < 0 && !GrabbingWall;
-
-            InAir = !TouchingGround && !GrabbingWall;
-
-            if (TouchingGround || GrabbingWall) DoubleJumpCount = 0;
         }
 
+        // Movement
+        public bool movementEnabled = true;
+
+        public bool MovementEnabled()
+        {
+            return movementEnabled && !WallJumped;
+        }
+        private bool CanMoveHorizontally()
+        {
+            // Only apply regular movement if not in a wall jump state
+            return !WallJumped;
+        }
+        
         private void HandleMovement()
         {
-            UpdateDirectionKeyPress();
+            if (!movementEnabled) return;
 
             HandeHorizontalMovement();
+            
+            UpdateJumpKeyPress();
+            if (JumpKeyPressed() && CanJump()) PerformJump();
+            //if (JumpKeyPressed() && CanDoubleJump()) DoubleJump();
+            
+            
         }
         
-        
-
         private void HandeHorizontalMovement()
         {
-            /*// Only apply regular movement if not in a wall jump state
-            if (!_wallJumped && _movementEnabled)
-            {
-                _rigidbody2D.velocity = new Vector2(Input.GetAxis("Horizontal") * moveSpeed, _rigidbody2D.velocity.y);
-            }*/
+            if (CanMoveHorizontally()) 
+                (this as IMovable).Move(Input.GetAxis("Horizontal"));
         }
-
+        
+        // Looking Direction
         private Vector2Int _lookingDirection = Vector2Int.right;
-
         public Vector2Int GetLookingDirection()
         {
             return _lookingDirection;
@@ -126,30 +179,8 @@ namespace Entities
                 _lookingDirection = _lastHorizontalDirection;
             }
         }
-
-        /*
-         *     private void FixedUpdate()
-    {
-        HandleMovement();
-        UpdateActions();
-
-        HandleWallGrabbing();
-
-        PerformAction();
-
-        ClampPlayerVelocity();
-    }
-         */
-
-        protected override void PreFixedUpdate()
-        {
-            
-        }
-
-        protected override void PostFixedUpdate()
-        {
-        }
-
+        
+        // Attack
         public override bool CanAttack()
         {
             return false;
@@ -178,6 +209,94 @@ namespace Entities
         {
             get => maxSecondaryJumps;
             set => maxSecondaryJumps = value;
+        }
+        
+        // Jump
+        private bool _oneKeyPressJumpController = false;
+        private bool CanJump()
+        {
+            return (!_oneKeyPressJumpController && 
+                    !WallJumped &&
+                    (TouchingGround || TouchingWallLeft || TouchingWallRight));
+        }
+        
+        private bool JumpKeyPressed()
+        {
+            bool jumpKeyPressed = Input.GetKey(KeyCode.V);
+            return jumpKeyPressed;
+        }
+        private void UpdateJumpKeyPress()
+        {
+            if (!Input.GetKey(KeyCode.V)) _oneKeyPressJumpController = false;
+        }
+        
+        private void PerformJump()
+        {
+            PerformJumpWithDirection();
+            _oneKeyPressJumpController = true;
+        }
+        
+        private void PerformJumpWithDirection()
+        {
+            if (TouchingGround)
+            {
+                (this as IJump).RegularJumpRv();
+            }
+            else if (wallJumpEnabled && TouchingWallRight)
+            {
+                WallJump(-1);
+            }
+            else if (wallJumpEnabled && TouchingWallLeft)
+            {
+                WallJump(1);
+            }
+        }
+        
+        
+        // IWallJump
+        public bool wallJumpEnabled = false;
+        public void WallJump(int direction)
+        {
+            (this as IMovable).ResetVelocities();
+            Rigidbody2D.AddForce(new Vector2(direction * wallJumpHorizontalForce, JumpForce * wallJumpVerticalMultiplierForce),
+                ForceMode2D.Impulse);
+            WallJumped = true;
+            Invoke(nameof(ResetWallJump), jumpHorizontalForceDuration);
+        }
+        private void ResetWallJump()
+        {
+            WallJumped = false;
+            (this as IMovable).ResetVelocities();
+        }
+
+        public bool WallJumped { get; set; }
+        public float JumpForce { get; set; }
+        
+        /// <summary>
+        /// The horizontal force applied when the player jumps off a wall.
+        /// </summary>
+        public float wallJumpHorizontalForce = 1.25f;
+
+        /// <summary>
+        /// Multiplier for the vertical force applied when the player jumps off a wall.
+        /// </summary>
+        public float wallJumpVerticalMultiplierForce = 1f;
+
+        /// <summary>
+        /// Duration for which the horizontal force is applied during a wall jump.
+        /// </summary>
+        public float jumpHorizontalForceDuration = 0.35f;
+        
+        // Double Jump
+        public bool canDoubleJump = false;
+
+        private bool CanDoubleJump()
+        {
+            return (canDoubleJump && 
+                    !_oneKeyPressJumpController && 
+                    !WallJumped && 
+                    InAir &&
+                    DoubleJumpCount < MaxSecondaryJumps);
         }
     }
 }

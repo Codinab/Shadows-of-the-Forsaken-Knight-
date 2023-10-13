@@ -5,10 +5,10 @@ namespace Interfaces
     public interface IChaser
     {
         
-        protected float CloseDistance { get; set; }
-        protected Camera MainCamera { get; set; }
-        protected Transform Transform { get; set; }
-        protected GameObject Player { get; set; }
+        protected float CloseDistance { get; }
+        protected Camera MainCamera { get; }
+        protected Transform Transform { get; }
+        protected GameObject Player { get; }
         public bool IsCloseToPlayer()
         {
             float squaredDistance = (Transform.position - Player.transform.position).sqrMagnitude;

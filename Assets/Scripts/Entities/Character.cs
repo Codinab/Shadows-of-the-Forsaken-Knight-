@@ -11,8 +11,9 @@ namespace Entities
         public abstract bool CanAttack();
         public abstract void Attack();
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             GroundCheck = transform.Find("GroundCheck");
             if (GroundCheck == null) Debug.LogError("GroundCheck not found");
             

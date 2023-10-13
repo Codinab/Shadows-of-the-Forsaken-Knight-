@@ -10,6 +10,8 @@ namespace Entities
             if (DoFixedUpdate()) OnFixedUpdate();
             PostFixedUpdate();
         }
+
+        protected abstract void Start();
         
         
         protected abstract void PreFixedUpdate();

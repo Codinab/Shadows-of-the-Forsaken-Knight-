@@ -11,7 +11,7 @@ namespace Entities
         public int health = 5;
         public float speed;
 
-        protected void Start()
+        protected override void Start()
         {
             Rigidbody2D = GetComponent<Rigidbody2D>();
             if (Rigidbody2D == null) Debug.LogError("Rigidbody2D not found");
@@ -25,10 +25,7 @@ namespace Entities
         public bool MovementDisabledByGetPushed { get; set; }
         public Rigidbody2D Rigidbody2D { get; set; }
 
-        void IMovable.Invoke(string functionName, float duration)
-        {
-            Invoke(functionName, duration);
-        }
+
 
         
         // IHealth

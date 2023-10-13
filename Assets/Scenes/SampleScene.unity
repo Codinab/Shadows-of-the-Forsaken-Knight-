@@ -1056,37 +1056,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
   m_PrefabInstance: {fileID: 2033329573}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1008501928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1008501920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff16c28d9f41a564bbd48f3a141aa3c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 5
---- !u!114 &1008501929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1008501920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf3c17e4b274404c90df21c23b4a133b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 5
-  health: 5
-  speed: 0
-  jumpForce: 0
-  maxFallSpeed: 0
-  maxSecondaryJumps: 0
 --- !u!1001 &1010620173
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1866,13 +1835,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 396534079832663281, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1842654318477508805, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209034628181208365, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: speed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209034628181208365, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: jumpForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209034628181208365, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209034628181208365, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: maxFallSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209034628181208365, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: wallJumpEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209034628181208365, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: maxSecondaryJumps
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4278073358043291884, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1914,16 +1915,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6599914428686321039, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      insertIndex: 6
-      addedObject: {fileID: 1008501928}
-    - targetCorrespondingSourceObject: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1008501929}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
 --- !u!1001 &2073532739
 PrefabInstance:
