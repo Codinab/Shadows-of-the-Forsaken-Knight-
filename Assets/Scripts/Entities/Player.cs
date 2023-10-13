@@ -105,7 +105,8 @@ namespace Entities
             HandeHorizontalMovement();
             
             UpdateJumpKeyPress();
-            if (JumpKeyPressed() && CanJump()) PerformJump();
+            //if (JumpKeyPressed() && CanJump())(this as IJump).RegularJumpRv();
+            if (JumpKeyPressed() && CanJump()) HandleJump();
             //if (JumpKeyPressed() && CanDoubleJump()) DoubleJump();
             
             
@@ -212,10 +213,10 @@ namespace Entities
         }
         
         // Jump
-        private bool _oneKeyPressJumpController = false;
+        private bool _jumpKeyPressController = false;
         private bool CanJump()
         {
-            return (!_oneKeyPressJumpController && 
+            return (!_jumpKeyPressController && 
                     !WallJumped &&
                     (TouchingGround || TouchingWallLeft || TouchingWallRight));
         }
@@ -227,16 +228,16 @@ namespace Entities
         }
         private void UpdateJumpKeyPress()
         {
-            if (!Input.GetKey(KeyCode.V)) _oneKeyPressJumpController = false;
+            if (!Input.GetKey(KeyCode.V)) _jumpKeyPressController = false;
         }
         
-        private void PerformJump()
+        private void HandleJump()
         {
-            PerformJumpWithDirection();
-            _oneKeyPressJumpController = true;
+            HandleDirectionOfJump();
+            _jumpKeyPressController = true;
         }
         
-        private void PerformJumpWithDirection()
+        private void HandleDirectionOfJump()
         {
             if (TouchingGround)
             {
@@ -293,7 +294,7 @@ namespace Entities
         private bool CanDoubleJump()
         {
             return (canDoubleJump && 
-                    !_oneKeyPressJumpController && 
+                    !_jumpKeyPressController && 
                     !WallJumped && 
                     InAir &&
                     DoubleJumpCount < MaxSecondaryJumps);

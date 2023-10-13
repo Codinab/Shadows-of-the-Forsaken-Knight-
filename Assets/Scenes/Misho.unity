@@ -486,34 +486,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 96089956149246758, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 807124148586545411, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1671285867734207343, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: m_Intensity
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1671285867734207343, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: m_SpotAngle
-      value: 179
-      objectReference: {fileID: 0}
-    - target: {fileID: 1842654318477508805, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: dashEnabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1842654318477508805, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: nSecondJumps
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1842654318477508805, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: doubleJumpEnabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_Name
       value: Player
@@ -557,10 +529,6 @@ PrefabInstance:
     - target: {fileID: 4278073358043291884, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4641548173306019907, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

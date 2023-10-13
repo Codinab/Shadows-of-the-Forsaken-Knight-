@@ -475,7 +475,7 @@ public class PlayerMovement : MonoBehaviour
     
     // Box for ground check
     private static readonly Vector2 HorizontalTouchRectangle = new Vector2(0.1f, 0.9f);
-    private static readonly Vector2 VerticalTouchRectangle = new Vector2(0.9f, 0.1f);
+    private static readonly Vector2 VerticalTouchRectangle = new Vector2(0.9f, 0.2f);
     
     private bool IsTouchingGround()
     {

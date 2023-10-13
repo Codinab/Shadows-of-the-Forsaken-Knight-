@@ -148,7 +148,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4278073358043291884
 Transform:
   m_ObjectHideFlags: 0
@@ -255,7 +255,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2657382273488803743}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd748302f8bdedf40a667af0deaa85b8, type: 3}
   m_Name: 
@@ -270,8 +270,8 @@ MonoBehaviour:
   grabbingFallSpeed: -1
   maxFallSpeed: 15
   dashPower: 100
-  nSecondJumps: 1
-  doubleJumpEnabled: 0
+  nSecondJumps: 2
+  doubleJumpEnabled: 1
   dashEnabled: 0
   wallJumpEnabled: 0
 --- !u!114 &396534079832663281
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2657382273488803743}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 582472c379bcff84d9a38f6826bfbef8, type: 3}
   m_Name: 
@@ -297,7 +297,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2657382273488803743}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff16c28d9f41a564bbd48f3a141aa3c9, type: 3}
   m_Name: 
@@ -362,10 +362,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   health: 5
-  speed: 0
-  jumpForce: 0
-  maxFallSpeed: 0
-  maxSecondaryJumps: 0
+  speed: 6
+  jumpForce: 6
+  maxFallSpeed: 15
+  movementEnabled: 1
+  maxSecondaryJumps: 1
+  wallJumpEnabled: 0
+  wallJumpHorizontalForce: 1.25
+  wallJumpVerticalMultiplierForce: 1
+  jumpHorizontalForceDuration: 0.35
+  canDoubleJump: 0
 --- !u!1 &3420141096230748208
 GameObject:
   m_ObjectHideFlags: 0
