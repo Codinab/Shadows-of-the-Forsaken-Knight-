@@ -7,6 +7,7 @@ public class NewGameButtonScript : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("Misho");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
     }
 }

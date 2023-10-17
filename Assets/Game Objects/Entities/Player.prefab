@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 6599914428686321039}
   - component: {fileID: 3366061365922077510}
   - component: {fileID: 4209034628181208365}
+  - component: {fileID: 3216676810931616814}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -372,6 +373,19 @@ MonoBehaviour:
   wallJumpVerticalMultiplierForce: 1
   jumpHorizontalForceDuration: 0.35
   canDoubleJump: 0
+--- !u!114 &3216676810931616814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2657382273488803743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37df72beb8f724e448765369a57e05af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InventorySize: 16
 --- !u!1 &3420141096230748208
 GameObject:
   m_ObjectHideFlags: 0

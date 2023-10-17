@@ -249,6 +249,7 @@ GameObject:
   - component: {fileID: 8499066453788820952}
   - component: {fileID: 4930163773375245637}
   - component: {fileID: 5542254119848902082}
+  - component: {fileID: 8245720657076789865}
   m_Layer: 5
   m_Name: InventoryCanvas
   m_TagString: Untagged
@@ -339,6 +340,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8245720657076789865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4165908526225433292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3eaf9bb9d6c7414a84e7a099f65000c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemsParent: {fileID: 9105102786464629784}
 --- !u!1001 &137711095874060520
 PrefabInstance:
   m_ObjectHideFlags: 0
