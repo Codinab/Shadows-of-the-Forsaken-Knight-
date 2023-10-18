@@ -35,12 +35,13 @@ public class Inventory : MonoBehaviour
         }
         _items.Add(item);
         if (onItemChangedCallBack != null)
+        {
             onItemChangedCallBack.Invoke();
+        }
         return true;
     }
-    // Update is called once per frame
-    void Update()
+    public void RemoveItem(Item item)
     {
-        
+        _items.Remove(item);
     }
 }

@@ -352,6 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3eaf9bb9d6c7414a84e7a099f65000c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InventoryTab: {fileID: 2005207195698714280}
   ItemsParent: {fileID: 9105102786464629784}
 --- !u!1001 &137711095874060520
 PrefabInstance:

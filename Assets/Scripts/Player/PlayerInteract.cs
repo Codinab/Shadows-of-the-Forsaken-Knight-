@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
+
+    public delegate void OnInteractKeyPressed();
+    public OnInteractKeyPressed onInteractKeyPressedCallBack;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +16,13 @@ public class PlayerInteract : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.E)) 
+        {
+            if(onInteractKeyPressedCallBack != null)
+            {
+                onInteractKeyPressedCallBack.Invoke();
+            }
+        }
+
     }
 }

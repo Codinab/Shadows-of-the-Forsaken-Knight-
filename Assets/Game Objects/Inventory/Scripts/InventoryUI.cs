@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
+    [SerializeField] GameObject InventoryTab;
     private Inventory _inventory;
     public Transform ItemsParent;
     InventorySlot[] _slots;
@@ -15,19 +16,21 @@ public class InventoryUI : MonoBehaviour
 
         _slots = ItemsParent.GetComponentsInChildren<InventorySlot>();
     }
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            InventoryTab.SetActive(!InventoryTab.activeSelf);
+        }
     }
     private void UpdateInventoryUI()
     {
+        Item[] items = _inventory.Items;
         for(int i=0;i<_slots.Length;i++)
         {
-            if(i < _inventory.Items.Length)
+            if(i < items.Length)
             {
-                _slots[i].AddItem(_inventory.Items[i]);
+                _slots[i].AddItem(items[i]);
             }
             else
             {

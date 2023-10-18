@@ -12,7 +12,7 @@ public class InventorySlot : MonoBehaviour
 
     public void AddItem(Item item)
     {
-        if(_item != null)
+        if(item != null)
         {
             _item=item;
             Icon.sprite = item.Icon;
@@ -23,5 +23,12 @@ public class InventorySlot : MonoBehaviour
     {
         Icon.sprite = null;
         Icon.enabled = false;
+    }
+    public void UseItem()
+    {
+        if (_item != null)
+        {
+            _item.Use();
+        }
     }
 }
