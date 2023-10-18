@@ -29,6 +29,7 @@ public class Inventory : MonoBehaviour
 
     public bool AddItem(Item item)
     {
+        Debug.Log(item.Name + " added to inv");
         if(_items.Count > InventorySize)
         {
             return false;

@@ -13,8 +13,8 @@ public class InventoryUI : MonoBehaviour
     {
         _inventory = Inventory.Instance;
         _inventory.onItemChangedCallBack += UpdateInventoryUI;
-
         _slots = ItemsParent.GetComponentsInChildren<InventorySlot>();
+        InventoryTab.SetActive(false);
     }
     private void Update()
     {
@@ -25,12 +25,16 @@ public class InventoryUI : MonoBehaviour
     }
     private void UpdateInventoryUI()
     {
+        
         Item[] items = _inventory.Items;
+        Debug.Log(_slots.Length);
         for(int i=0;i<_slots.Length;i++)
         {
-            if(i < items.Length)
+            Debug.Log($"put in slot {i}");
+            if (i < items.Length)
             {
                 _slots[i].AddItem(items[i]);
+                
             }
             else
             {

@@ -12,6 +12,7 @@ public class InventorySlot : MonoBehaviour
 
     public void AddItem(Item item)
     {
+        Debug.Log("item added to slot");
         if(item != null)
         {
             _item=item;
