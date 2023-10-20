@@ -44,6 +44,10 @@ public class EquipmentManager : MonoBehaviour
     public void EquipItem(Equipment item)
     {
         int slotIndex = (int)item.equipmentSlot;
+        if (_equipment[slotIndex] != null)
+        {
+            _inventory.AddItem(_equipment[slotIndex]);
+        }
         _equipment[slotIndex] = item;
         _inventory.RemoveItem(item);
         _inventory.onItemChangedCallBack.Invoke();
