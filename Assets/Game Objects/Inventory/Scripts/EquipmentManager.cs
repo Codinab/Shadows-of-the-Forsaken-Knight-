@@ -23,16 +23,29 @@ public class EquipmentManager : MonoBehaviour
             return _equipment;
         }
     }
-     private Equipment[] _equipment;
+    public int NumberOfSlots
+    {
+        get
+        {
+            return _numberOfSlots;
+        }
+    }
+    private Equipment[] _equipment;
+    private int _numberOfSlots;
+    private Inventory _inventory;
+
     private void Start()
     {
-        int numberOfSlots = Enum.GetNames(typeof(EquipmentSlot)).Length;
-        _equipment = new Equipment[numberOfSlots];
+        _numberOfSlots = Enum.GetNames(typeof(EquipmentSlot)).Length;
+        _equipment = new Equipment[_numberOfSlots];
+        _inventory = Inventory.Instance;
     }
 
     public void EquipItem(Equipment item)
     {
         int slotIndex = (int)item.equipmentSlot;
         _equipment[slotIndex] = item;
+        _inventory.RemoveItem(item);
+        _inventory.onItemChangedCallBack.Invoke();
     }
 }

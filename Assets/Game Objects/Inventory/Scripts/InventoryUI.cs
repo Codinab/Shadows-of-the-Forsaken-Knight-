@@ -27,10 +27,8 @@ public class InventoryUI : MonoBehaviour
     {
         
         Item[] items = _inventory.Items;
-        Debug.Log(_slots.Length);
         for(int i=0;i<_slots.Length;i++)
         {
-            Debug.Log($"put in slot {i}");
             if (i < items.Length)
             {
                 _slots[i].AddItem(items[i]);

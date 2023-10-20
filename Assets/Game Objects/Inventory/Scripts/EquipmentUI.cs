@@ -17,13 +17,20 @@ public class EquipmentUI : MonoBehaviour
         _slots = ItemsParent.GetComponentsInChildren<InventorySlot>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void UpdateUI()
     {
-        //create slot code call add ande make them index specific
+        Item[] items = _equipmentManager.EquipmentList;
+        Debug.Log(_slots.Length + " slots in equipment");
+        for (int i = 0; i < _equipmentManager.NumberOfSlots; i++)
+        {
+            if (items[i] == null)
+            {
+                _slots[i].ClearSlot();
+            }
+            else
+            {
+                _slots[i].AddItem(items[i]);
+            }
+        }
     }
 }
