@@ -66,4 +66,5 @@ public class EquipmentManager : MonoBehaviour
             _inventory.onItemChangedCallBack.Invoke();
         }
     }
+    
 }

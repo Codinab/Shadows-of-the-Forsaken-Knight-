@@ -20,7 +20,6 @@ public class EquipmentUI : MonoBehaviour
     private void UpdateUI()
     {
         Item[] items = _equipmentManager.EquipmentList;
-        Debug.Log(_slots.Length + " slots in equipment");
         for (int i = 0; i < _equipmentManager.NumberOfSlots; i++)
         {
             if (items[i] == null)
