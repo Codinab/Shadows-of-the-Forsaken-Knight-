@@ -16,6 +16,9 @@ public class EquipmentManager : MonoBehaviour
         Instance = this;
     }
     #endregion
+
+    public delegate void OnEquipmentChangedCallBack(Equipment newEquipment,Equipment oldEquipment);
+    public OnEquipmentChangedCallBack onEquipmentChangedCallBack;
     public Equipment[] EquipmentList
     {
         get
@@ -44,6 +47,7 @@ public class EquipmentManager : MonoBehaviour
     public void EquipItem(Equipment item)
     {
         int slotIndex = (int)item.equipmentSlot;
+        onEquipmentChangedCallBack.Invoke(item, _equipment[slotIndex]);
         if (_equipment[slotIndex] != null)
         {
             _inventory.AddItem(_equipment[slotIndex]);
