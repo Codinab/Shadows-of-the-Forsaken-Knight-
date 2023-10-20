@@ -46,14 +46,24 @@ public class EquipmentManager : MonoBehaviour
 
     public void EquipItem(Equipment item)
     {
+        Item returnItem=null;
         int slotIndex = (int)item.equipmentSlot;
-        onEquipmentChangedCallBack.Invoke(item, _equipment[slotIndex]);
-        if (_equipment[slotIndex] != null)
+        if (onEquipmentChangedCallBack != null)
         {
-            _inventory.AddItem(_equipment[slotIndex]);
+            onEquipmentChangedCallBack.Invoke(item, _equipment[slotIndex]);
         }
+        //save item from current equipment
+        returnItem = _equipment[slotIndex];
+        //cahnge item in equipment
         _equipment[slotIndex] = item;
+        //take item from inventory
         _inventory.RemoveItem(item);
-        _inventory.onItemChangedCallBack.Invoke();
+        //return old item to inv
+        _inventory.AddItem(returnItem);
+        //call UI update
+        if (_inventory.onItemChangedCallBack != null)
+        {
+            _inventory.onItemChangedCallBack.Invoke();
+        }
     }
 }
