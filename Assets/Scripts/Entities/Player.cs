@@ -1,6 +1,7 @@
 ﻿using System;
 using Interfaces;
 using Interfaces.Checkers;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -18,11 +19,14 @@ namespace Entities
     }
     public class Player : Character, IVelocityLimit, IGrabbingWallCheck, IDoubleJump
     {
+        private EquipmentManager _em;
         public float maxFallSpeed;
         
         protected override void Start()
         {
             base.Start();
+            _em = EquipmentManager.Instance;
+            _em.onEquipmentChangedCallBack += EquipmentChanged; 
         }
 
         protected override void OnFixedUpdate()
@@ -42,8 +46,8 @@ namespace Entities
         {
             (this as IVelocityLimit).ClampVelocity();
         }
-        
-        // Actions
+
+        #region Actions
         private void UpdateActions()
         {
             UpdateDirectionKeyPress();
@@ -84,8 +88,9 @@ namespace Entities
             TouchingWallRight = (this as IWallChecker).IsTouchingWallRight();
             TouchingWall = TouchingWallLeft || TouchingWallRight;
         }
+        #endregion
 
-        // Movement
+        #region Movement
         public bool movementEnabled = true;
 
         public bool MovementEnabled()
@@ -117,8 +122,9 @@ namespace Entities
             if (CanMoveHorizontally()) 
                 (this as IMovable).Move(Input.GetAxis("Horizontal"));
         }
-        
-        // Looking Direction
+        #endregion
+
+        #region Looking Direction
         private Vector2Int _lookingDirection = Vector2Int.right;
         public Vector2Int GetLookingDirection()
         {
@@ -180,8 +186,10 @@ namespace Entities
                 _lookingDirection = _lastHorizontalDirection;
             }
         }
-        
-        // Attack
+        #endregion
+
+
+        #region Attack
         public override bool CanAttack()
         {
             return false;
@@ -190,29 +198,23 @@ namespace Entities
         public override void Attack()
         {
         }
+        #endregion
 
-        // IVelocityLimit
+        #region IVelocityLimit
         public float MaxVelocity => 100f;
         public float MaxFallSpeed => maxFallSpeed;
         public bool Dashed { get; set; } // TODO: Implement dash
-
-        // IGrabbingWallCheck
+        #endregion
+        #region IGrabbingWallCheck
         public bool GrabbingWallLeft { get; set; }
         public bool GrabbingWallRight { get; set; }
         public bool GrabbingWall { get; set; }
+        #endregion
         public bool Sliding { get; set; }
         public bool Falling { get; set; }
         public bool InAir { get; set; }
 
-        public int DoubleJumpCount { get; set; }
-
-        public int MaxSecondaryJumps
-        {
-            get => maxSecondaryJumps;
-            set => maxSecondaryJumps = value;
-        }
-        
-        // Jump
+        #region Jump
         private bool _jumpKeyPressController = false;
         private bool CanJump()
         {
@@ -252,9 +254,9 @@ namespace Entities
                 WallJump(1);
             }
         }
-        
-        
-        // IWallJump
+
+
+        #region IWallJump
         public bool wallJumpEnabled = false;
         public void WallJump(int direction)
         {
@@ -287,10 +289,15 @@ namespace Entities
         /// Duration for which the horizontal force is applied during a wall jump.
         /// </summary>
         public float jumpHorizontalForceDuration = 0.35f;
-        
-        // Double Jump
-        public bool canDoubleJump = false;
+        #endregion
+        #region Double Jump
+        public int DoubleJumpCount { get; set; }
 
+        public int MaxSecondaryJumps
+        {
+            get => maxSecondaryJumps;
+            set => maxSecondaryJumps = value;
+        }
         private bool CanDoubleJump()
         {
             return (canDoubleJump && 
@@ -299,5 +306,72 @@ namespace Entities
                     InAir &&
                     DoubleJumpCount < MaxSecondaryJumps);
         }
+        #endregion
+
+        #endregion
+
+        #region Equipment Related
+        private void EquipmentChanged(Equipment oldE, Equipment newE)
+        {
+            if (oldE != null)
+            {
+                bonusHealth -= oldE.HealthModifier;
+                damageModifier -= oldE.DamageModifier;
+                switch(oldE.power)
+                {
+                    case SpecialPower.SWORD:
+                        holdingWeapon = false;
+                        break;
+                    case SpecialPower.DOUBLE_JUMP:
+                        canDoubleJump = false;
+                        break;
+                    case SpecialPower.DASH:
+                        canDash = false; 
+                        break;
+                    case SpecialPower.WALL_JUMP:
+                        canWallJump = false;
+                        break;
+                    case SpecialPower.VISION:
+                        canSeeInTheDark = false;
+                        break;
+                    default:
+                        break;   
+                }
+            }
+            if (newE != null)
+            {
+                bonusHealth += oldE.HealthModifier;
+                damageModifier += oldE.DamageModifier;
+                switch (oldE.power)
+                {
+                    case SpecialPower.SWORD:
+                        holdingWeapon = true;
+                        break;
+                    case SpecialPower.DOUBLE_JUMP:
+                        canDoubleJump = true;
+                        break;
+                    case SpecialPower.DASH:
+                        canDash = true;
+                        break;
+                    case SpecialPower.WALL_JUMP:
+                        canWallJump = true;
+                        break;
+                    case SpecialPower.VISION:
+                        canSeeInTheDark = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        private bool holdingWeapon = false;
+        private bool canDoubleJump = false;
+        private bool canDash = false;
+        private bool canWallJump = false;
+        private bool canSeeInTheDark = false;
+        private int bonusHealth = 0;
+        private int damageModifier = 0;
+
+        #endregion
     }
 }

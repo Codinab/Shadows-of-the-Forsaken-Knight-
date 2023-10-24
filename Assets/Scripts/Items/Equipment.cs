@@ -7,6 +7,7 @@ using UnityEngine;
 public class Equipment : Item
 {
     public EquipmentSlot equipmentSlot;
+    public SpecialPower power;
     public int HealthModifier;
     public int DamageModifier;
 
@@ -24,4 +25,13 @@ public enum EquipmentSlot
     LEGS,
     BOOTS,
     SWORD
+}
+public enum SpecialPower
+{
+    NONE,
+    SWORD,
+    DOUBLE_JUMP,
+    DASH,
+    WALL_JUMP,
+    VISION
 }
