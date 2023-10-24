@@ -153,8 +153,7 @@ namespace Entities
 
 
         private Vector2Int _lastHorizontalDirection = Vector2Int.right;
-        public int maxSecondaryJumps;
-
+        
         private void UpdateDirectionKeyPress()
         {
             var rightKey = Input.GetKey(KeyCode.D);
@@ -213,6 +212,7 @@ namespace Entities
         public bool Sliding { get; set; }
         public bool Falling { get; set; }
         public bool InAir { get; set; }
+        public int maxSecondaryJumps;
 
         #region Jump
         private bool _jumpKeyPressController = false;
