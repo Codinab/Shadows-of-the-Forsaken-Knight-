@@ -13,6 +13,9 @@ namespace Entities
 
         protected override void Start()
         {
+            _combatHandler = GetComponent<CombatHandler>();
+            if (_combatHandler == null) Debug.LogError("PlayerCombat not found");
+            
             base.Start();
         }
 
@@ -70,10 +73,9 @@ namespace Entities
         private void UpdateTouching()
         {
             Vector2 selfSize = transform.localScale;
-            Vector2 position = transform.position;
 
-            TouchingGround = Physics2D.OverlapBox(position, new Vector2(selfSize.x - 0.1f, selfSize.y + 10f), 0f);
-            TouchingWallLeft = (this as IWallChecker).IsTouchingWallLeft();
+            (this as IGroundChecker).TouchingGround = (this as IGroundChecker).IsTouchingGround();
+                TouchingWallLeft = (this as IWallChecker).IsTouchingWallLeft();
             TouchingWallRight = (this as IWallChecker).IsTouchingWallRight();
             TouchingWall = TouchingWallLeft || TouchingWallRight;
         }
@@ -102,10 +104,12 @@ namespace Entities
 
             UpdateJumpKeyPress();
             //if (DashKeyPressed() && CanDash()) Dash();
-            if (JumpKeyPressed() && CanJump()) HandleJump();
+            if (JumpKeyPressed()
+               && CanJump()
+                ) HandleJump();
             //if (JumpKeyPressed() && CanDoubleJump()) DoubleJump();
 
-            //if (AttackKeyPressed() && CanAttack() && !attacked) StartCoroutine(Attack());
+            if (AttackKeyPressed() && CanAttack()) StartCoroutine(Attack());
         }
 
         private void HandeHorizontalMovement()
@@ -179,20 +183,7 @@ namespace Entities
         }
 
         // Attack
-        public int damage = 1;
-        public float attackSpeed = 1f;
-        public int pushPower = 3;
-        public float attackRange = 1f;
-        public int Damage => damage;
-        public float AttackSpeed => attackSpeed;
-        public int PushPower => pushPower;
-        public float AttackRange => attackRange;
-
-
-        private List<GameObject> objectsInAttackRange = new List<GameObject>();
-        private List<GameObject> attackedEnemies = new List<GameObject>();
-        private bool isAttacking;
-        private bool attacked;
+        private bool _attackKeyPressed;
 
         private void FixedUpdate()
         {
@@ -201,97 +192,19 @@ namespace Entities
         
         private bool AttackKeyPressed()
         {
-            return Input.GetKey(KeyCode.C);
+            var attackKey = Input.GetKey(KeyCode.C);
+            return attackKey;
         }
 
+        private CombatHandler _combatHandler;
         public bool CanAttack()
         {
-            if (AttackKeyPressed() && !attacked)
-            {
-                attacked = true;
-                foreach (var collider in Physics2D.OverlapCircleAll(transform.position, AttackRange))
-                    if (collider.gameObject.CompareTag("Enemy") && !objectsInAttackRange.Contains(collider.gameObject))
-                        objectsInAttackRange.Add(collider.gameObject);
-            }
-            else if (!AttackKeyPressed())
-            {
-                attacked = false;
-            }
-
-            return AttackKeyPressed() && !isAttacking;
+            return _combatHandler.CanAttack();
         }
 
         public IEnumerator Attack()
         {
-            isAttacking = true;
-
-            // Clear the list of attacked enemies
-            attackedEnemies.Clear();
-
-            var lookingDirection = GetLookingDirection();
-
-            // Execute the attack
-            AttackDirection(lookingDirection);
-
-            // Push the player back
-            if (lookingDirection.y == 0) (this as IMovable).GetPushed(-lookingDirection, attackPushBack, pushAfterAttackDelay);
-
-            // Wait for the attack delay before allowing another attack
-            yield return new WaitForSeconds(1 / attackSpeed);
-
-            // Reset the attack flag
-            isAttacking = false;
-        }
-
-        public float pushAfterAttackDelay = 0.4f;
-        public float attackPushBack = 0.1f;
-
-        private void AttackDirection(Vector2Int lookingDirection)
-        {
-            foreach (GameObject enemy in new List<GameObject>(objectsInAttackRange))
-            {
-                if (attackedEnemies.Contains(enemy)) continue;
-                if (EnemyInAttackDirection(lookingDirection, enemy))
-                {
-                    var enemyLive = enemy.GetComponent<EnemyLive>();
-                    var enemyMovement = enemy.GetComponent<EnemyMovement>();
-
-                    enemyLive.TakeDamage(damage);
-                    enemyMovement.GetPushed(lookingDirection, pushPower);
-
-                    if (CanJumpAfterSuccessfulDownAttack()) JumpAfterSuccessfulDownAttack();
-
-                    attackedEnemies.Add(enemy);
-                }
-            }
-        }
-
-        private bool CanJumpAfterSuccessfulDownAttack()
-        {
-            return IsLookingDown();
-        }
-
-        private void JumpAfterSuccessfulDownAttack()
-        {
-            (this as IJump).RegularJumpRv();
-        }
-
-        private bool EnemyInAttackDirection(Vector2Int lookingDirection, GameObject enemy)
-        {
-            Vector2 enemyPosition = enemy.transform.position;
-            Vector2 playerPosition = transform.position;
-            var attackDirection = enemyPosition - playerPosition;
-
-            Vector2 approximatedDirection;
-
-            if (Mathf.Abs(attackDirection.x) > Mathf.Abs(attackDirection.y))
-                // x-axis is dominant
-                approximatedDirection = new Vector2(Mathf.Sign(attackDirection.x), 0);
-            else
-                // y-axis is dominant
-                approximatedDirection = new Vector2(0, Mathf.Sign(attackDirection.y));
-
-            return approximatedDirection == lookingDirection;
+            return _combatHandler.Attack();
         }
 
         // IVelocityLimit
@@ -323,7 +236,7 @@ namespace Entities
 
         private void HandleWallGrabbing()
         {
-            if (!TouchingGround && !WallJumped && Sliding)
+            if (!(this as IGroundChecker).TouchingGround && !WallJumped && Sliding)
             {
                 // log in console
                 var velocity = Rigidbody2D.velocity;
@@ -336,14 +249,9 @@ namespace Entities
 
         private bool CanJump()
         {
-            bool result = !_jumpKeyPressController &&
+            return !_jumpKeyPressController &&
                    !WallJumped &&
-                   (TouchingGround || TouchingWallLeft || TouchingWallRight);
-            Debug.Log(" !_jumpKeyPressController: " + !_jumpKeyPressController
-                + " !WallJumped: " + !WallJumped+
-                " TouchingGround: " + TouchingGround);
-            if(result) Debug.Log("CanJump()");
-            return result;
+                   ((this as IGroundChecker).IsTouchingGround() || TouchingWallLeft || TouchingWallRight);
         }
 
         private bool JumpKeyPressed()
@@ -366,13 +274,13 @@ namespace Entities
 
         private void HandleDirectionOfJump()
         {
-            if (TouchingGround)
+            if ((this as IGroundChecker).IsTouchingGround())
             {
                 Debug.Log("Jump()");
                 (this as IJump).RegularJumpRv();
-            }            else if (wallJumpEnabled && TouchingWallRight)
-                WallJump(-1);
-            else if (wallJumpEnabled && TouchingWallLeft) WallJump(1);
+            } /*
+            else if (wallJumpEnabled && TouchingWallRight) WallJump(-1);
+            else if (wallJumpEnabled && TouchingWallLeft) WallJump(1);*/
         }
 
 

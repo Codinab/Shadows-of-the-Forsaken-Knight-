@@ -21,6 +21,9 @@ namespace Entities
             
             WallCheckRight = transform.Find("WallCheckRight");
             if (WallCheckRight == null) Debug.LogError("WallCheckRight not found");
+            
+            GroundCheck = transform.Find("GroundCheck");
+            if (GroundCheck == null) Debug.LogError("GroundCheck not found");
         }
 
         // IJump
@@ -30,6 +33,8 @@ namespace Entities
         public GameObject GameObject { get => gameObject; }
         public LayerMask WhatIsGround { get; set; }
         public bool TouchingGround { get; set; }
+        
+        public Transform GroundCheck { get; set; }
         
         // IWallChecker
         public Transform WallCheckLeft { get; set; }

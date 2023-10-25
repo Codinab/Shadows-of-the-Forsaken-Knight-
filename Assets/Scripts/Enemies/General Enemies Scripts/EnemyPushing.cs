@@ -8,6 +8,7 @@ public class EnemyPushing : MonoBehaviour
 {
     public float pushPower = 10f;
     public float pushDelay = 0.5f;
+    public float stunDuration = 0.2f;
     
     private bool _canPush = true;
     private bool _playerInTrigger = false;
@@ -55,13 +56,19 @@ public class EnemyPushing : MonoBehaviour
     {
         PushPlayer();
     }
-
+    
+    private void PlayerPushReset()
+    {
+        (_player as IMovable).GetPushedReset();
+    }
     private void PushPlayer()
     {
         if (!_canPush || !_playerInTrigger) return;
         
         Vector2 pushDirection = this._playerGameObject.transform.position - transform.position;
         (_player as IMovable).GetPushed(pushDirection.normalized, pushPower);
+        Invoke(nameof(PlayerPushReset), stunDuration);
+        
         (_player as IHealth).TakeDamage(1);
         _canPush = false;
         Invoke(nameof(EnablePushing), pushDelay);

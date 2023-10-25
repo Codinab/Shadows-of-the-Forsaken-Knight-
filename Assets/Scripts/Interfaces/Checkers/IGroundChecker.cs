@@ -6,12 +6,12 @@ namespace Interfaces.Checkers
     {
         LayerMask WhatIsGround { get; }
         
+        Transform GroundCheck { get; set; }
         public bool TouchingGround { get; set; }
-        public bool IsTouchingGround(GameObject gameObject)
+        public bool IsTouchingGround()
         {
-            // Use the player's size to determine if the player is touching the ground.
-            Vector2 size = gameObject.transform.localScale;
-            return Physics2D.OverlapBox(gameObject.transform.position, new Vector2(size.x - 0.1f, size.y + 1f), 0f, WhatIsGround);
+            Vector2 boxPosition = GroundCheck.position;
+            return Physics2D.OverlapBox(boxPosition, new Vector2(0.9f, 0.1f), 0f, WhatIsGround);
         }
     }
 }
