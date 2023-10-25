@@ -4,9 +4,9 @@ namespace Interfaces.Checkers
 {
     public interface IGroundChecker
     {
-        Transform GroundCheck { get; }
         LayerMask WhatIsGround { get; }
         
+        Transform GroundCheck { get; set; }
         public bool TouchingGround { get; set; }
         public bool IsTouchingGround()
         {

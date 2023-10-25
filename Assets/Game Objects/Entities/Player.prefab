@@ -137,14 +137,9 @@ GameObject:
   - component: {fileID: 3323703193171231877}
   - component: {fileID: 789897798536047278}
   - component: {fileID: 2089518725455339971}
-  - component: {fileID: 1842654318477508805}
-  - component: {fileID: 396534079832663281}
-  - component: {fileID: 6599914428686321039}
   - component: {fileID: 3366061365922077510}
   - component: {fileID: 4209034628181208365}
-  - component: {fileID: 3216676810931616814}
-  - component: {fileID: 26996836526356743}
-  - component: {fileID: 6960727195817407671}
+  - component: {fileID: 732915565784474815}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -251,61 +246,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1842654318477508805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2657382273488803743}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd748302f8bdedf40a667af0deaa85b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 6
-  jumpForce: 6
-  wallJumpHorizontalForce: 1.25
-  wallJumpVerticalMultiplierForce: 1
-  jumpHorizontalForceDuration: 0.35
-  dashCooldown: 0.6
-  verticalDashDuration: 0.3
-  grabbingFallSpeed: -1
-  maxFallSpeed: 15
-  dashPower: 100
-  nSecondJumps: 2
-  doubleJumpEnabled: 1
-  dashEnabled: 0
-  wallJumpEnabled: 0
---- !u!114 &396534079832663281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2657382273488803743}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 582472c379bcff84d9a38f6826bfbef8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pushPower: 3
-  pushAfterAttackDelay: 0.1
-  attackDelay: 0.25
-  attackPushBack: 2
---- !u!114 &6599914428686321039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2657382273488803743}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff16c28d9f41a564bbd48f3a141aa3c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 5
 --- !u!61 &3366061365922077510
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -370,12 +310,13 @@ MonoBehaviour:
   maxFallSpeed: 15
   movementEnabled: 1
   maxSecondaryJumps: 1
+  grabbingFallSpeed: -1
   wallJumpEnabled: 0
   wallJumpHorizontalForce: 1.25
   wallJumpVerticalMultiplierForce: 1
   jumpHorizontalForceDuration: 0.35
   canDoubleJump: 0
---- !u!114 &3216676810931616814
+--- !u!114 &732915565784474815
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -384,34 +325,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2657382273488803743}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37df72beb8f724e448765369a57e05af, type: 3}
+  m_Script: {fileID: 11500000, guid: 57fad4676db540cca178fdbfa71229d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InventorySize: 16
---- !u!114 &26996836526356743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2657382273488803743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae46b6a12b951104190c26b913ff42c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6960727195817407671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2657382273488803743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5d03011e1e838c4485f31a0ac2741f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  pushPower: 3
+  pushAfterAttackDelay: 0.4
+  attackDelay: 0.25
+  attackPushBack: 3
 --- !u!1 &3420141096230748208
 GameObject:
   m_ObjectHideFlags: 0

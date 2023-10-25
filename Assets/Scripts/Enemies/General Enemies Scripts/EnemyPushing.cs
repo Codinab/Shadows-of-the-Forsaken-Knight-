@@ -1,4 +1,6 @@
 using System;
+using Entities;
+using Interfaces;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -6,40 +8,28 @@ public class EnemyPushing : MonoBehaviour
 {
     public float pushPower = 10f;
     public float pushDelay = 0.5f;
+    public float stunDuration = 0.2f;
     
     private bool _canPush = true;
     private bool _playerInTrigger = false;
 
-    private GameObject _player;
-    private PlayerMovement _playerMovement;
-    private PlayerCombat _playerCombat;
-    private PlayerHealth _playerHealth;
+    private GameObject _playerGameObject;
+    private Player _player;
+
 
     private void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
+        _playerGameObject = GameObject.FindGameObjectWithTag("Player");
+        if (_playerGameObject == null)
+        {
+            Debug.LogError("Player not found");
+        }
+        _player = _playerGameObject.GetComponent<Player>();
         if (_player == null)
         {
             Debug.LogError("Player not found");
         }
-             
-        _playerMovement = _player.GetComponent<PlayerMovement>();
-        if (_playerMovement == null)
-        {
-            Debug.LogError("PlayerMovement not found on player");
-        }
         
-        _playerCombat = _player.GetComponent<PlayerCombat>();
-        if (_playerCombat == null)
-        {
-            Debug.LogError("PlayerCombat not found on player");
-        }
-
-        _playerHealth = _player.GetComponent<PlayerHealth>();
-        if (_playerHealth == null)
-        {
-            Debug.LogError("PlayerHealth not found on player");
-        }
     } 
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -66,14 +56,20 @@ public class EnemyPushing : MonoBehaviour
     {
         PushPlayer();
     }
-
+    
+    private void PlayerPushReset()
+    {
+        (_player as IMovable).GetPushedReset();
+    }
     private void PushPlayer()
     {
         if (!_canPush || !_playerInTrigger) return;
         
-        Vector2 pushDirection = this._player.transform.position - transform.position;
-        _playerMovement.GetPushed(pushDirection.normalized, pushPower);
-        _playerHealth.ApplyDamage(1);
+        Vector2 pushDirection = this._playerGameObject.transform.position - transform.position;
+        (_player as IMovable).GetPushed(pushDirection.normalized, pushPower);
+        Invoke(nameof(PlayerPushReset), stunDuration);
+        
+        (_player as IHealth).TakeDamage(1);
         _canPush = false;
         Invoke(nameof(EnablePushing), pushDelay);
     }

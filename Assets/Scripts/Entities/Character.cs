@@ -8,14 +8,10 @@ namespace Entities
     public abstract class Character : Entity, IJump, IGroundChecker, IWallChecker
     {
         public float jumpForce;
-        public abstract bool CanAttack();
-        public abstract void Attack();
 
         protected override void Start()
         {
             base.Start();
-            GroundCheck = transform.Find("GroundCheck");
-            if (GroundCheck == null) Debug.LogError("GroundCheck not found");
             
             WhatIsGround = LayerMask.GetMask("Ground");
             if (WhatIsGround == 0) Debug.LogError("LayerMask for ground not found");
@@ -25,20 +21,20 @@ namespace Entities
             
             WallCheckRight = transform.Find("WallCheckRight");
             if (WallCheckRight == null) Debug.LogError("WallCheckRight not found");
-        }
-
-        protected override void OnFixedUpdate()
-        {
-            if (CanAttack()) Attack();
+            
+            GroundCheck = transform.Find("GroundCheck");
+            if (GroundCheck == null) Debug.LogError("GroundCheck not found");
         }
 
         // IJump
         float IJump.JumpForce { get => jumpForce; set => jumpForce = value; }
         
         // IGroundChecker
-        public Transform GroundCheck { get; set; }
+        public GameObject GameObject { get => gameObject; }
         public LayerMask WhatIsGround { get; set; }
         public bool TouchingGround { get; set; }
+        
+        public Transform GroundCheck { get; set; }
         
         // IWallChecker
         public Transform WallCheckLeft { get; set; }

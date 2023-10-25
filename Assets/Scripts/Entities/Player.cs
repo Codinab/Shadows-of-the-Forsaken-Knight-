@@ -1,58 +1,51 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Interfaces;
 using Interfaces.Checkers;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace Entities
-{
-    
-    public class IntEventArgs : EventArgs
-    {
-        public IntEventArgs(int value)
-        {
-            Value = value;
-        }
-        public int Value { get; set; }
-    }
-    public class Player : Character, IVelocityLimit, IGrabbingWallCheck, IDoubleJump
+{ 
+    public class Player : Character, IVelocityLimit, IGrabbingWallCheck, IDoubleJump, IAttacks
     {
         public float maxFallSpeed;
-        
+
         protected override void Start()
         {
+            _combatHandler = GetComponent<CombatHandler>();
+            if (_combatHandler == null) Debug.LogError("PlayerCombat not found");
+            
             base.Start();
         }
 
         protected override void OnFixedUpdate()
         {
             UpdateActions();
+
             HandleMovement();
-            
-            base.OnFixedUpdate();
+
         }
-        
+
         protected override void PreFixedUpdate()
         {
-            
         }
 
         protected override void PostFixedUpdate()
         {
             (this as IVelocityLimit).ClampVelocity();
         }
-        
+
         // Actions
         private void UpdateActions()
         {
             UpdateDirectionKeyPress();
-            
+
             UpdateTouching();
             UpdateGrabbing();
 
             UpdateFalling();
-            
+
             UpdateDoubleJumpCount();
         }
 
@@ -66,7 +59,7 @@ namespace Entities
             var velocity = Rigidbody2D.velocity;
             Sliding = velocity.y < 0 && GrabbingWall;
             Falling = velocity.y < 0 && !GrabbingWall;
-            
+
             InAir = !TouchingGround && !GrabbingWall;
         }
 
@@ -79,8 +72,10 @@ namespace Entities
 
         private void UpdateTouching()
         {
-            TouchingGround = (this as IGroundChecker).IsTouchingGround();
-            TouchingWallLeft = (this as IWallChecker).IsTouchingWallLeft();
+            Vector2 selfSize = transform.localScale;
+
+            (this as IGroundChecker).TouchingGround = (this as IGroundChecker).IsTouchingGround();
+                TouchingWallLeft = (this as IWallChecker).IsTouchingWallLeft();
             TouchingWallRight = (this as IWallChecker).IsTouchingWallRight();
             TouchingWall = TouchingWallLeft || TouchingWallRight;
         }
@@ -92,34 +87,40 @@ namespace Entities
         {
             return movementEnabled && !WallJumped;
         }
+
         private bool CanMoveHorizontally()
         {
             // Only apply regular movement if not in a wall jump state
             return !WallJumped;
         }
-        
+
         private void HandleMovement()
         {
             if (!movementEnabled) return;
 
             HandeHorizontalMovement();
-            
+
+            HandleWallGrabbing();
+
             UpdateJumpKeyPress();
-            //if (JumpKeyPressed() && CanJump())(this as IJump).RegularJumpRv();
-            if (JumpKeyPressed() && CanJump()) HandleJump();
+            //if (DashKeyPressed() && CanDash()) Dash();
+            if (JumpKeyPressed()
+               && CanJump()
+                ) HandleJump();
             //if (JumpKeyPressed() && CanDoubleJump()) DoubleJump();
-            
-            
+
+            if (AttackKeyPressed() && CanAttack()) StartCoroutine(Attack());
         }
-        
+
         private void HandeHorizontalMovement()
         {
-            if (CanMoveHorizontally()) 
+            if (CanMoveHorizontally())
                 (this as IMovable).Move(Input.GetAxis("Horizontal"));
         }
-        
+
         // Looking Direction
         private Vector2Int _lookingDirection = Vector2Int.right;
+
         public Vector2Int GetLookingDirection()
         {
             return _lookingDirection;
@@ -180,15 +181,30 @@ namespace Entities
                 _lookingDirection = _lastHorizontalDirection;
             }
         }
-        
+
         // Attack
-        public override bool CanAttack()
+        private bool _attackKeyPressed;
+
+        private void FixedUpdate()
         {
-            return false;
+            HandleMovement();
+        }
+        
+        private bool AttackKeyPressed()
+        {
+            var attackKey = Input.GetKey(KeyCode.C);
+            return attackKey;
         }
 
-        public override void Attack()
+        private CombatHandler _combatHandler;
+        public bool CanAttack()
         {
+            return _combatHandler.CanAttack();
+        }
+
+        public IEnumerator Attack()
+        {
+            return _combatHandler.Attack();
         }
 
         // IVelocityLimit
@@ -211,59 +227,76 @@ namespace Entities
             get => maxSecondaryJumps;
             set => maxSecondaryJumps = value;
         }
-        
+
+        // Wall Grabbing
+        /// <summary>
+        ///     Falling speed when grabbing a wall.
+        /// </summary>
+        public float grabbingFallSpeed = -1f;
+
+        private void HandleWallGrabbing()
+        {
+            if (!(this as IGroundChecker).TouchingGround && !WallJumped && Sliding)
+            {
+                // log in console
+                var velocity = Rigidbody2D.velocity;
+                Rigidbody2D.velocity = new Vector2(velocity.x, grabbingFallSpeed);
+            }
+        }
+
         // Jump
-        private bool _jumpKeyPressController = false;
+        private bool _jumpKeyPressController;
+
         private bool CanJump()
         {
-            return (!_jumpKeyPressController && 
-                    !WallJumped &&
-                    (TouchingGround || TouchingWallLeft || TouchingWallRight));
+            return !_jumpKeyPressController &&
+                   !WallJumped &&
+                   ((this as IGroundChecker).IsTouchingGround() || TouchingWallLeft || TouchingWallRight);
         }
-        
+
         private bool JumpKeyPressed()
         {
-            bool jumpKeyPressed = Input.GetKey(KeyCode.V);
+            var jumpKeyPressed = Input.GetKey(KeyCode.V);
+            if (jumpKeyPressed) Debug.Log("Jump() key pressed");
             return jumpKeyPressed;
         }
+
         private void UpdateJumpKeyPress()
         {
             if (!Input.GetKey(KeyCode.V)) _jumpKeyPressController = false;
         }
-        
+
         private void HandleJump()
         {
             HandleDirectionOfJump();
             _jumpKeyPressController = true;
         }
-        
+
         private void HandleDirectionOfJump()
         {
-            if (TouchingGround)
+            if ((this as IGroundChecker).IsTouchingGround())
             {
+                Debug.Log("Jump()");
                 (this as IJump).RegularJumpRv();
-            }
-            else if (wallJumpEnabled && TouchingWallRight)
-            {
-                WallJump(-1);
-            }
-            else if (wallJumpEnabled && TouchingWallLeft)
-            {
-                WallJump(1);
-            }
+            } /*
+            else if (wallJumpEnabled && TouchingWallRight) WallJump(-1);
+            else if (wallJumpEnabled && TouchingWallLeft) WallJump(1);*/
         }
-        
-        
+
+
         // IWallJump
-        public bool wallJumpEnabled = false;
+        public bool wallJumpEnabled;
+
         public void WallJump(int direction)
         {
             (this as IMovable).ResetVelocities();
-            Rigidbody2D.AddForce(new Vector2(direction * wallJumpHorizontalForce, JumpForce * wallJumpVerticalMultiplierForce),
+            Rigidbody2D.AddForce(
+                new Vector2(direction * wallJumpHorizontalForce, JumpForce * wallJumpVerticalMultiplierForce),
                 ForceMode2D.Impulse);
             WallJumped = true;
             Invoke(nameof(ResetWallJump), jumpHorizontalForceDuration);
         }
+
         private void ResetWallJump()
         {
             WallJumped = false;
@@ -272,32 +305,34 @@ namespace Entities
 
         public bool WallJumped { get; set; }
         public float JumpForce { get; set; }
-        
+
         /// <summary>
-        /// The horizontal force applied when the player jumps off a wall.
+        ///     The horizontal force applied when the player jumps off a wall.
         /// </summary>
         public float wallJumpHorizontalForce = 1.25f;
 
         /// <summary>
-        /// Multiplier for the vertical force applied when the player jumps off a wall.
+        ///     Multiplier for the vertical force applied when the player jumps off a wall.
         /// </summary>
         public float wallJumpVerticalMultiplierForce = 1f;
 
         /// <summary>
-        /// Duration for which the horizontal force is applied during a wall jump.
+        ///     Duration for which the horizontal force is applied during a wall jump.
         /// </summary>
         public float jumpHorizontalForceDuration = 0.35f;
-        
+
         // Double Jump
-        public bool canDoubleJump = false;
+        public bool canDoubleJump;
 
         private bool CanDoubleJump()
         {
-            return (canDoubleJump && 
-                    !_jumpKeyPressController && 
-                    !WallJumped && 
-                    InAir &&
-                    DoubleJumpCount < MaxSecondaryJumps);
+            return canDoubleJump &&
+                   !_jumpKeyPressController &&
+                   !WallJumped &&
+                   InAir &&
+                   DoubleJumpCount < MaxSecondaryJumps;
         }
+
+        // Trigger
     }
 }

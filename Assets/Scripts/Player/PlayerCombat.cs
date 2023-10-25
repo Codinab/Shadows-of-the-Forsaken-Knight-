@@ -36,7 +36,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (CanAttack() && !_isAttacking)
         {
-            StartCoroutine(PerformAttack());
+            StartCoroutine(Attack());
         }
         
     }
@@ -67,7 +67,7 @@ public class PlayerCombat : MonoBehaviour
     
     private bool _isAttacking = false;
 
-    private IEnumerator PerformAttack()
+    private IEnumerator Attack()
     {
         _isAttacking = true;
         _attacked = true;
@@ -78,7 +78,7 @@ public class PlayerCombat : MonoBehaviour
         Vector2Int lookingDirection = _playerMovement.GetLookingDirection();
         
         // Execute the attack
-        Attack(lookingDirection);
+        AttackDirection(lookingDirection);
         
         // Push the player back
         if (lookingDirection.y == 0)
@@ -95,7 +95,7 @@ public class PlayerCombat : MonoBehaviour
     
     public float pushAfterAttackDelay = 0.4f;
 
-    private void Attack(Vector2Int lookingDirection)
+    private void AttackDirection(Vector2Int lookingDirection)
     {
         //If the list gets updated during the loop it will crash, so we copy it.
         List<GameObject> objectsInAttackRangeCopy = new List<GameObject>(_objectsInAttackRange);

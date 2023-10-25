@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Timeline.Actions;
+using UnityEngine;
 
 namespace Interfaces
 {
@@ -7,7 +8,7 @@ namespace Interfaces
         protected float Speed {get; set;}
         bool MovementDisabledByGetPushed {get; set;}
         Rigidbody2D Rigidbody2D {get; set;}
-        public void GetPushed(Vector2 direction, float pushPower, float duration=0.4f)
+        public void GetPushed(Vector2 direction, float pushPower)
         {
             MovementDisabledByGetPushed = true;
             ResetVelocities();
@@ -22,7 +23,7 @@ namespace Interfaces
         {
             Rigidbody2D.AddForce(direction * pushPower, ForceMode2D.Impulse);
         }
-        private void GetPushedReset()
+        public void GetPushedReset()
         {
             MovementDisabledByGetPushed = false;
         }
