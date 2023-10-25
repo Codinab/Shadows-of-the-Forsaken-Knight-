@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/StartMenu.unity
+    path: Assets/Scenes/Definitive Scenes/StartMenu.unity
     guid: d153b84268f9ac9488fe8046ea93e5d7
   - enabled: 1
-    path: Assets/Scenes/Misho.unity
+    path: Assets/Scenes/Test Scenes/Misho.unity
     guid: 6e6468c341be09f4aa33e96e6c15ca46
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/Test Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Definitive Scenes/Scene 1.unity
+    guid: e3fdb534772a9d44382d1d1f13837f20
   m_configObjects: {}

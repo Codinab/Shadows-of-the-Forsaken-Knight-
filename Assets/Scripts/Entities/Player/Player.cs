@@ -28,7 +28,7 @@ namespace Entities
             UpdateActions();
 
             HandleMovement();
-
+            HandleActions();
         }
 
         protected override void PreFixedUpdate()
@@ -113,7 +113,10 @@ namespace Entities
                && CanJump()
                 ) HandleJump();
             //if (JumpKeyPressed() && CanDoubleJump()) DoubleJump();
+        }
 
+        private void HandleActions()
+        {
             if (AttackKeyPressed() && CanAttack()) StartCoroutine(Attack());
         }
 
@@ -216,6 +219,7 @@ namespace Entities
         public float MaxFallSpeed => maxFallSpeed;
         public bool Dashed { get; set; } // TODO: Implement dash
         #endregion
+        
         #region IGrabbingWallCheck
         public bool GrabbingWallLeft { get; set; }
         public bool GrabbingWallRight { get; set; }
@@ -224,14 +228,7 @@ namespace Entities
         public bool Sliding { get; set; }
         public bool Falling { get; set; }
         public bool InAir { get; set; }
-
-        public int DoubleJumpCount { get; set; }
-
-        public int MaxSecondaryJumps
-        {
-            get => maxSecondaryJumps;
-            set => maxSecondaryJumps = value;
-        }
+        
 
         // Wall Grabbing
         /// <summary>
@@ -249,13 +246,14 @@ namespace Entities
             }
         }
 
-        // Jump
-        private bool _jumpKeyPressController;
 
-        public int maxSecondaryJumps;
+
+
 
         #region Jump
         private bool _jumpKeyPressController = false;
+        public int maxSecondaryJumps;
+        
         private bool CanJump()
         {
             return !_jumpKeyPressController &&
@@ -403,6 +401,7 @@ namespace Entities
                 }
             }
         }
+        
         private bool holdingWeapon = false;
         private bool canDoubleJump = false;
         private bool canDash = false;
