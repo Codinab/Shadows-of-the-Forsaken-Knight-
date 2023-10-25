@@ -5,22 +5,43 @@ using Interfaces;
 using Interfaces.Checkers;
 using Unity.VisualScripting;
 using UnityEngine;
+using World;
 
 namespace Entities
 { 
     public class Player : Character, IVelocityLimit, IGrabbingWallCheck, IDoubleJump, IAttacks
     {
-        private EquipmentManager _em;
+        private EquipmentManager _equipmentManager;
         public float maxFallSpeed;
 
+        public static Player Instance { get; private set; }
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+        
         protected override void Start()
         {
             _combatHandler = GetComponent<CombatHandler>();
             if (_combatHandler == null) Debug.LogError("PlayerCombat not found");
             
             base.Start();
-            _em = EquipmentManager.Instance;
-            _em.onEquipmentChangedCallBack += EquipmentChanged; 
+            _equipmentManager = EquipmentManager.Instance;
+            _equipmentManager.onEquipmentChangedCallBack += EquipmentChanged; 
+            
+            // If transitioning from another scene, update the player's position
+            if (TransitionData.EntrancePosition != Vector3.zero)
+            {
+                transform.position = TransitionData.EntrancePosition;
+                TransitionData.EntrancePosition = Vector3.zero;  // Reset the entrance position
+            }
         }
 
         protected override void OnFixedUpdate()
