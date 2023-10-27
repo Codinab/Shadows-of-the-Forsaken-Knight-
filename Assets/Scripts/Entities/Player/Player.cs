@@ -42,6 +42,9 @@ namespace Entities
                 transform.position = TransitionData.EntrancePosition;
                 TransitionData.EntrancePosition = Vector3.zero;  // Reset the entrance position
             }
+            
+            // Set the z position to -0.5
+            transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
         }
 
         protected override void OnFixedUpdate()

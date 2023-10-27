@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Test Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/Definitive Scenes/ConstantScreen.unity
+    guid: c172dfa973da811489fd9047e4e01c86
+  - enabled: 1
     path: Assets/Scenes/Definitive Scenes/Scene 1.unity
     guid: e3fdb534772a9d44382d1d1f13837f20
   - enabled: 1

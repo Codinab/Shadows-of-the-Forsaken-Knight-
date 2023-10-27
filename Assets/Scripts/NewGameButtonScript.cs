@@ -7,6 +7,7 @@ public class NewGameButtonScript : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("Scene 1");
+        SceneTransitionManager sceneTransitionManager = FindObjectOfType<SceneTransitionManager>();
+        sceneTransitionManager.LoadScene("Scene 1", Vector3.zero);
     }
 }

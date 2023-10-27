@@ -1,24 +1,33 @@
 ﻿using Entities;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace World
 {
     public class ScreenTransitionHandler : MonoBehaviour
     {
-        public string sceneName;  // Name of the scene to transition to
-        public Vector3 entrancePosition;  // Position where the player should appear in the new scene
+        public string sceneName;
+        public Vector3 entrancePosition;
+
+        private SceneTransitionManager sceneTransitionManager;
+
+        private void Start()
+        {
+            sceneTransitionManager = FindObjectOfType<SceneTransitionManager>();
+            if (sceneTransitionManager == null)
+            {
+                Debug.LogError("SceneTransitionManager not found.");
+            }
+        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player"))
             {
-                // Store the entrance position in a static variable or a singleton
-                // so it can be accessed in the new scene
                 TransitionData.EntrancePosition = entrancePosition;
-
-                // Load the new scene
-                SceneManager.LoadScene(sceneName);
+                if (sceneTransitionManager != null)
+                {
+                    sceneTransitionManager.LoadScene(sceneName, entrancePosition);
+                }
             }
         }
     }
