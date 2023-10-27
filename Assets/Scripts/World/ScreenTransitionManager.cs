@@ -9,6 +9,10 @@ public class SceneTransitionManager : MonoBehaviour
     public Image loadingImage;
     public Canvas loadingCanvas;
 
+    public delegate void OnScreenChanged();
+    public OnScreenChanged onScreenChanged;
+
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -68,5 +72,6 @@ public class SceneTransitionManager : MonoBehaviour
 
         // Hide the loading screen
         loadingCanvas.enabled = false;
+        onScreenChanged.Invoke();
     }
 }

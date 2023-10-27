@@ -332,18 +332,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf3c17e4b274404c90df21c23b4a133b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
-  health: 5
+  _maxHealth: 5
+  _health: 0
   speed: 6
   jumpForce: 6
   maxFallSpeed: 15
   movementEnabled: 1
   grabbingFallSpeed: -1
   maxSecondaryJumps: 1
-  wallJumpEnabled: 0
   wallJumpHorizontalForce: 1.25
   wallJumpVerticalMultiplierForce: 1
   jumpHorizontalForceDuration: 0.35
+  _holdingWeapon: 0
+  _damage: 0
 --- !u!114 &732915565784474815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,6 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57fad4676db540cca178fdbfa71229d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
   pushPower: 1
   pushAfterAttackDelay: 0.2
   attackDelay: 0.4
@@ -384,7 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37df72beb8f724e448765369a57e05af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InventorySize: 5
+  InventorySize: 16
 --- !u!114 &1319631012912057193
 MonoBehaviour:
   m_ObjectHideFlags: 0

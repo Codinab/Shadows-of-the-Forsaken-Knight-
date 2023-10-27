@@ -80,7 +80,6 @@ public class FlyChasing : MonoBehaviour
     }
     private void BasicRoam()
     {
-        Debug.Log("In basic roam");
         if (_goingRight && DidntPassOnTheRight())
         {
             _rigidbody2D.velocity = new Vector2(HorizontalVelocity, _rigidbody2D.velocity.y);
