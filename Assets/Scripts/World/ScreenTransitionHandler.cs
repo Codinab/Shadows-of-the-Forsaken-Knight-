@@ -1,11 +1,9 @@
 ﻿using Entities;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace World
 {
-    using UnityEngine;
-    using UnityEngine.SceneManagement;
-
     public class ScreenTransitionHandler : MonoBehaviour
     {
         public string sceneName;  // Name of the scene to transition to
