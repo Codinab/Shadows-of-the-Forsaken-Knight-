@@ -490,6 +490,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3096159075574192807, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: InventorySize
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 3216676810931616814, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: InventorySize
       value: 16
@@ -539,11 +543,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
---- !u!1 &355039024 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-  m_PrefabInstance: {fileID: 355039023}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &556515571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1151,7 +1150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea31ba48f51e6854c94c6c1e8c24be90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 355039024}
 --- !u!81 &1419536479
 AudioListener:
   m_ObjectHideFlags: 0
