@@ -7,7 +7,7 @@ namespace Entities
 {
     public class CombatHandler : MonoBehaviour
     {
-        private readonly int _damage = 1;
+        public int damage = 1;
 
         public float pushPower = 3f;
 
@@ -91,7 +91,7 @@ namespace Entities
                     var enemyLive = enemy.GetComponent<EnemyLive>();
                     var enemyMovement = enemy.GetComponent<EnemyMovement>();
 
-                    enemyLive.TakeDamage(_damage);
+                    enemyLive.TakeDamage(damage);
                     enemyMovement.GetPushed(lookingDirection, pushPower);
 
                     if (CanJumpAfterSuccessfulDownAttack()) JumpAfterSuccessfulDownAttack();

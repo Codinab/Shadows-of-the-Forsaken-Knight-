@@ -7,8 +7,10 @@ namespace Entities
     [RequireComponent(typeof(Rigidbody2D))]
     public abstract class Entity : Updatable, IMovable, IHealth
     {
-        public int maxHealth = 5;
-        public int health = 5;
+        [SerializeField]
+        private int _maxHealth = 5;
+        [SerializeField]
+        private int _health;
         public float speed;
 
         protected override void Start()
@@ -16,8 +18,9 @@ namespace Entities
             Rigidbody2D = GetComponent<Rigidbody2D>();
             if (Rigidbody2D == null) Debug.LogError("Rigidbody2D not found");
             MovementDisabledByGetPushed = false;
-            MaxHealth = maxHealth;
+            MaxHealth = _maxHealth;
             CurrentHealth = MaxHealth;
+
         }
         
         // IMovable
@@ -27,10 +30,11 @@ namespace Entities
 
 
 
-        
+
         // IHealth
-        public int CurrentHealth { get => health; set => health = value;}
-        public int MaxHealth { get => maxHealth; set => maxHealth = value; }
+        
+        public int CurrentHealth { get => _health; set => _health = value;}
+        public virtual int MaxHealth { get => _maxHealth; set => _maxHealth = value; }
 
     }
 }

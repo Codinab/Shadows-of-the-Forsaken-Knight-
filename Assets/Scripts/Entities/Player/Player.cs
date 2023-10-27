@@ -215,7 +215,6 @@ namespace Entities
         }
         #endregion
 
-
         #region Attack
 
         private bool _attackKeyPressed;
@@ -229,7 +228,7 @@ namespace Entities
         private CombatHandler _combatHandler;
         public bool CanAttack()
         {
-            return _combatHandler.CanAttack();
+            return (_combatHandler.CanAttack()&&_holdingWeapon);
         }
 
         public IEnumerator Attack()
@@ -248,16 +247,7 @@ namespace Entities
         public bool GrabbingWallLeft { get; set; }
         public bool GrabbingWallRight { get; set; }
         public bool GrabbingWall { get; set; }
-        #endregion
-        public bool Sliding { get; set; }
-        public bool Falling { get; set; }
-        public bool InAir { get; set; }
-        
 
-        // Wall Grabbing
-        /// <summary>
-        ///     Falling speed when grabbing a wall.
-        /// </summary>
         public float grabbingFallSpeed = -1f;
 
         private void HandleWallGrabbing()
@@ -269,6 +259,18 @@ namespace Entities
                 Rigidbody2D.velocity = new Vector2(velocity.x, grabbingFallSpeed);
             }
         }
+        #endregion
+
+        public bool Sliding { get; set; }
+        public bool Falling { get; set; }
+        public bool InAir { get; set; }
+        
+
+        // Wall Grabbing
+        /// <summary>
+        ///     Falling speed when grabbing a wall.
+        /// </summary>
+        
 
 
 
@@ -316,7 +318,6 @@ namespace Entities
 
 
         #region IWallJump
-        public bool wallJumpEnabled = false;
         public void WallJump(int direction)
         {
             (this as IMovable).ResetVelocities();
@@ -361,7 +362,7 @@ namespace Entities
         }
         private bool CanDoubleJump()
         {
-            return canDoubleJump &&
+            return _canDoubleJump &&
                    !_jumpKeyPressController &&
                    !WallJumped &&
                    InAir &&
@@ -372,28 +373,29 @@ namespace Entities
         #endregion
 
         #region Equipment Related
-        private void EquipmentChanged(Equipment oldE, Equipment newE)
+        private void EquipmentChanged(Equipment newE, Equipment oldE)
         {
+            int bonusHealth = 0;
             if (oldE != null)
             {
                 bonusHealth -= oldE.HealthModifier;
-                damageModifier -= oldE.DamageModifier;
-                switch(oldE.power)
+                _damage -= oldE.DamageModifier;
+                switch (oldE.power)
                 {
                     case SpecialPower.SWORD:
-                        holdingWeapon = false;
+                        _holdingWeapon = false;
                         break;
                     case SpecialPower.DOUBLE_JUMP:
-                        canDoubleJump = false;
+                        _canDoubleJump = false;
                         break;
                     case SpecialPower.DASH:
-                        canDash = false; 
+                        _canDash = false; 
                         break;
                     case SpecialPower.WALL_JUMP:
-                        canWallJump = false;
+                        _canWallJump = false;
                         break;
                     case SpecialPower.VISION:
-                        canSeeInTheDark = false;
+                        _canSeeInTheDark = false;
                         break;
                     default:
                         break;   
@@ -401,38 +403,45 @@ namespace Entities
             }
             if (newE != null)
             {
-                bonusHealth += oldE.HealthModifier;
-                damageModifier += oldE.DamageModifier;
-                switch (oldE.power)
+                bonusHealth += newE.HealthModifier;
+                _damage += newE.DamageModifier;
+                switch (newE.power)
                 {
                     case SpecialPower.SWORD:
-                        holdingWeapon = true;
+                        _holdingWeapon = true;
                         break;
                     case SpecialPower.DOUBLE_JUMP:
-                        canDoubleJump = true;
+                        _canDoubleJump = true;
                         break;
                     case SpecialPower.DASH:
-                        canDash = true;
+                        _canDash = true;
                         break;
                     case SpecialPower.WALL_JUMP:
-                        canWallJump = true;
+                        _canWallJump = true;
                         break;
                     case SpecialPower.VISION:
-                        canSeeInTheDark = true;
+                        _canSeeInTheDark = true;
                         break;
                     default:
                         break;
                 }
             }
+            MaxHealth += bonusHealth;
+            _combatHandler.damage = _damage;
+            if (MaxHealth < CurrentHealth)
+            {
+                CurrentHealth = MaxHealth;
+            }
         }
-        
-        private bool holdingWeapon = false;
-        private bool canDoubleJump = false;
-        private bool canDash = false;
-        private bool canWallJump = false;
-        private bool canSeeInTheDark = false;
-        private int bonusHealth = 0;
-        private int damageModifier = 0;
+        [SerializeField] 
+        private bool _holdingWeapon = false;   //done
+        private bool _canDoubleJump = false;   //refactoring needed
+        private bool _canDash = false;         //refactoring needed
+        private bool _canWallJump = false;     //refactoring needed
+        private bool _canSeeInTheDark = false; //not even implemented
+        [SerializeField]
+        private int _damage = 0;  //done bonus health also done
+
 
         #endregion
     }
