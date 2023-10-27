@@ -104,6 +104,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushPower: 2
   pushDelay: 0.5
+  stunDuration: 0.2
+  damage: 1
 --- !u!114 &2444063085970960488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b6c4389add4506a791823c11f6403b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pushed: 0
+  pushed: 0
+  closeDistance: 20
 --- !u!114 &2327374970149340780
 MonoBehaviour:
   m_ObjectHideFlags: 0

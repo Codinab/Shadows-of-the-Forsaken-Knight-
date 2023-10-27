@@ -48,9 +48,12 @@ public class FlyChasing : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        
-        if (!_enemyMovement.IsCloseToPlayer()) return;
-        
+
+        if (!_enemyMovement.IsCloseToPlayer())
+        {
+            _rigidbody2D.velocity = Vector2.zero;
+            return;
+        }
         if (_enemyMovement.pushed)
         {
             lastHitTaken = Time.time;
@@ -77,7 +80,7 @@ public class FlyChasing : MonoBehaviour
     }
     private void BasicRoam()
     {
-
+        Debug.Log("In basic roam");
         if (_goingRight && DidntPassOnTheRight())
         {
             _rigidbody2D.velocity = new Vector2(HorizontalVelocity, _rigidbody2D.velocity.y);
