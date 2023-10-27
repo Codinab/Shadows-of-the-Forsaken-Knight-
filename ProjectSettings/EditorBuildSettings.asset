@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Definitive Scenes/Scene 2.unity
     guid: 7662b64660722ad47b5d0b8a90dc364d
+  - enabled: 1
+    path: Assets/Scenes/Definitive Scenes/Scene 3.unity
+    guid: cc883fb226d8cc34fbeabd1a4d45e208
   m_configObjects: {}
