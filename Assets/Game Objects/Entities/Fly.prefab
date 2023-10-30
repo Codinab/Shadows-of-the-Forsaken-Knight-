@@ -147,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StunDuration: 1
   HorizontalVelocity: 3
-  ChaseVelocity: 4
+  ChaseVelocity: 3
   AgressiveRadius: 6
   VerticalVelocity: 3
   HoverHeight: 4

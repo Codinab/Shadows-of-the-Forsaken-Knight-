@@ -8,7 +8,7 @@ public class SmallSpiderChasing : MonoBehaviour
     [SerializeField] int JumpStrength;
     
     private GameObject _groundCheckBody;
-    private Rigidbody2D _rb;
+    private Rigidbody2D _rigidbody2D;
     private float lastLookRight;
     private float lastLookLeft;
     private float lastJump;
@@ -24,6 +24,7 @@ public class SmallSpiderChasing : MonoBehaviour
 
 
     private EnemyMovement _enemyMovement;
+    private EnemyPushing _enemyPushing;
     
     void Start()
     {
@@ -44,8 +45,14 @@ public class SmallSpiderChasing : MonoBehaviour
         {
             Debug.LogError("Ground not found");
         }
+
+        _enemyPushing = GetComponent<EnemyPushing>();
+        if (_enemyPushing == null)
+        {
+            Debug.LogError("EnemyPushing script not found");
+        }
         
-        _rb = GetComponent<Rigidbody2D>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
         lastLookLeft = 0;
         lastLookRight = 0;
         lastJump = 0;
@@ -54,12 +61,16 @@ public class SmallSpiderChasing : MonoBehaviour
         lastMoved = Time.time;
         lastHitTaken = 0;
         _enemyMovement = GetComponent<EnemyMovement>();
+
+
     }
 
     void FixedUpdate()
     {
         // Don't do anything until triggered by the player
         if(!_enemyMovement.IsCloseToPlayer()) return;
+
+        if (!_enemyPushing.CanMove()) return;
         
         if (_enemyMovement.pushed)
         {
@@ -85,7 +96,7 @@ public class SmallSpiderChasing : MonoBehaviour
                 }
             }
             //if stuck on edge move slightly toward player
-            if (_rb.velocity != Vector2.zero)
+            if (_rigidbody2D.velocity != Vector2.zero)
             {
                 lastMoved = Time.time;
             }
@@ -114,17 +125,17 @@ public class SmallSpiderChasing : MonoBehaviour
     private float _maxVelocity = 10f;
     private void ClampVelocity()
     {
-        Vector2 velocity = _rb.velocity;
+        Vector2 velocity = _rigidbody2D.velocity;
         if (velocity.x > _maxVelocity) velocity.x = _maxVelocity;
         if (velocity.x < -_maxVelocity) velocity.x = -_maxVelocity;
-        _rb.velocity = velocity;
+        _rigidbody2D.velocity = velocity;
     }
     
     private void Jump()
     {
         if (GroundCheck())
         {
-            _rb.velocity = new Vector2(_rb.velocity.x, JumpStrength);
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, JumpStrength);
             jumped = true;
             peakJump = transform.position.y;
         }
@@ -134,11 +145,11 @@ public class SmallSpiderChasing : MonoBehaviour
     {
         if (_player.transform.position.x > transform.position.x)
         {
-            _rb.velocity = new Vector2(1, _rb.velocity.y);
+            _rigidbody2D.velocity = new Vector2(1, _rigidbody2D.velocity.y);
         }
         if (_player.transform.position.x < transform.position.x)
         {
-            _rb.velocity = new Vector2(-1, _rb.velocity.y);
+            _rigidbody2D.velocity = new Vector2(-1, _rigidbody2D.velocity.y);
         }
     }
     private void BasicMove()
@@ -148,14 +159,14 @@ public class SmallSpiderChasing : MonoBehaviour
             if (_player.transform.position.x > transform.position.x &&
                 (lastLookLeft + ReactionTime < Time.time || lastLookLeft == 0))
             {
-                _rb.velocity = new Vector2(Speed, _rb.velocity.y);
+                _rigidbody2D.velocity = new Vector2(Speed, _rigidbody2D.velocity.y);
                 lastLookRight = Time.time;
             }
 
             if (_player.transform.position.x < transform.position.x &&
                 (lastLookRight + ReactionTime < Time.time || lastLookRight == 0))
             {
-                _rb.velocity = new Vector2(-Speed, _rb.velocity.y);
+                _rigidbody2D.velocity = new Vector2(-Speed, _rigidbody2D.velocity.y);
                 lastLookLeft = Time.time;
             }
         }

@@ -11,7 +11,7 @@ public class FlyChasing : MonoBehaviour
     private GameObject _player;
     private float _startPositionX;
     private bool _goingRight;
-
+    private EnemyPushing _enemyPushing;
 
     //mutual
     private float lastHitTaken;
@@ -43,6 +43,11 @@ public class FlyChasing : MonoBehaviour
         _startPositionX = transform.position.x;
         _goingRight = true;
         _enemyMovement = GetComponent<EnemyMovement>();
+        _enemyPushing = GetComponent<EnemyPushing>();
+        if (_enemyPushing == null)
+        {
+            Debug.LogError("EnemyPushing script not found");
+        }
     }
 
     // Update is called once per frame
@@ -52,6 +57,11 @@ public class FlyChasing : MonoBehaviour
         if (!_enemyMovement.IsCloseToPlayer())
         {
             _rigidbody2D.velocity = Vector2.zero;
+            return;
+        }
+        if (!_enemyPushing.CanMove())
+        {
+            RunFromPlayer();
             return;
         }
         if (_enemyMovement.pushed)
@@ -94,17 +104,6 @@ public class FlyChasing : MonoBehaviour
         }
 
 
-
-        //if ()
-        //{
-        //    _goingRight = true;
-        //}
-        //else if ()
-        //{
-        //    _goingRight = false;
-        //}
-        //Debug.Log($"{transform.position.x + RoamRadius} < {_startPositionX} go left");
-        //Debug.Log($"{transform.position.x - RoamRadius} < {_startPositionX} go right");
     }
     private bool DidntPassOnTheRight()
     {
@@ -146,6 +145,12 @@ public class FlyChasing : MonoBehaviour
         _rigidbody2D.velocity = direction * ChaseVelocity;
 
     }
+    private void RunFromPlayer()
+    {
+        Vector2 direction = _player.transform.position - transform.position;
+        direction.Normalize();
+        _rigidbody2D.velocity = direction * ChaseVelocity * -1;
+    }
     private RaycastHit2D CastRay()
     {
         //origin right under the body
@@ -161,4 +166,5 @@ public class FlyChasing : MonoBehaviour
         }
         return rcHits[rcHits.Length - 1];
     }
+
 }

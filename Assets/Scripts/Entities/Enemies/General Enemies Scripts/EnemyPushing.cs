@@ -17,6 +17,11 @@ public class EnemyPushing : MonoBehaviour
     private GameObject _playerGameObject;
     private Player _player;
 
+    public bool CanMove()
+    {
+        return _canPush;
+    }
+
 
     private void Start()
     {
