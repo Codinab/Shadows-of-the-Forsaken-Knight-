@@ -12,6 +12,9 @@ namespace Entities
     public class Player : Character, IVelocityLimit, IGrabbingWallCheck, IDoubleJump, IAttacks
     {
         private EquipmentManager _equipmentManager;
+        [SerializeField]
+        private GameObject _animation;
+        private Animator _animator;
         public float maxFallSpeed;
 
         public static Player Instance { get; private set; }
@@ -29,6 +32,8 @@ namespace Entities
         
         protected override void Start()
         {
+            _animator = _animation.GetComponent<Animator>();
+            if (_animator == null) Debug.LogWarning("Animator for player is null");
             _combatHandler = GetComponent<CombatHandler>();
             if (_combatHandler == null) Debug.LogError("PlayerCombat not found");
             
@@ -45,6 +50,7 @@ namespace Entities
             
             // Set the z position to -0.5
             transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
+
         }
 
         protected override void OnFixedUpdate()
@@ -233,6 +239,9 @@ namespace Entities
 
         public IEnumerator Attack()
         {
+            //animation
+            AttackAnimation();
+            Debug.Log("attacked");
             return _combatHandler.Attack();
         }
         #endregion
@@ -264,16 +273,20 @@ namespace Entities
         public bool Sliding { get; set; }
         public bool Falling { get; set; }
         public bool InAir { get; set; }
-        
+
 
         // Wall Grabbing
         /// <summary>
         ///     Falling speed when grabbing a wall.
         /// </summary>
-        
 
+        #region Animation
+        private void AttackAnimation()
+        {
+            _animator.SetTrigger("Attack");
+        }
 
-
+        #endregion
 
 
         #region Jump
@@ -290,7 +303,6 @@ namespace Entities
         private bool JumpKeyPressed()
         {
             var jumpKeyPressed = Input.GetKey(KeyCode.V);
-            if (jumpKeyPressed) Debug.Log("Jump() key pressed");
             return jumpKeyPressed;
         }
 
@@ -309,7 +321,6 @@ namespace Entities
         {
             if ((this as IGroundChecker).IsTouchingGround())
             {
-                Debug.Log("Jump()");
                 (this as IJump).RegularJumpRv();
             } /*
             else if (wallJumpEnabled && TouchingWallRight) WallJump(-1);
