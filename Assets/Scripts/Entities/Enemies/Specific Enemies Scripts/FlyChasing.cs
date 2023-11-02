@@ -53,23 +53,23 @@ public class FlyChasing : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        if (!_enemyMovement.IsCloseToPlayer())
-        {
-            _rigidbody2D.velocity = Vector2.zero;
-            return;
-        }
-        if (!_enemyPushing.CanMove())
-        {
-            RunFromPlayer();
-            return;
-        }
         if (_enemyMovement.pushed)
         {
             lastHitTaken = Time.time;
             _enemyMovement.pushed = false;
         }
-        if (lastHitTaken + StunDuration < Time.time)
+        if (!_enemyMovement.IsCloseToPlayer() && !CanMove())
+        {
+            _rigidbody2D.velocity = Vector2.zero;
+            return;
+        }
+        if (!_enemyPushing.CanMove() && !CanMove())
+        {
+            RunFromPlayer();
+            return;
+        }
+        
+        if (CanMove())
         {
             //end of mutual
             float playerX = _player.transform.position.x;
@@ -88,6 +88,12 @@ public class FlyChasing : MonoBehaviour
             }
         }
     }
+
+    private bool CanMove()
+    {
+        return lastHitTaken + StunDuration < Time.time;
+    }
+
     private void BasicRoam()
     {
         if (_goingRight && DidntPassOnTheRight())

@@ -42,7 +42,6 @@ public class InventoryUI : MonoBehaviour
     }
     private void UpdateInventoryUI()
     {
-        
         Item[] items = _inventory.Items;
         for(int i=0;i<_slots.Length;i++)
         {

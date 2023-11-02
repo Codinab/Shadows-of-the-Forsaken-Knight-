@@ -67,4 +67,16 @@ public class EquipmentManager : MonoBehaviour
         }
     }
     
+    public void LoadEquipment(Equipment[] equipments)
+    {
+        foreach (var equipment in equipments)
+        {
+            EquipItem(equipment);   
+        }
+    }
+
+    public Equipment[] SaveEquipment()
+    {
+        return _equipment;
+    }
 }

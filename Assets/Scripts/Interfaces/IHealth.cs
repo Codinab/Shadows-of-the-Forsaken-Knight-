@@ -8,7 +8,10 @@
         public void TakeDamage(int amount)
         {
             CurrentHealth -= amount;
+            DamagedAnimation();
         }
+
+        void DamagedAnimation();
 
         public void Heal(int amount)
         {

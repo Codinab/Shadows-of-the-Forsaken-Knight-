@@ -36,15 +36,15 @@ namespace Entities
             _equipmentManager = EquipmentManager.Instance;
             _equipmentManager.onEquipmentChangedCallBack += EquipmentChanged; 
             
-            // If transitioning from another scene, update the player's position
-            if (TransitionData.EntrancePosition != Vector3.zero)
+            // If transitioning from another scene, update the player's data
+            SceneTransitionSavedData savedData = GameData.SceneTransitionSavedData;
+            if (savedData != null)
             {
-                transform.position = TransitionData.EntrancePosition;
-                TransitionData.EntrancePosition = Vector3.zero;  // Reset the entrance position
+                LoadPosition(savedData.NextSceneEntrancePosition);
+                LoadEquipment(savedData.SavedEquipment);
+                GameData.SceneTransitionSavedData = null;
             }
             
-            // Set the z position to -0.5
-            transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
         }
 
         protected override void OnFixedUpdate()
@@ -228,7 +228,7 @@ namespace Entities
         private CombatHandler _combatHandler;
         public bool CanAttack()
         {
-            return (_combatHandler.CanAttack()&&_holdingWeapon);
+            return _combatHandler.CanAttack();//&&_holdingWeapon;
         }
 
         public IEnumerator Attack()
@@ -441,8 +441,32 @@ namespace Entities
         private bool _canSeeInTheDark = false; //not even implemented
         [SerializeField]
         private int _damage = 0;  //done bonus health also done
+        
+        public EquipmentSaveData SaveEquipment()
+        {
+            Item[] savedInventory = Inventory.Instance.SaveInventory();
+            Equipment[] savedEquipment = EquipmentManager.Instance.SaveEquipment();
+            
+            return new EquipmentSaveData(savedInventory, savedEquipment);
+        }
 
-
+        public void LoadEquipment(EquipmentSaveData equipment)
+        {
+            Inventory.Instance.LoadInventory(equipment.Inventory);
+            EquipmentManager.Instance.LoadEquipment(equipment.Equipment);
+        }
+        
         #endregion
+
+        public void LoadPosition(Vector2 pos)
+        {
+            transform.position = new Vector3(pos.x, pos.y, -0.5f);
+        }
+
+        public Vector2 SavedPosition()
+        {
+            Vector2 transformPosition = transform.position;
+            return new Vector2(transformPosition.x, transformPosition.y);
+        }
     }
 }

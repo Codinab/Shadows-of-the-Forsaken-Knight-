@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class SceneTransitionManager : MonoBehaviour
 {
@@ -31,7 +33,7 @@ public class SceneTransitionManager : MonoBehaviour
         if (loadingImage == null) Debug.LogError("No Image found as a child of the Canvas.");
     }
 
-    public void LoadScene(string sceneName, Vector3 entrancePosition)
+    public void LoadScene(string sceneName)
     {
         SetRandomLoadingImage();
         StartCoroutine(LoadSceneAsync(sceneName));
@@ -73,5 +75,54 @@ public class SceneTransitionManager : MonoBehaviour
         // Hide the loading screen
         loadingCanvas.enabled = false;
         onScreenChanged.Invoke();
+    }
+}
+
+public static class GameData
+{
+    public static SceneTransitionSavedData SceneTransitionSavedData;
+    public static PlayerSaveData PlayerSaveData;
+}
+
+public class SceneTransitionSavedData
+{
+    public Vector2 NextSceneEntrancePosition;
+    public EquipmentSaveData SavedEquipment;
+
+    public SceneTransitionSavedData(Vector2 nextSceneEntrancePosition, EquipmentSaveData savedEquipment)
+    {
+        NextSceneEntrancePosition = nextSceneEntrancePosition;
+        SavedEquipment = savedEquipment;
+    }
+}
+
+public class PlayerSaveData
+{
+    public Vector2 SavedPosition;
+    public String SavedSceneName;
+    public EquipmentSaveData SavedEquipment;
+
+    public PlayerSaveData(Vector2 savedPosition, String savedSceneName, EquipmentSaveData savedEquipment)
+    {
+        SavedPosition = savedPosition;
+        SavedSceneName = savedSceneName;
+        SavedEquipment = savedEquipment;
+    }
+}
+
+public class EquipmentSaveData
+{
+    public Item[] Inventory;
+    public Equipment[] Equipment;
+    public EquipmentSaveData(Item[] inventory, Equipment[] equipment)
+    {
+        this.Inventory = inventory;
+        this.Equipment = equipment;
+    }
+
+    public EquipmentSaveData()
+    {
+        Inventory = new Item[0];
+        Equipment = new Equipment[0];
     }
 }

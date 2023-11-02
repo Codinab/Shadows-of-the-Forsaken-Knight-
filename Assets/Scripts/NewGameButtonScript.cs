@@ -1,15 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class NewGameButtonScript : MonoBehaviour
 {
     
     public void PlayGame()
     {
-        SceneTransitionManager sceneTransitionManager = FindObjectOfType<SceneTransitionManager>();
-        sceneTransitionManager.LoadScene("Scene 1", Vector3.zero);
+        var sceneTransitionManager = FindObjectOfType<SceneTransitionManager>();
+
+        var startPosition = new Vector2(-5f, 0);
+        GameData.PlayerSaveData = new PlayerSaveData(
+            startPosition,
+            "Scene 1",
+            new EquipmentSaveData()
+        );
+
+        sceneTransitionManager.LoadScene("Scene 1");
         Debug.Log("invoked");
         
     }

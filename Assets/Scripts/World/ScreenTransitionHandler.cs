@@ -6,7 +6,7 @@ namespace World
     public class ScreenTransitionHandler : MonoBehaviour
     {
         public string sceneName;
-        public Vector3 entrancePosition;
+        public Vector2 entrancePosition;
 
         private SceneTransitionManager sceneTransitionManager;
 
@@ -23,17 +23,13 @@ namespace World
         {
             if (other.CompareTag("Player"))
             {
-                TransitionData.EntrancePosition = entrancePosition;
+                EquipmentSaveData saveData = Player.Instance.SaveEquipment();
+                GameData.SceneTransitionSavedData = new SceneTransitionSavedData(entrancePosition, saveData);
                 if (sceneTransitionManager != null)
                 {
-                    sceneTransitionManager.LoadScene(sceneName, entrancePosition);
+                    sceneTransitionManager.LoadScene(sceneName);
                 }
             }
         }
-    }
-
-    public static class TransitionData
-    {
-        public static Vector3 EntrancePosition;
     }
 }

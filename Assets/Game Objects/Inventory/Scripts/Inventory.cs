@@ -48,4 +48,16 @@ public class Inventory : MonoBehaviour
     {
         _items.Remove(item);
     }
+
+    public Item[] SaveInventory()
+    {
+        return _items.ToArray();
+    }
+    public void LoadInventory(Item[] items)
+    {
+        foreach (var item in items)
+        {
+            AddItem(item);
+        }
+    }
 }
