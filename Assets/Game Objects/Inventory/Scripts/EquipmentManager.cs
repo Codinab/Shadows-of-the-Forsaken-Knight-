@@ -79,4 +79,13 @@ public class EquipmentManager : MonoBehaviour
     {
         return _equipment;
     }
+
+    // TODO: temporary fix, it should disable all the booleans that an item enabled sthg
+    public void Clear()
+    {
+        for (int i = 0; i < _numberOfSlots; i++)
+        {
+            _equipment[i] = null;
+        }
+    }
 }

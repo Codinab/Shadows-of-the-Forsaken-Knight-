@@ -60,4 +60,10 @@ public class Inventory : MonoBehaviour
             AddItem(item);
         }
     }
+
+    // TODO: temporary fix for the prototype
+    public void Clear()
+    {
+        _items.Clear();
+    }
 }
