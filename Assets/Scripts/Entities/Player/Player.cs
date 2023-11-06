@@ -306,7 +306,6 @@ namespace Entities
             {
                 Animator.SetBool("On a wall", false);
             }
-            //look directions
             if (IsLookingLeft())
             {
                 rotation += 180;
