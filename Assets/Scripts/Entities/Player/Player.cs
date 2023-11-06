@@ -291,20 +291,31 @@ namespace Entities
         }
         private void Animations()
         {
+            int rotation = 0;
             if((this as IGroundChecker).IsTouchingGround())
             {
                 Animator.SetFloat("Speed", Math.Abs(Rigidbody2D.velocity.x));
             }
             Animator.SetFloat("Vertical Speed", Rigidbody2D.velocity.y);
+            if(Sliding)
+            {
+                Animator.SetBool("On a wall", true);
+                rotation += 180;
+            }
+            else
+            {
+                Animator.SetBool("On a wall", false);
+            }
             //look directions
             if (IsLookingLeft())
             {
-                Animator.transform.rotation = Quaternion.Euler(0, 180, 0);
+                rotation += 180;
             }
             else if (IsLookingRight())
             {
-                Animator.transform.rotation = Quaternion.Euler(0, 0, 0);
+                
             }
+            Animator.transform.rotation = Quaternion.Euler(0, rotation, 0);
 
         }
         #endregion
