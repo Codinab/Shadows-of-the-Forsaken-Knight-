@@ -24,6 +24,7 @@ namespace Entities
             
             GroundCheck = transform.Find("GroundCheck");
             if (GroundCheck == null) Debug.LogError("GroundCheck not found");
+  
         }
 
         // IJump

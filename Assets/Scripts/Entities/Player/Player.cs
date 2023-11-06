@@ -6,6 +6,7 @@ using Interfaces.Checkers;
 using Unity.VisualScripting;
 using UnityEngine;
 using World;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 namespace Entities
 { 
@@ -13,8 +14,8 @@ namespace Entities
     {
         private EquipmentManager _equipmentManager;
         [SerializeField]
-        private GameObject _animation;
-        private Animator _animator;
+        //private GameObject _animation;
+        public Animator Animator;
         public float maxFallSpeed;
 
         public static Player Instance { get; private set; }
@@ -32,8 +33,10 @@ namespace Entities
         
         protected override void Start()
         {
-            _animator = _animation.GetComponent<Animator>();
-            if (_animator == null) Debug.LogWarning("Animator for player is null");
+            //_animator = _animation.GetComponent<Animator>();
+            //if (_animator == null) Debug.LogWarning("Animator for player is null");
+
+
             _combatHandler = GetComponent<CombatHandler>();
             if (_combatHandler == null) Debug.LogError("PlayerCombat not found");
             
@@ -68,6 +71,7 @@ namespace Entities
         protected override void PostFixedUpdate()
         {
             (this as IVelocityLimit).ClampVelocity();
+            Animations();
         }
 
         #region Actions
@@ -109,7 +113,7 @@ namespace Entities
             Vector2 selfSize = transform.localScale;
 
             (this as IGroundChecker).TouchingGround = (this as IGroundChecker).IsTouchingGround();
-                TouchingWallLeft = (this as IWallChecker).IsTouchingWallLeft();
+            TouchingWallLeft = (this as IWallChecker).IsTouchingWallLeft();
             TouchingWallRight = (this as IWallChecker).IsTouchingWallRight();
             TouchingWall = TouchingWallLeft || TouchingWallRight;
         }
@@ -283,9 +287,26 @@ namespace Entities
         #region Animation
         private void AttackAnimation()
         {
-            _animator.SetTrigger("Attack");
+           Animator.SetTrigger("Attack");
         }
+        private void Animations()
+        {
+            if((this as IGroundChecker).IsTouchingGround())
+            {
+                Animator.SetFloat("Speed", Math.Abs(Rigidbody2D.velocity.x));
+            }
+            Animator.SetFloat("Vertical Speed", Rigidbody2D.velocity.y);
+            //look directions
+            if (IsLookingLeft())
+            {
+                Animator.transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+            else if (IsLookingRight())
+            {
+                Animator.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
 
+        }
         #endregion
 
 

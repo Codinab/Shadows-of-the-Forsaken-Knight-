@@ -486,6 +486,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1671285867734207343, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_Intensity
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2657382273488803743, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_Name
       value: Player
@@ -501,7 +505,7 @@ PrefabInstance:
     - target: {fileID: 4209034628181208365, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: _animator
       value: 
-      objectReference: {fileID: 1655080125}
+      objectReference: {fileID: 0}
     - target: {fileID: 4209034628181208365, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: canWallJump
       value: 0
@@ -512,11 +516,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4278073358043291884, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.94
+      value: -4.14
       objectReference: {fileID: 0}
     - target: {fileID: 4278073358043291884, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.28
+      value: 1.01
       objectReference: {fileID: 0}
     - target: {fileID: 4278073358043291884, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_LocalPosition.z
@@ -553,6 +557,14 @@ PrefabInstance:
     - target: {fileID: 4760574092583037321, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
       propertyPath: m_Name
       value: AttackAnimation
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768939289779376030, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6492555912367660833, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1400,11 +1412,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3814174946448130251, guid: c858f455948a58f469b3a25195a64c00, type: 3}
   m_PrefabInstance: {fileID: 1593728700}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1655080125 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8590140384905104979, guid: 89cc7709b3ea24748a0b9bcc68aee8be, type: 3}
-  m_PrefabInstance: {fileID: 355039023}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1700631889
 PrefabInstance:
