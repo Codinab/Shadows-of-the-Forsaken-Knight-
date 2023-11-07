@@ -17,6 +17,8 @@ public class FlyChasing : MonoBehaviour
     private float lastHitTaken;
     private EnemyMovement _enemyMovement;
     [SerializeField] float StunDuration;
+    [SerializeField]
+    private Animator _animator;
     //end of mutual
 
 
@@ -173,4 +175,19 @@ public class FlyChasing : MonoBehaviour
         return rcHits[rcHits.Length - 1];
     }
 
+
+    #region Animation
+    private void IdleAnimation()
+    {
+
+    }
+    private void ChaseAnimation()
+    {
+
+    }
+    private void AttackAnimation()
+    {
+
+    }
+    #endregion
 }
