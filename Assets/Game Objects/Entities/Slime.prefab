@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 8632929665158961182}
   - component: {fileID: 7852150629760770105}
   m_Layer: 6
-  m_Name: SmallSpider
+  m_Name: Slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,6 +273,7 @@ MonoBehaviour:
   ReactionTime: 0.5
   JumpStrength: 6
   StunDuration: 1
+  _animator: {fileID: 2115975569161933771}
 --- !u!114 &8632929665158961182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,7 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushed: 0
-  closeDistance: 5
+  closeDistance: 8
 --- !u!1001 &3800509352420354289
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -21,7 +21,7 @@ public class SmallSpiderChasing : MonoBehaviour
     //mutual
     private float lastHitTaken;
     [SerializeField] float StunDuration;
-
+    [SerializeField] Animator _animator;
 
     private EnemyMovement _enemyMovement;
     private EnemyPushing _enemyPushing;
@@ -68,10 +68,16 @@ public class SmallSpiderChasing : MonoBehaviour
     void FixedUpdate()
     {
         // Don't do anything until triggered by the player
-        if(!_enemyMovement.IsCloseToPlayer()) return;
-
-        if (!_enemyPushing.CanMove()) return;
-        
+        if (!_enemyMovement.IsCloseToPlayer())
+        {
+            HandleAnimtion();
+            return;
+        }
+        if (!_enemyPushing.CanMove())
+        {
+            HandleAnimtion();
+            return;
+        }
         if (_enemyMovement.pushed)
         {
             lastHitTaken = Time.time;
@@ -105,6 +111,7 @@ public class SmallSpiderChasing : MonoBehaviour
                 MoveSlightly();
             }
         }
+        HandleAnimtion();
         //ClampVelocity();
     }
 
@@ -169,6 +176,26 @@ public class SmallSpiderChasing : MonoBehaviour
                 _rigidbody2D.velocity = new Vector2(-Speed, _rigidbody2D.velocity.y);
                 lastLookLeft = Time.time;
             }
+        }
+    }
+
+    private void HandleAnimtion()
+    {
+        if(GroundCheck())
+        {
+            _animator.speed = 1;
+            if(Mathf.Abs(_rigidbody2D.velocity.x) > 0)
+            {
+                _animator.SetBool("isMoving", true);
+            }
+            else
+            {
+                _animator.SetBool("isMoving", false);
+            }
+        }
+        else
+        {
+            _animator.speed = 0;
         }
     }
 }

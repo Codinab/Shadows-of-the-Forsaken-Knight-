@@ -19,7 +19,7 @@ namespace Entities
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
         public float maxFallSpeed;
-
+        private bool _alive = true;
         public static Player Instance { get; private set; }
         private void Awake()
         {
@@ -300,7 +300,7 @@ namespace Entities
         {
             StartCoroutine(ChangeColorTemporarily());
         }
-        protected virtual IEnumerator ChangeColorTemporarily()
+        protected override IEnumerator ChangeColorTemporarily()
         {
             var originalColor = _spriteRenderer.material.color;
             var material = _spriteRenderer.material;
@@ -312,8 +312,12 @@ namespace Entities
             }
             else
             {
-                material.color = Color.yellow;
+                Die();
             }
+        }
+        private void DeathAnimation()
+        {
+            _animator.SetTrigger("Dead");
         }
         private void Animations()
         {
@@ -344,8 +348,23 @@ namespace Entities
 
         }
         #endregion
-
-
+        private void Die()
+        {
+            if (_alive)
+            {
+                DeathAnimation();
+                Rigidbody2D.velocity = Vector2.zero;
+            }
+            _alive = false;
+        }
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (!_alive && collision.collider.tag != "Floor")
+            {
+                Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.collider, true);
+                Rigidbody2D.velocity= Vector2.zero;
+            }
+        }
         #region Jump
         private bool _jumpKeyPressController = false;
         public int maxSecondaryJumps;
