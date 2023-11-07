@@ -27,7 +27,6 @@ public class EquipmentUI : MonoBehaviour
         if(_started) return;
         _started=true;
         _equipmentManager = EquipmentManager.Instance;
-        Debug.Log(_equipmentManager);
         Inventory.Instance.onItemChangedCallBack += UpdateUI;
         _slots = ItemsParent.GetComponentsInChildren<InventorySlot>();
 

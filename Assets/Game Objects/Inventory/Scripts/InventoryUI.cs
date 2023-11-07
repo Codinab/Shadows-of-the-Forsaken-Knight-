@@ -18,7 +18,6 @@ public class InventoryUI : MonoBehaviour
         SceneTransitionManager script = menu.GetComponent<SceneTransitionManager>();
         script.onScreenChanged += PlayStarted;
         _started = false;
-        Debug.Log(SceneManager.GetActiveScene().name);
         if (SceneManager.GetActiveScene().name == "Misho" || SceneManager.GetActiveScene().name == "SampleScene")
         {
             PlayStarted();
