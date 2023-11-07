@@ -15,8 +15,9 @@ namespace Entities
     {
         private EquipmentManager _equipmentManager;
         [SerializeField]
-        //private GameObject _animation;
-        public Animator Animator;
+        private GameObject _spriteMask;
+        private Animator _animator;
+        private SpriteRenderer _spriteRenderer;
         public float maxFallSpeed;
 
         public static Player Instance { get; private set; }
@@ -34,7 +35,8 @@ namespace Entities
         
         protected override void Start()
         {
-            //_animator = _animation.GetComponent<Animator>();
+            _animator = _spriteMask.GetComponent<Animator>();
+            _spriteRenderer = _spriteMask.GetComponent<SpriteRenderer>();
             //if (_animator == null) Debug.LogWarning("Animator for player is null");
 
 
@@ -288,32 +290,47 @@ namespace Entities
         public bool InAir { get; set; }
 
 
-        // Wall Grabbing
-        /// <summary>
-        ///     Falling speed when grabbing a wall.
-        /// </summary>
 
         #region Animation
         private void AttackAnimation()
         {
-           Animator.SetTrigger("Attack");
+           _animator.SetTrigger("Attack");
+        }
+        public override void DamagedAnimation()
+        {
+            StartCoroutine(ChangeColorTemporarily());
+        }
+        protected virtual IEnumerator ChangeColorTemporarily()
+        {
+            var originalColor = _spriteRenderer.material.color;
+            var material = _spriteRenderer.material;
+            if (CurrentHealth >= 0) material.color = Color.red;
+            yield return new WaitForSeconds(0.2f);
+            if (CurrentHealth >= 0)
+            {
+                material.color = originalColor;
+            }
+            else
+            {
+                material.color = Color.yellow;
+            }
         }
         private void Animations()
         {
             int rotation = 0;
             if((this as IGroundChecker).IsTouchingGround())
             {
-                Animator.SetFloat("Speed", Math.Abs(Rigidbody2D.velocity.x));
+                _animator.SetFloat("Speed", Math.Abs(Rigidbody2D.velocity.x));
             }
-            Animator.SetFloat("Vertical Speed", Rigidbody2D.velocity.y);
+            _animator.SetFloat("Vertical Speed", Rigidbody2D.velocity.y);
             if(Sliding)
             {
-                Animator.SetBool("On a wall", true);
+                _animator.SetBool("On a wall", true);
                 rotation += 180;
             }
             else
             {
-                Animator.SetBool("On a wall", false);
+                _animator.SetBool("On a wall", false);
             }
             if (IsLookingLeft())
             {
@@ -323,7 +340,7 @@ namespace Entities
             {
                 
             }
-            Animator.transform.rotation = Quaternion.Euler(0, rotation, 0);
+            _animator.transform.rotation = Quaternion.Euler(0, rotation, 0);
 
         }
         #endregion

@@ -337,7 +337,7 @@ MonoBehaviour:
   _health: 0
   speed: 6
   jumpForce: 6
-  Animator: {fileID: 3377600118291201791}
+  _spriteMask: {fileID: 8753544554354824148}
   maxFallSpeed: 15
   movementEnabled: 1
   grabbingFallSpeed: -1
