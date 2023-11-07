@@ -81,6 +81,6 @@ public class EnemyPushing : MonoBehaviour
     }
     private void AttackAnimation()
     {
-
+        Animator.SetTrigger("attack");
     }
 }

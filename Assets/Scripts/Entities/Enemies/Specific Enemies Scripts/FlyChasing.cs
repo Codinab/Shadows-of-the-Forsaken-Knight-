@@ -110,7 +110,7 @@ public class FlyChasing : MonoBehaviour
         {
             _goingRight = !_goingRight;
         }
-
+        IdleAnimation();
 
     }
     private bool DidntPassOnTheRight()
@@ -151,7 +151,7 @@ public class FlyChasing : MonoBehaviour
         Vector2 direction = _player.transform.position - transform.position;
         direction.Normalize();
         _rigidbody2D.velocity = direction * ChaseVelocity;
-
+        ChaseAnimation();
     }
     private void RunFromPlayer()
     {
@@ -179,15 +179,11 @@ public class FlyChasing : MonoBehaviour
     #region Animation
     private void IdleAnimation()
     {
-
+        _animator.SetBool("isMoving", false);
     }
     private void ChaseAnimation()
     {
-
-    }
-    private void AttackAnimation()
-    {
-
+        _animator.SetBool("isMoving", true);
     }
     #endregion
 }
