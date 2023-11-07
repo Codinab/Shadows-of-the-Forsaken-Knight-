@@ -5,6 +5,7 @@ using Interfaces;
 using Interfaces.Checkers;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using World;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
@@ -86,6 +87,13 @@ namespace Entities
             UpdateFalling();
 
             UpdateDoubleJumpCount();
+            
+            // TODO: temporary reset
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                GameData.Reset();
+                SceneManager.LoadScene("StartMenu");
+            }
         }
 
         private void UpdateDoubleJumpCount()

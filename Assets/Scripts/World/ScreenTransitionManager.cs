@@ -82,6 +82,14 @@ public static class GameData
 {
     public static SceneTransitionSavedData SceneTransitionSavedData;
     public static PlayerSaveData PlayerSaveData;
+
+    public static void Reset()
+    {
+        SceneTransitionSavedData = null;
+        PlayerSaveData = null;
+        Inventory.Instance.Clear();
+        EquipmentManager.Instance.Clear();
+    }
 }
 
 public class SceneTransitionSavedData
