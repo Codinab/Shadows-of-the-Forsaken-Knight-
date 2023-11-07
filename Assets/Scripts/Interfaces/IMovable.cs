@@ -1,5 +1,4 @@
-﻿using UnityEditor.Timeline.Actions;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Interfaces
 {
