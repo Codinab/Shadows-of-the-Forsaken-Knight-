@@ -47,37 +47,7 @@ public class Inventory : MonoBehaviour
     }
     public void RemoveItem(Item item)
     {
-        //string displaymsg = "";
-        //foreach (Item i in Items)
-        //{
-        //    displaymsg += " " + i.name;
-        //}
-        //Debug.Log("Item removed");
-        //Debug.Log(displaymsg);
         _items.Remove(item);
-        //displaymsg = string.Empty;
-        //foreach (Item i in Items)
-        //{
-        //    displaymsg += " " + i.name;
-        //}
-        //Debug.Log(displaymsg);
     }
 
-    //public Item[] SaveInventory()
-    //{
-    //    return _items.ToArray();
-    //}
-    //public void LoadInventory(Item[] items)
-    //{
-    //    foreach (var item in items)
-    //    {
-    //        AddItem(item);
-    //    }
-    //}
-
-    //// TODO: temporary fix for the prototype
-    //public void Clear()
-    //{
-    //    _items.Clear();
-    //}
 }

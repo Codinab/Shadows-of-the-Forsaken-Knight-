@@ -26,6 +26,10 @@ public class HealthUI : MonoBehaviour
         {
             DisplayMaxHealth();
         }
+        else
+        {
+            UpdateMissingHealth();
+        }
     }
     private void DisplayMaxHealth()
     {
@@ -39,7 +43,11 @@ public class HealthUI : MonoBehaviour
     }
     private void UpdateMissingHealth()
     {
-
+        for(int i = _player.MaxHealth; i > _player.CurrentHealth; i--)
+        {
+            Image img = transform.GetChild(i-1).gameObject.GetComponent<Image>();
+            img.color = Color.black;
+        }
     }
     private void RemoveDisplayed()
     {
