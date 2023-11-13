@@ -20,6 +20,7 @@ namespace Entities
         private SpriteRenderer _spriteRenderer;
         public float maxFallSpeed;
         private bool _alive = true;
+        public bool isAlive { get { return _alive; } }
         public static Player Instance { get; private set; }
         private void Awake()
         {
@@ -75,6 +76,7 @@ namespace Entities
         protected override void PostFixedUpdate()
         {
             (this as IVelocityLimit).ClampVelocity();
+            if(!_alive) { Rigidbody2D.velocity = Vector2.zero; }
             Animations();
         }
 
@@ -254,7 +256,6 @@ namespace Entities
 
         public IEnumerator Attack()
         {
-            //animation
             AttackAnimation();
             Debug.Log("attacked");
             return _combatHandler.Attack();
@@ -357,12 +358,12 @@ namespace Entities
             }
             _alive = false;
         }
-        private void OnCollisionEnter2D(Collision2D collision)
+        private void OnCollisionStay2D(Collision2D collision)
         {
-            if (!_alive && collision.collider.tag != "Floor")
+            if (!_alive && collision.collider.tag != "Ground")
             {
                 Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.collider, true);
-                Rigidbody2D.velocity= Vector2.zero;
+                Rigidbody2D.velocity = Vector2.zero;
             }
         }
         #region Jump

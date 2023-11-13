@@ -60,12 +60,12 @@ public class FlyChasing : MonoBehaviour
             lastHitTaken = Time.time;
             _enemyMovement.pushed = false;
         }
-        if (!_enemyMovement.IsCloseToPlayer() && !CanMove())
+        if (!_enemyMovement.IsCloseToPlayer() || !CanMove())
         {
             _rigidbody2D.velocity = Vector2.zero;
             return;
         }
-        if (!_enemyPushing.CanMove() && !CanMove())
+        if (!_enemyPushing.CanMove() || !CanMove())
         {
             RunFromPlayer();
             return;
