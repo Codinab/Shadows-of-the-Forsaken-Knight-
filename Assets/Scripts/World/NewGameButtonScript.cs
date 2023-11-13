@@ -11,11 +11,15 @@ public class NewGameButtonScript : MonoBehaviour
         GameData.PlayerSaveData = new PlayerSaveData(
             startPosition,
             "Scene 1",
-            new EquipmentSaveData()
+            new PlayerStats()
         );
 
         sceneTransitionManager.LoadScene("Scene 1");
-        Debug.Log("invoked");
         
+    }
+    public void QuitGame()
+    {
+        Debug.Log("Quit");
+        Application.Quit();
     }
 }

@@ -1,3 +1,4 @@
+using Entities;
 using System;
 using System.Collections;
 using UnityEditor;
@@ -87,17 +88,15 @@ public static class GameData
     {
         SceneTransitionSavedData = null;
         PlayerSaveData = null;
-        Inventory.Instance.Clear();
-        EquipmentManager.Instance.Clear();
     }
 }
 
 public class SceneTransitionSavedData
 {
     public Vector2 NextSceneEntrancePosition;
-    public EquipmentSaveData SavedEquipment;
+    public PlayerStats SavedEquipment;
 
-    public SceneTransitionSavedData(Vector2 nextSceneEntrancePosition, EquipmentSaveData savedEquipment)
+    public SceneTransitionSavedData(Vector2 nextSceneEntrancePosition, PlayerStats savedEquipment)
     {
         NextSceneEntrancePosition = nextSceneEntrancePosition;
         SavedEquipment = savedEquipment;
@@ -108,29 +107,38 @@ public class PlayerSaveData
 {
     public Vector2 SavedPosition;
     public String SavedSceneName;
-    public EquipmentSaveData SavedEquipment;
+    public PlayerStats SavedEquipment;
 
-    public PlayerSaveData(Vector2 savedPosition, String savedSceneName, EquipmentSaveData savedEquipment)
+    public PlayerSaveData(Vector2 savedPosition, String savedSceneName, PlayerStats savedEquipment)
     {
         SavedPosition = savedPosition;
         SavedSceneName = savedSceneName;
         SavedEquipment = savedEquipment;
     }
 }
-
-public class EquipmentSaveData
+public class PlayerStats
 {
-    public Item[] Inventory;
-    public Equipment[] Equipment;
-    public EquipmentSaveData(Item[] inventory, Equipment[] equipment)
-    {
-        this.Inventory = inventory;
-        this.Equipment = equipment;
-    }
-
-    public EquipmentSaveData()
-    {
-        Inventory = new Item[0];
-        Equipment = new Equipment[0];
-    }
+    public bool holdingWeapon;  
+    public bool canDoubleJump;  
+    public bool canDash;        
+    public bool canWallJump;    
+    public bool canSeeInTheDark;
+    public int hp;
+    public int dmg;
 }
+//public class EquipmentSaveData
+//{
+//    public Item[] Inventory;
+//    public Equipment[] Equipment;
+//    public EquipmentSaveData(Item[] inventory, Equipment[] equipment)
+//    {
+//        this.Inventory = inventory;
+//        this.Equipment = equipment;
+//    }
+
+//    public EquipmentSaveData()
+//    {
+//        Inventory = new Item[0];
+//        Equipment = new Equipment[0];
+//    }
+//}

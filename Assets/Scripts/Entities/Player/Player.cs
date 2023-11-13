@@ -5,6 +5,7 @@ using Interfaces;
 using Interfaces.Checkers;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using World;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
@@ -53,7 +54,7 @@ namespace Entities
             if (savedData != null)
             {
                 LoadPosition(savedData.NextSceneEntrancePosition);
-                LoadEquipment(savedData.SavedEquipment);
+                LoadStats(savedData.SavedEquipment);
                 GameData.SceneTransitionSavedData = null;
             }
             
@@ -529,32 +530,57 @@ namespace Entities
         private bool _canSeeInTheDark = false; //not even implemented
         [SerializeField]
         private int _damage = 0;  //done bonus health also done
-        
-        public EquipmentSaveData SaveEquipment()
-        {
-            Item[] savedInventory = Inventory.Instance.SaveInventory();
-            Equipment[] savedEquipment = EquipmentManager.Instance.SaveEquipment();
-            
-            return new EquipmentSaveData(savedInventory, savedEquipment);
-        }
 
-        public void LoadEquipment(EquipmentSaveData equipment)
-        {
-            Inventory.Instance.LoadInventory(equipment.Inventory);
-            EquipmentManager.Instance.LoadEquipment(equipment.Equipment);
-        }
-        
+        //public EquipmentSaveData SaveEquipment()
+        //{
+        //    //Item[] savedInventory = Inventory.Instance.SaveInventory();
+        //   // Equipment[] savedEquipment = EquipmentManager.Instance.SaveEquipment();
+
+        //    return new EquipmentSaveData(savedInventory, savedEquipment);
+        //}
+
+        //public void LoadEquipment(EquipmentSaveData equipment)
+        //{
+        //   // Inventory.Instance.LoadInventory(equipment.Inventory);
+        //   // EquipmentManager.Instance.LoadEquipment(equipment.Equipment);
+        //}
+
         #endregion
 
+        #region Precistance
         public void LoadPosition(Vector2 pos)
         {
             transform.position = new Vector3(pos.x, pos.y, -0.5f);
         }
-
         public Vector2 SavedPosition()
         {
             Vector2 transformPosition = transform.position;
             return new Vector2(transformPosition.x, transformPosition.y);
         }
+
+        private void LoadStats(PlayerStats ps)
+        {
+            _holdingWeapon = ps.holdingWeapon;
+            _canDoubleJump =ps.canDoubleJump  ;
+            _canDash=      ps.canDash        ;
+            _canWallJump=  ps.canWallJump    ;
+            _canSeeInTheDark=ps.canSeeInTheDark;
+            CurrentHealth = ps.hp;
+            _combatHandler.damage = ps.dmg;
+        }
+
+        public PlayerStats SaveStats()
+        {
+            PlayerStats ps = new PlayerStats();
+            ps.holdingWeapon   = _holdingWeapon;
+            ps.canDoubleJump   = _canDoubleJump;
+            ps.canDash         = _canDash;
+            ps.canWallJump     = _canWallJump;
+            ps.canSeeInTheDark =_canSeeInTheDark;
+            ps.hp=CurrentHealth;
+            ps.dmg=_combatHandler.damage;
+            return ps;
+        }
+        #endregion
     }
 }

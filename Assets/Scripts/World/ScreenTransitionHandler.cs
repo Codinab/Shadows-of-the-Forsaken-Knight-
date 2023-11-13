@@ -23,7 +23,7 @@ namespace World
         {
             if (other.CompareTag("Player"))
             {
-                EquipmentSaveData saveData = Player.Instance.SaveEquipment();
+                PlayerStats saveData = Player.Instance.SaveStats();
                 GameData.SceneTransitionSavedData = new SceneTransitionSavedData(entrancePosition, saveData);
                 if (sceneTransitionManager != null)
                 {

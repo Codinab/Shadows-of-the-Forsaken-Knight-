@@ -49,21 +49,21 @@ public class Inventory : MonoBehaviour
         _items.Remove(item);
     }
 
-    public Item[] SaveInventory()
-    {
-        return _items.ToArray();
-    }
-    public void LoadInventory(Item[] items)
-    {
-        foreach (var item in items)
-        {
-            AddItem(item);
-        }
-    }
+    //public Item[] SaveInventory()
+    //{
+    //    return _items.ToArray();
+    //}
+    //public void LoadInventory(Item[] items)
+    //{
+    //    foreach (var item in items)
+    //    {
+    //        AddItem(item);
+    //    }
+    //}
 
-    // TODO: temporary fix for the prototype
-    public void Clear()
-    {
-        _items.Clear();
-    }
+    //// TODO: temporary fix for the prototype
+    //public void Clear()
+    //{
+    //    _items.Clear();
+    //}
 }

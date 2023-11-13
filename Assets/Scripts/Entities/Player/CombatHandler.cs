@@ -27,7 +27,6 @@ namespace Entities
             if (!other.gameObject.CompareTag("Enemy")) return;
             if (_objectsInAttackRange.Contains(other.gameObject)) return;
             _objectsInAttackRange.Add(other.gameObject);
-            Debug.Log(_objectsInAttackRange.Count + " " + other.gameObject.name + " entered player trigger");
         }
 
         private void OnTriggerExit2D(Collider2D other)

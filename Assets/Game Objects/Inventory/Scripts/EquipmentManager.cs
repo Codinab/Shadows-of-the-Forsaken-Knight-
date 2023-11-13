@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class EquipmentManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class EquipmentManager : MonoBehaviour
         if (Instance != null)
         {
             Debug.LogWarning("equipment instance duplicated");
+            return;
         }
         Instance = this;
     }
@@ -41,16 +43,25 @@ public class EquipmentManager : MonoBehaviour
     {
         _numberOfSlots = Enum.GetNames(typeof(EquipmentSlot)).Length;
         _equipment = new Equipment[_numberOfSlots];
+        Debug.Log(_equipment.Length);
         _inventory = Inventory.Instance;
     }
 
     public void EquipItem(Equipment item)
     {
-        Item returnItem=null;
+        Item returnItem = null;
         int slotIndex = (int)item.equipmentSlot;
+        //change player stats
         if (onEquipmentChangedCallBack != null)
         {
-            onEquipmentChangedCallBack.Invoke(item, _equipment[slotIndex]);
+            if(_equipment[slotIndex] != null)
+            {
+                onEquipmentChangedCallBack.Invoke(item, _equipment[slotIndex]);
+            }
+            else
+            {
+                onEquipmentChangedCallBack.Invoke(item, null);
+            }
         }
         //save item from current equipment
         returnItem = _equipment[slotIndex];
@@ -66,26 +77,26 @@ public class EquipmentManager : MonoBehaviour
             _inventory.onItemChangedCallBack.Invoke();
         }
     }
-    
-    public void LoadEquipment(Equipment[] equipments)
-    {
-        foreach (var equipment in equipments)
-        {
-            EquipItem(equipment);   
-        }
-    }
 
-    public Equipment[] SaveEquipment()
-    {
-        return _equipment;
-    }
+    //public void LoadEquipment(Equipment[] equipments)
+    //{
+    //    foreach (var equipment in equipments)
+    //    {
+    //        EquipItem(equipment);   
+    //    }
+    //}
 
-    // TODO: temporary fix, it should disable all the booleans that an item enabled sthg
-    public void Clear()
-    {
-        for (int i = 0; i < _numberOfSlots; i++)
-        {
-            _equipment[i] = null;
-        }
-    }
+    //public Equipment[] SaveEquipment()
+    //{
+    //    return _equipment;
+    //}
+
+    //// TODO: temporary fix, it should disable all the booleans that an item enabled sthg
+    //public void Clear()
+    //{
+    //    for (int i = 0; i < _numberOfSlots; i++)
+    //    {
+    //        _equipment[i] = null;
+    //    }
+    //}
 }
