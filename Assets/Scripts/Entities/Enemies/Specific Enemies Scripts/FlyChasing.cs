@@ -17,6 +17,8 @@ public class FlyChasing : MonoBehaviour
     private float lastHitTaken;
     private EnemyMovement _enemyMovement;
     [SerializeField] float StunDuration;
+    [SerializeField]
+    private Animator _animator;
     //end of mutual
 
 
@@ -58,12 +60,12 @@ public class FlyChasing : MonoBehaviour
             lastHitTaken = Time.time;
             _enemyMovement.pushed = false;
         }
-        if (!_enemyMovement.IsCloseToPlayer() && !CanMove())
+        if (!_enemyMovement.IsCloseToPlayer() || !CanMove())
         {
             _rigidbody2D.velocity = Vector2.zero;
             return;
         }
-        if (!_enemyPushing.CanMove() && !CanMove())
+        if (!_enemyPushing.CanMove() || !CanMove())
         {
             RunFromPlayer();
             return;
@@ -108,7 +110,7 @@ public class FlyChasing : MonoBehaviour
         {
             _goingRight = !_goingRight;
         }
-
+        IdleAnimation();
 
     }
     private bool DidntPassOnTheRight()
@@ -149,7 +151,7 @@ public class FlyChasing : MonoBehaviour
         Vector2 direction = _player.transform.position - transform.position;
         direction.Normalize();
         _rigidbody2D.velocity = direction * ChaseVelocity;
-
+        ChaseAnimation();
     }
     private void RunFromPlayer()
     {
@@ -173,4 +175,15 @@ public class FlyChasing : MonoBehaviour
         return rcHits[rcHits.Length - 1];
     }
 
+
+    #region Animation
+    private void IdleAnimation()
+    {
+        _animator.SetBool("isMoving", false);
+    }
+    private void ChaseAnimation()
+    {
+        _animator.SetBool("isMoving", true);
+    }
+    #endregion
 }

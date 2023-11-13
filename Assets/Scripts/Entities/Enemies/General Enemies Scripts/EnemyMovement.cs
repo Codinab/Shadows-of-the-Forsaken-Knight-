@@ -1,4 +1,6 @@
 ﻿
+using Entities;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -42,9 +44,24 @@ public class EnemyMovement : MonoBehaviour
 
     public bool IsCloseToPlayer()
     {
-        float squaredDistance = (transform.position - _player.transform.position).sqrMagnitude;
-        float squaredCloseDistance = closeDistance * closeDistance;
-        return squaredDistance <= squaredCloseDistance;
+        Player script;
+        try
+        {
+            script = _player.GetComponent<Player>();
+            if (script.isAlive)
+            {
+                float squaredDistance = (transform.position - _player.transform.position).sqrMagnitude;
+                float squaredCloseDistance = closeDistance * closeDistance;
+                return squaredDistance <= squaredCloseDistance;
+            }
+        }
+        catch
+        {
+            float squaredDistance = (transform.position - _player.transform.position).sqrMagnitude;
+            float squaredCloseDistance = closeDistance * closeDistance;
+            return squaredDistance <= squaredCloseDistance;
+        }
+        return false;
     }
 
     public bool IsInView()

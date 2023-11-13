@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyLive : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer[] _spriteRenderer;
     public int health = 1;
     
     public bool IsAlive()
@@ -23,20 +24,25 @@ public class EnemyLive : MonoBehaviour
     
     public void DamagedAnimation()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
         StartCoroutine(ChangeColorTemporarily());
     }
         
-    private MeshRenderer meshRenderer;
     private IEnumerator ChangeColorTemporarily()
     {
-        if (meshRenderer != null)
+        List<Color> originalColor = new List<Color>();
+        List<Material> material = new List<Material>();
+        for (int i =0;i< _spriteRenderer.Length;i++)
         {
-            Color originalColor = meshRenderer.material.color;
-            var material = meshRenderer.material;
-            material.color = Color.red;
-            yield return new WaitForSeconds(0.2f);
-            material.color = originalColor;
+            originalColor.Add(_spriteRenderer[i].material.color);
+            material.Add(_spriteRenderer[i].material);
+            material[i].color = Color.red;
         }
+        yield return new WaitForSeconds(0.2f);
+        for(int i = 0;i<material.Count;i++)
+        {
+            material[i].color = originalColor[i];
+        }
+        
     }
+
 }

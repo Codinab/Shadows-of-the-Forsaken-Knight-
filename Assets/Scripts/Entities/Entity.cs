@@ -45,7 +45,7 @@ namespace Entities
             set => _maxHealth = value;
         }
 
-        public void DamagedAnimation()
+        public virtual void DamagedAnimation()
         {
             meshRenderer = GetComponent<MeshRenderer>();
             StartCoroutine(ChangeColorTemporarily());
@@ -53,7 +53,7 @@ namespace Entities
 
         private MeshRenderer meshRenderer;
 
-        private IEnumerator ChangeColorTemporarily()
+        protected virtual IEnumerator ChangeColorTemporarily()
         {
             if (meshRenderer != null)
             {
