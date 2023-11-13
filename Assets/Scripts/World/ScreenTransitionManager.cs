@@ -78,7 +78,6 @@ public class SceneTransitionManager : MonoBehaviour
         onScreenChanged.Invoke();
     }
 }
-
 public static class GameData
 {
     public static SceneTransitionSavedData SceneTransitionSavedData;

@@ -23,9 +23,11 @@ public class InventorySlot : MonoBehaviour
     {
         Icon.sprite = null;
         Icon.enabled = false;
+        _item = null;
     }
     public void UseItem()
     {
+        Debug.Log("using" +  _item.name);
         if (_item != null)
         {
             _item.Use();

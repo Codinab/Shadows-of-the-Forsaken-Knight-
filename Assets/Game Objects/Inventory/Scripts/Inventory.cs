@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -46,7 +47,20 @@ public class Inventory : MonoBehaviour
     }
     public void RemoveItem(Item item)
     {
+        //string displaymsg = "";
+        //foreach (Item i in Items)
+        //{
+        //    displaymsg += " " + i.name;
+        //}
+        //Debug.Log("Item removed");
+        //Debug.Log(displaymsg);
         _items.Remove(item);
+        //displaymsg = string.Empty;
+        //foreach (Item i in Items)
+        //{
+        //    displaymsg += " " + i.name;
+        //}
+        //Debug.Log(displaymsg);
     }
 
     //public Item[] SaveInventory()
