@@ -328,13 +328,12 @@ namespace Entities
         }
         protected override IEnumerator ChangeColorTemporarily()
         {
-            var originalColor = _spriteRenderer.material.color;
             var material = _spriteRenderer.material;
             if (CurrentHealth > 0) material.color = Color.red;
             yield return new WaitForSeconds(0.2f);
             if (CurrentHealth > 0)
             {
-                material.color = originalColor;
+                material.color = Color.white;
             }
         }
         private void DeathAnimation()
