@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using World;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 namespace Entities
 { 
@@ -326,15 +325,16 @@ namespace Entities
             if (CurrentHealth <= 0) Die();
             
         }
+
         protected override IEnumerator ChangeColorTemporarily()
         {
-            var originalColor = _spriteRenderer.material.color;
+            //var originalColor = _spriteRenderer.material.color;
             var material = _spriteRenderer.material;
             if (CurrentHealth >= 0) material.color = Color.red;
             yield return new WaitForSeconds(0.2f);
             if (CurrentHealth >= 0)
             {
-                material.color = originalColor;
+                material.color = Color.white;
             }
         }
         private void DeathAnimation()

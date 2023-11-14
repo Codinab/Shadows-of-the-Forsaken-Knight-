@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Definitive Scenes/ConstantScreen.unity
     guid: c172dfa973da811489fd9047e4e01c86
   - enabled: 1
