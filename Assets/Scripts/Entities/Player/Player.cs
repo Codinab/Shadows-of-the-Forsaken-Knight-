@@ -22,6 +22,7 @@ namespace Entities
         private bool _alive = true;
         public bool isAlive { get { return _alive; } }
         public static Player Instance { get; private set; }
+        
         private void Awake()
         {
             if (Instance == null)
@@ -167,10 +168,26 @@ namespace Entities
             if (AttackKeyPressed() && CanAttack()) StartCoroutine(Attack());
         }
 
+        private bool _movingSound = false;
         private void HandeHorizontalMovement()
         {
             if (CanMoveHorizontally())
                 (this as IMovable).Move(Input.GetAxis("Horizontal"));
+
+            float xVelocity = Rigidbody2D.velocity.x;
+            if (TouchingGround && xVelocity is > 0.1f or < -0.1f)
+            {
+                if (!_movingSound)
+                {
+                    _movingSound = true; 
+                    AudioManager.Instance.Play("FootStep");
+                }
+            }
+            else
+            {
+                AudioManager.Instance.Stop("FootStep");
+                _movingSound = false; 
+            }
         }
         #endregion
 
@@ -296,10 +313,15 @@ namespace Entities
         private void AttackAnimation()
         {
            _animator.SetTrigger("Attack");
+           AudioManager.Instance.Play("PlayerAttack");
         }
-        public override void DamagedAnimation()
+        
+        public override void Damaged()
         {
             StartCoroutine(ChangeColorTemporarily());
+            AudioManager.Instance.Play("PlayerReceivesDamage");
+            if (CurrentHealth <= 0) Die();
+            
         }
         protected override IEnumerator ChangeColorTemporarily()
         {
@@ -310,10 +332,6 @@ namespace Entities
             if (CurrentHealth >= 0)
             {
                 material.color = originalColor;
-            }
-            else
-            {
-                Die();
             }
         }
         private void DeathAnimation()
@@ -355,6 +373,7 @@ namespace Entities
             {
                 DeathAnimation();
                 Rigidbody2D.velocity = Vector2.zero;
+                AudioManager.Instance.Play("PlayerDying");
             }
             _alive = false;
         }
@@ -392,6 +411,7 @@ namespace Entities
         {
             HandleDirectionOfJump();
             _jumpKeyPressController = true;
+            AudioManager.Instance.Play("JumpSound");
         }
 
         private void HandleDirectionOfJump()

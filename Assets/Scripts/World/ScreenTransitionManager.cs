@@ -36,7 +36,9 @@ public class SceneTransitionManager : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         SetRandomLoadingImage();
+        
         StartCoroutine(LoadSceneAsync(sceneName));
+        
     }
 
     public void SetRandomLoadingImage()
@@ -75,6 +77,10 @@ public class SceneTransitionManager : MonoBehaviour
         // Hide the loading screen
         loadingCanvas.enabled = false;
         onScreenChanged.Invoke();
+        
+        AudioManager.Instance.Stop("StartMenuMusic");
+        AudioManager.Instance.Stop("BackgroundSounds");
+        AudioManager.Instance.Play("BackgroundSounds");
     }
 }
 

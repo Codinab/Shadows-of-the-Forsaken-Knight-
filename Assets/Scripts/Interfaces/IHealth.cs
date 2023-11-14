@@ -7,11 +7,12 @@
 
         public void TakeDamage(int amount)
         {
+            if (IsDead()) return;
             CurrentHealth -= amount;
-            DamagedAnimation();
+            Damaged();
         }
 
-        void DamagedAnimation();
+        void Damaged();
 
         public void Heal(int amount)
         {
