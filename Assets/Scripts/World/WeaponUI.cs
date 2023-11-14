@@ -17,7 +17,7 @@ public class WeaponUI : UI
         
         
         _equipmentManager = EquipmentManager.Instance;
-        _equipmentManager.onEquipmentChangedCallBack += EquipmentChnaged;
+        //_equipmentManager.onEquipmentChangedCallBack += EquipmentChnaged;
         _activeImage = GetComponent<Image>();
         _activeImage.enabled = false;
         tmp = transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
@@ -36,21 +36,27 @@ public class WeaponUI : UI
             Player player = Player.Instance;
             _playerCombat = player.CombatHandler;
         }
-    }
-    private void EquipmentChnaged(Equipment newE, Equipment old)
-    {
-        if(newE.equipmentSlot != EquipmentSlot.SWORD)
+        Equipment weapon = _equipmentManager.EquipmentList[4];
+        if (weapon != null)
         {
-            return;
-        }
-        else
-        {
-            _activeImage.sprite = newE.Icon;
+            _activeImage.sprite = weapon.Icon;
             _activeImage.enabled = true;
-            string dmg = _playerCombat.damage.ToString();
-            tmp.text = dmg; 
+            tmp.text = _playerCombat.damage.ToString();
         }
     }
+    //private void EquipmentChnaged(Equipment newE, Equipment old)
+    //{
+    //    if(newE.equipmentSlot != EquipmentSlot.SWORD)
+    //    {
+    //        return;
+    //    }
+    //    else
+    //    {
+    //        _activeImage.sprite = newE.Icon;
+    //        _activeImage.enabled = true;
+    //        tmp.text = _playerCombat.damage.ToString();
+    //    }
+    //}
     // Update is called once per frame
-    
+
 }
