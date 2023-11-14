@@ -40,6 +40,7 @@ public class ItemPickup : MonoBehaviour
 
         if (Inventory.Instance.AddItem(Item))
         {
+            AudioManager.Instance.Play("ItemPickUp");
             _playerScript.onInteractKeyPressedCallBack -= PickUp;
             Destroy(gameObject);
         }
