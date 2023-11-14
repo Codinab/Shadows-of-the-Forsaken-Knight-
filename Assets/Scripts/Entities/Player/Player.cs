@@ -330,9 +330,9 @@ namespace Entities
         {
             var originalColor = _spriteRenderer.material.color;
             var material = _spriteRenderer.material;
-            if (CurrentHealth >= 0) material.color = Color.red;
+            if (CurrentHealth > 0) material.color = Color.red;
             yield return new WaitForSeconds(0.2f);
-            if (CurrentHealth >= 0)
+            if (CurrentHealth > 0)
             {
                 material.color = originalColor;
             }
@@ -358,6 +358,7 @@ namespace Entities
             {
                 _animator.SetBool("On a wall", false);
             }
+            if (!_alive) return;
             if (IsLookingLeft())
             {
                 rotation += 180;
@@ -375,6 +376,7 @@ namespace Entities
             if (_alive)
             {
                 DeathAnimation();
+                
                 Rigidbody2D.velocity = Vector2.zero;
                 AudioManager.Instance.Play("PlayerDying");
             }
