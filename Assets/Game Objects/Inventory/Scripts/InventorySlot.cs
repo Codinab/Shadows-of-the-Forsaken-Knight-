@@ -27,7 +27,6 @@ public class InventorySlot : MonoBehaviour
     }
     public void UseItem()
     {
-        Debug.Log("using" +  _item.name);
         if (_item != null)
         {
             _item.Use();

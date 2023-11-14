@@ -250,6 +250,7 @@ namespace Entities
         }
 
         private CombatHandler _combatHandler;
+        public CombatHandler CombatHandler { get { return _combatHandler; }  }
         public bool CanAttack()
         {
             return _combatHandler.CanAttack();//&&_holdingWeapon;

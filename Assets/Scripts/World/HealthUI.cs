@@ -48,6 +48,11 @@ public class HealthUI : MonoBehaviour
             Image img = transform.GetChild(i-1).gameObject.GetComponent<Image>();
             img.color = Color.black;
         }
+        for(int i = 0;i< _player.CurrentHealth; i++)
+        {
+            Image img = transform.GetChild(i).gameObject.GetComponent<Image>();
+            img.color = Color.white;
+        }
     }
     private void RemoveDisplayed()
     {
