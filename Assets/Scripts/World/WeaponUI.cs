@@ -5,29 +5,37 @@ using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class WeaponUI : MonoBehaviour
+public class WeaponUI : UI
 {
     private CombatHandler _playerCombat;
     private EquipmentManager _equipmentManager;
     private Image _activeImage;
     private TextMeshProUGUI tmp;
     // Start is called before the first frame update
-    void Start()
+    protected override void Initialize()
     {
-        Player player = Player.Instance;
-        _playerCombat = player.CombatHandler;
+        
+        
         _equipmentManager = EquipmentManager.Instance;
         _equipmentManager.onEquipmentChangedCallBack += EquipmentChnaged;
-        string display = "";
-        foreach (var v in transform.GetChild(0).gameObject.GetComponents<Component>())
-        {
-            display += v.GetType() + " ";
-        }
-        Debug.Log(display);
         _activeImage = GetComponent<Image>();
         _activeImage.enabled = false;
         tmp = transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         tmp.text = "";
+
+    }
+    protected override void PlayStarted()
+    {
+        Player player = Player.Instance;
+        _playerCombat = player.CombatHandler;
+    }
+    protected override void ChildUpdate()
+    {
+        if(_playerCombat == null)
+        {
+            Player player = Player.Instance;
+            _playerCombat = player.CombatHandler;
+        }
     }
     private void EquipmentChnaged(Equipment newE, Equipment old)
     {
@@ -39,12 +47,10 @@ public class WeaponUI : MonoBehaviour
         {
             _activeImage.sprite = newE.Icon;
             _activeImage.enabled = true;
-            tmp.text = _playerCombat.damage.ToString();
+            string dmg = _playerCombat.damage.ToString();
+            tmp.text = dmg; 
         }
     }
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

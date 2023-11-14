@@ -22,6 +22,8 @@ namespace Entities
         public float maxFallSpeed;
         private bool _alive = true;
         public bool isAlive { get { return _alive; } }
+        private CombatHandler _combatHandler;
+        public CombatHandler CombatHandler { get { return _combatHandler; } }
         public static Player Instance { get; private set; }
         private void Awake()
         {
@@ -44,7 +46,7 @@ namespace Entities
 
             _combatHandler = GetComponent<CombatHandler>();
             if (_combatHandler == null) Debug.LogError("PlayerCombat not found");
-            
+
             base.Start();
             _equipmentManager = EquipmentManager.Instance;
             _equipmentManager.onEquipmentChangedCallBack += EquipmentChanged; 
@@ -249,11 +251,10 @@ namespace Entities
             return attackKey;
         }
 
-        private CombatHandler _combatHandler;
-        public CombatHandler CombatHandler { get { return _combatHandler; }  }
+        
         public bool CanAttack()
         {
-            return _combatHandler.CanAttack();//&&_holdingWeapon;
+            return _combatHandler.CanAttack() &&_holdingWeapon;
         }
 
         public IEnumerator Attack()

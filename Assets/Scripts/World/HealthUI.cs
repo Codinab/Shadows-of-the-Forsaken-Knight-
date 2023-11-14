@@ -4,23 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthUI : MonoBehaviour
+public class HealthUI : UI
 {
     [SerializeField]
     private Image _heart;
     private Player _player;
-    private int _displayedHealth;
     private int _displayedMaxHealth;
     // Start is called before the first frame update
-    void Start()
+    protected override void Initialize()
+    {
+    }
+    protected override void PlayStarted()
     {
         _player = Player.Instance;
         DisplayMaxHealth();
-        
     }
-
-    // Update is called once per frame
-    void Update()
+    protected override void ChildUpdate()
     {
         if( _displayedMaxHealth != _player.MaxHealth )
         {
@@ -31,6 +30,9 @@ public class HealthUI : MonoBehaviour
             UpdateMissingHealth();
         }
     }
+
+
+
     private void DisplayMaxHealth()
     {
         RemoveDisplayed();
