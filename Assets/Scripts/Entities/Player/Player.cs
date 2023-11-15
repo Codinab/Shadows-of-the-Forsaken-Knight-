@@ -403,7 +403,7 @@ namespace Entities
 
         private bool JumpKeyPressed()
         {
-            var jumpKeyPressed = Input.GetKey(KeyCode.V);
+            var jumpKeyPressed = Input.GetKey(KeyCode.Space);
             return jumpKeyPressed;
         }
 
