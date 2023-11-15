@@ -21,6 +21,7 @@ public abstract class UI : MonoBehaviour
                 return;
             }
         }
+        StartPlay();
     }
     protected abstract void Initialize();
     private void StartPlay()
