@@ -231,7 +231,8 @@ namespace Entities
             var leftKey = Input.GetKey(KeyCode.A);
             var upKey = Input.GetKey(KeyCode.W);
             var downKey = Input.GetKey(KeyCode.S);
-
+            var leftKeyArrow = Input.GetKey(KeyCode.LeftArrow);
+            var rightKeyArrow = Input.GetKey(KeyCode.RightArrow);
             if (upKey)
             {
                 _lookingDirection = Vector2Int.up;
@@ -240,12 +241,12 @@ namespace Entities
             {
                 _lookingDirection = Vector2Int.down;
             }
-            else if (leftKey)
+            else if (leftKey || leftKeyArrow)
             {
                 _lookingDirection = Vector2Int.left;
                 _lastHorizontalDirection = Vector2Int.left;
             }
-            else if (rightKey)
+            else if (rightKey || rightKeyArrow)
             {
                 _lookingDirection = Vector2Int.right;
                 _lastHorizontalDirection = Vector2Int.right;
