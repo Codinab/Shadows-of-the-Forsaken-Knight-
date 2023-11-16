@@ -10,6 +10,8 @@ public class ItemPickup : Interactable
     
     void Start()
     {
+        SpriteRenderer spreit = GetComponent<SpriteRenderer>();
+        spreit.sprite = Item.Icon;
     }
 
     // Update is called once per frame
