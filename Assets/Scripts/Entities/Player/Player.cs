@@ -265,7 +265,7 @@ namespace Entities
         
         private bool AttackKeyPressed()
         {
-            var attackKey = Input.GetKey(KeyCode.C);
+            var attackKey = Input.GetKey(KeyCode.J);
             return attackKey;
         }
 
