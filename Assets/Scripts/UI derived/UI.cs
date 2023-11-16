@@ -18,11 +18,15 @@ public abstract class UI : MonoBehaviour
         {
             if(scene.name == "StartMenu")
             {
+                _playStarted = false ;
+                //PlayStopped();
                 return;
             }
         }
         StartPlay();
     }
+
+    //protected abstract void PlayStopped();
     protected abstract void Initialize();
     private void StartPlay()
     {
@@ -36,6 +40,10 @@ public abstract class UI : MonoBehaviour
         if (_playStarted)
         {
             ChildUpdate();
+        }
+        else
+        {
+            Debug.Log("play not active");
         }
     }
     protected abstract void ChildUpdate();

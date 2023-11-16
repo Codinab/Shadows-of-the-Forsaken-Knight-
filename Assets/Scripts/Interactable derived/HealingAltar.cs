@@ -24,12 +24,10 @@ public class HealingAltar : Interactable
         Player player = Player.Instance;
         player.CurrentHealth = player.MaxHealth;
         canInteract = false;
-        Debug.Log(_cooldown);
         Invoke("CooldownEnd", _cooldown);
     }
     private void CooldownEnd()
     {
-        Debug.Log("reset");
         canInteract = true;
     }
 

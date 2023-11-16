@@ -43,6 +43,7 @@ public class WeaponUI : UI
             _activeImage.enabled = true;
             tmp.text = _playerCombat.damage.ToString();
         }
+        Debug.Log("child upadted");
     }
     //private void EquipmentChnaged(Equipment newE, Equipment old)
     //{

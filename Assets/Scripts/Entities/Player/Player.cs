@@ -278,7 +278,6 @@ namespace Entities
         public IEnumerator Attack()
         {
             AttackAnimation();
-            Debug.Log("attacked");
             return _combatHandler.Attack();
         }
         #endregion

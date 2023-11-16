@@ -37,7 +37,6 @@ public abstract class Interactable : MonoBehaviour
     }
     private void PreInteract()
     {
-        Debug.Log("Interacted");
         playerScript.onInteractKeyPressedCallBack -= PreInteract;
         Interact();
     }
