@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class EquipmentManager : MonoBehaviour
 {
@@ -45,7 +44,10 @@ public class EquipmentManager : MonoBehaviour
         _equipment = new Equipment[_numberOfSlots];
         _inventory = Inventory.Instance;
     }
-
+    public void Clear()
+    {
+        _equipment = new Equipment[_numberOfSlots];
+    }
     public void EquipItem(Equipment item)
     {
         Item returnItem;

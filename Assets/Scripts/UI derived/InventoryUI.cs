@@ -39,7 +39,10 @@ public class InventoryUI : UI
         }
     }
 
-
+    protected override void StopPlay() 
+    {
+        InventoryTab.SetActive(false);
+    }
     private void UpdateInventoryUI()
     {
         Item[] items = _inventory.Items;

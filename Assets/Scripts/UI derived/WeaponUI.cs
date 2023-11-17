@@ -45,6 +45,13 @@ public class WeaponUI : UI
         }
         Debug.Log("child upadted");
     }
+
+    protected override void StopPlay()
+    {
+        _activeImage.enabled = false;
+        tmp.text = "";
+        Debug.Log("Play stoppped");
+    }
     //private void EquipmentChnaged(Equipment newE, Equipment old)
     //{
     //    if(newE.equipmentSlot != EquipmentSlot.SWORD)

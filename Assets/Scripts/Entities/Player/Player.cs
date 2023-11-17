@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using World;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 namespace Entities
 { 
@@ -96,14 +95,22 @@ namespace Entities
 
             UpdateDoubleJumpCount();
             
-            // TODO: temporary reset
+            
+        }
+        private void Update()
+        {
             if (Input.GetKeyDown(KeyCode.O))
             {
-                GameData.Reset();
-                SceneManager.LoadScene("StartMenu");
+                RestartTheGame();
+                
             }
         }
-
+        private void RestartTheGame()
+        {
+            Inventory.Instance.Clear();
+            GameData.Reset();
+            SceneManager.LoadScene("StartMenu");
+        }
         private void UpdateDoubleJumpCount()
         {
             if (TouchingGround || GrabbingWall) DoubleJumpCount = 0;

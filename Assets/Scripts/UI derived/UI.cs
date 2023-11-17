@@ -37,14 +37,18 @@ public abstract class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_playStarted)
+        foreach (Scene scene in SceneManager.GetAllScenes())
         {
-            ChildUpdate();
+            if (scene.name == "StartMenu")
+            {
+                _playStarted = false;
+                StopPlay();
+                return;
+            }
         }
-        else
-        {
-            Debug.Log("play not active");
-        }
+        ChildUpdate();
+        
     }
+    protected abstract void StopPlay();
     protected abstract void ChildUpdate();
 }

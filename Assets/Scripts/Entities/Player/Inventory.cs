@@ -27,7 +27,11 @@ public class Inventory : MonoBehaviour
     {
         _items = new List<Item>();
     }
-
+    public void Clear()
+    {
+        EquipmentManager.Instance.Clear();
+        _items.Clear();
+    }
     public bool AddItem(Item item)
     {
         if(item == null)
