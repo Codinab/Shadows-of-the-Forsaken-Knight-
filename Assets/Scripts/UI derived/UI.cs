@@ -13,10 +13,20 @@ public abstract class UI : MonoBehaviour
         GameObject menu = GameObject.FindGameObjectWithTag("Menu");
         SceneTransitionManager script = menu.GetComponent<SceneTransitionManager>();
         script.onScreenChanged += StartPlay;
+        _playStarted = false;
+        foreach(Scene scene in SceneManager.GetAllScenes())
+        {
+            if(scene.name == "StartMenu")
+            {
+                _playStarted = false ;
+                //PlayStopped();
+                return;
+            }
+        }
         StartPlay();
     }
 
-    protected abstract void PlayStopped();
+    //protected abstract void PlayStopped();
     protected abstract void Initialize();
     private void StartPlay()
     {
@@ -27,19 +37,6 @@ public abstract class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (Scene scene in SceneManager.GetAllScenes())
-        {
-            if (scene.name == "StartMenu")
-            {
-                _playStarted = false;
-                PlayStopped();
-                return;
-            }
-            else
-            {
-                _playStarted = true;
-            }
-        }
         if (_playStarted)
         {
             ChildUpdate();

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Interfaces;
 using Interfaces.Checkers;
 using Unity.VisualScripting;
@@ -27,7 +25,6 @@ namespace Entities
         private CombatHandler _combatHandler;
         public CombatHandler CombatHandler { get { return _combatHandler; } }
         public static Player Instance { get; private set; }
-        private GameObject tmp;
         
         private void Awake()
         {
@@ -66,19 +63,6 @@ namespace Entities
             
             // Set the z position to -0.5
             transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
-            string display = "";
-            foreach(Transform child in transform)
-            {
-                display += child.name + " ";
-                if(child.name == "Restart text")
-                {
-                    tmp = child.gameObject;
-                    tmp.active = false;
-                    return;
-                }
-            }
-            Debug.Log(display);
-
         }
 
         protected override void OnFixedUpdate()
@@ -116,7 +100,6 @@ namespace Entities
             if (Input.GetKeyDown(KeyCode.O))
             {
                 GameData.Reset();
-                Inventory.Reset();
                 SceneManager.LoadScene("StartMenu");
             }
         }
@@ -392,7 +375,7 @@ namespace Entities
             if (_alive)
             {
                 DeathAnimation();
-                tmp.active= true;
+                
                 Rigidbody2D.velocity = Vector2.zero;
                 AudioManager.Instance.Play("PlayerDying");
             }

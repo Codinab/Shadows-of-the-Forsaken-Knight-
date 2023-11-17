@@ -12,10 +12,8 @@ public class InventorySlot : MonoBehaviour
 
     public void AddItem(Item item)
     {
-        Debug.Log("item actually addedf");
         if(item != null)
         {
-            Debug.Log("and is not null");
             _item=item;
             Icon.sprite = item.Icon;
             Icon.enabled = true;
@@ -29,7 +27,6 @@ public class InventorySlot : MonoBehaviour
     }
     public void UseItem()
     {
-        Debug.Log("usnig this");
         if (_item != null)
         {
             _item.Use();

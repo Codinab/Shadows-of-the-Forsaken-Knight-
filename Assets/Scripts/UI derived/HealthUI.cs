@@ -63,9 +63,4 @@ public class HealthUI : UI
             Object.Destroy(transform.GetChild(i).gameObject);
         }
     }
-
-    protected override void PlayStopped()
-    {
-        
-    }
 }
