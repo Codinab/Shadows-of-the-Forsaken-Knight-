@@ -49,5 +49,10 @@ public class Inventory : MonoBehaviour
     {
         _items.Remove(item);
     }
+    public static void Reset()
+    {
+        Instance = null;
+        EquipmentManager.Instance = null;
+    }
 
 }

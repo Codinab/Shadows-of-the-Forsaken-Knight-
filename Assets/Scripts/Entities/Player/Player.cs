@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Interfaces;
 using Interfaces.Checkers;
 using Unity.VisualScripting;
@@ -8,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using World;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 namespace Entities
 { 
@@ -24,6 +27,7 @@ namespace Entities
         private CombatHandler _combatHandler;
         public CombatHandler CombatHandler { get { return _combatHandler; } }
         public static Player Instance { get; private set; }
+        private GameObject tmp;
         
         private void Awake()
         {
@@ -62,6 +66,19 @@ namespace Entities
             
             // Set the z position to -0.5
             transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
+            string display = "";
+            foreach(Transform child in transform)
+            {
+                display += child.name + " ";
+                if(child.name == "Restart text")
+                {
+                    tmp = child.gameObject;
+                    tmp.active = false;
+                    return;
+                }
+            }
+            Debug.Log(display);
+
         }
 
         protected override void OnFixedUpdate()
@@ -99,6 +116,7 @@ namespace Entities
             if (Input.GetKeyDown(KeyCode.O))
             {
                 GameData.Reset();
+                Inventory.Reset();
                 SceneManager.LoadScene("StartMenu");
             }
         }
@@ -230,7 +248,8 @@ namespace Entities
             var leftKey = Input.GetKey(KeyCode.A);
             var upKey = Input.GetKey(KeyCode.W);
             var downKey = Input.GetKey(KeyCode.S);
-
+            var leftKeyArrow = Input.GetKey(KeyCode.LeftArrow);
+            var rightKeyArrow = Input.GetKey(KeyCode.RightArrow);
             if (upKey)
             {
                 _lookingDirection = Vector2Int.up;
@@ -239,12 +258,12 @@ namespace Entities
             {
                 _lookingDirection = Vector2Int.down;
             }
-            else if (leftKey)
+            else if (leftKey || leftKeyArrow)
             {
                 _lookingDirection = Vector2Int.left;
                 _lastHorizontalDirection = Vector2Int.left;
             }
-            else if (rightKey)
+            else if (rightKey || rightKeyArrow)
             {
                 _lookingDirection = Vector2Int.right;
                 _lastHorizontalDirection = Vector2Int.right;
@@ -263,7 +282,7 @@ namespace Entities
         
         private bool AttackKeyPressed()
         {
-            var attackKey = Input.GetKey(KeyCode.C);
+            var attackKey = Input.GetKey(KeyCode.J);
             return attackKey;
         }
 
@@ -276,7 +295,6 @@ namespace Entities
         public IEnumerator Attack()
         {
             AttackAnimation();
-            Debug.Log("attacked");
             return _combatHandler.Attack();
         }
         #endregion
@@ -325,14 +343,12 @@ namespace Entities
             if (CurrentHealth <= 0) Die();
             
         }
-
         protected override IEnumerator ChangeColorTemporarily()
         {
-            //var originalColor = _spriteRenderer.material.color;
             var material = _spriteRenderer.material;
-            if (CurrentHealth >= 0) material.color = Color.red;
+            if (CurrentHealth > 0) material.color = Color.red;
             yield return new WaitForSeconds(0.2f);
-            if (CurrentHealth >= 0)
+            if (CurrentHealth > 0)
             {
                 material.color = Color.white;
             }
@@ -358,6 +374,7 @@ namespace Entities
             {
                 _animator.SetBool("On a wall", false);
             }
+            if (!_alive) return;
             if (IsLookingLeft())
             {
                 rotation += 180;
@@ -375,6 +392,7 @@ namespace Entities
             if (_alive)
             {
                 DeathAnimation();
+                tmp.active= true;
                 Rigidbody2D.velocity = Vector2.zero;
                 AudioManager.Instance.Play("PlayerDying");
             }
@@ -401,7 +419,7 @@ namespace Entities
 
         private bool JumpKeyPressed()
         {
-            var jumpKeyPressed = Input.GetKey(KeyCode.V);
+            var jumpKeyPressed = Input.GetKey(KeyCode.Space);
             return jumpKeyPressed;
         }
 
