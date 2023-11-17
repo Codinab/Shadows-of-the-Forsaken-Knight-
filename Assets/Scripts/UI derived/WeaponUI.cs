@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 public class WeaponUI : UI
+
 {
     private CombatHandler _playerCombat;
     private EquipmentManager _equipmentManager;
@@ -43,7 +44,12 @@ public class WeaponUI : UI
             _activeImage.enabled = true;
             tmp.text = _playerCombat.damage.ToString();
         }
-        Debug.Log("child upadted");
+    }
+
+    protected override void PlayStopped()
+    {
+        tmp.text = "";
+        _activeImage.enabled = false;
     }
     //private void EquipmentChnaged(Equipment newE, Equipment old)
     //{

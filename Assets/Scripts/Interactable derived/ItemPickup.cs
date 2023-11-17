@@ -21,8 +21,6 @@ public class ItemPickup : Interactable
     }
     protected override void Interact()
     {
-        
-
         if (Inventory.Instance.AddItem(Item))
         {
             AudioManager.Instance.Play("ItemPickUp");

@@ -23,6 +23,7 @@ public class InventoryUI : UI
     }
     protected override void ChildUpdate()
     {
+        Debug.Log("doing child update");
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             // If opening inventory play open sound
@@ -55,5 +56,11 @@ public class InventoryUI : UI
                 _slots[i].ClearSlot();
             }
         }
+    }
+
+    protected override void PlayStopped()
+    {
+        Debug.Log("play stopped");
+        InventoryTab.SetActive(false);
     }
 }
