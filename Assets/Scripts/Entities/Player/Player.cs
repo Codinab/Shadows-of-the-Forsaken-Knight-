@@ -24,7 +24,7 @@ namespace Entities
         private CombatHandler _combatHandler;
         public CombatHandler CombatHandler { get { return _combatHandler; } }
         public static Player Instance { get; private set; }
-        
+        private GameObject _tmp;        
         private void Awake()
         {
             if (Instance == null)
@@ -59,6 +59,7 @@ namespace Entities
                 LoadStats(savedData.SavedEquipment);
                 GameData.SceneTransitionSavedData = null;
             }
+            _tmp = transform.Find("Death Text").gameObject;
             
             // Set the z position to -0.5
             transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
@@ -382,7 +383,7 @@ namespace Entities
             if (_alive)
             {
                 DeathAnimation();
-                
+                _tmp.SetActive(true);
                 Rigidbody2D.velocity = Vector2.zero;
                 AudioManager.Instance.Play("PlayerDying");
             }
