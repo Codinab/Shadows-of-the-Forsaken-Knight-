@@ -36,7 +36,7 @@ To clone the repository and start working on Shadows of the Forsaken Knight, fol
 git clone https://github.com/Codinab/Shadows-of-the-Forsaken-Knight-.git
 ```
 
-4. Once cloned, you can navigate into the directory using `cd Shadows-of-the-Forsaken-Knight` and start working on the project.
+4. Once cloned, you can navigate into the directory and start working on the project.
 ```bash
 cd Shadows-of-the-Forsaken-Knight
 ```
